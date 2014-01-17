@@ -1,6 +1,17 @@
-ateam-tanks
-===========
+Tank Battles!
+=============
 
-Spring 2014 Software Engineering project!
+A yet-to-be-officially-named 2D multiplayer tank combat game which could feature
+AI enemies,
+music and sound effects,
+network play,
+explosion physics,
+and anything else we come up with!
 
-This will be a tank battle game written in Java and SDL (?)
+We are writing the game as a desktop application in Java and
+a not-yet-chosen media framework (likely SDL).
+
+*Written as a Spring 2014 SLU Software Engineering project by:*
+
+Nick Lewchenko
+
