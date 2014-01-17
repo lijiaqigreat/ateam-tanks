@@ -11,14 +11,8 @@ and anything else we come up with!
 We are writing the game as a desktop application in Java and
 a not-yet-chosen media framework (likely SDL).
 
+--
+
 *Written as a Spring 2014 SLU Software Engineering project by:*
 
 -- Nick Lewchenko
-
---
-
---
-
---
-
---
