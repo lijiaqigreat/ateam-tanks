@@ -13,5 +13,12 @@ a not-yet-chosen media framework (likely SDL).
 
 *Written as a Spring 2014 SLU Software Engineering project by:*
 
-Nick Lewchenko
+-- Nick Lewchenko
 
+--
+
+--
+
+--
+
+--
