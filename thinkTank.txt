@@ -2,7 +2,7 @@
 Andres Wiltz
 1/23/14
 ------------------------------------------------------------------------------
-I think it would be a good idea to have this document to start throwing ideas around.  We can also organize things and start creating some structure to the structure where we can finalize ideas and everyone can see them at any time.
+I think it would be a good idea to have this document to start throwing ideas around.  We can also organize things and start creating some structure to the project. We can also finalize ideas where everyone can see them at any time.
 
 Some things I think we need to finalize:
      - Rules of the game
