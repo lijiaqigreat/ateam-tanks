@@ -18,4 +18,7 @@ a not-yet-chosen media framework (likely SDL).
 * Nick Lewchenko
 
 * Jiaqi Li
+
 * Andres Wiltz
+
+* barnett
