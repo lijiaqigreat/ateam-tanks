@@ -22,3 +22,6 @@ a not-yet-chosen media framework (likely SDL).
 * Andres Wiltz
 
 * barnett
+
+* Imaoye Ekpelu
+
