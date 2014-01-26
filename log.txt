@@ -18,3 +18,15 @@ Some ideas about modularizing the game:
   Management amoung different modules
        -- Jiaqi
 
+Jan 26 Meeting Update:
+  Core Mechanics
+  Map (generator/static?)
+  Interface (I/O) menu, etc
+  AI (AI and human inherit from player)
+  Network Play
+  Files (save maps, game state)
+  Game art
+  Grid-based
+  Turn based
+  Create UML diagram for classes
+  No game engine as of yet?
