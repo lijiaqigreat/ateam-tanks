@@ -1,32 +1,25 @@
---- Priority ---
+Sprint Backlog - Current Sprint Goal: Have a playable (locally-) multiplayer tank battle game
+==============
 
+1. Finalize Rules
 
+2. Implement Map and Maptile classes with Maptile presets for plains, marsh, water, and mountain (and functions for shifting weather patterns)
 
+3. Implement Tank with presets for tread-type and armor-type
 
+4. Implement Bullet and subclasses ArcShot and DirectShot
 
---- Ideas ---
+5. Implement GameState class to aggregate previous classes
 
-This game should be strictly turn-based. Synchronization is easier this way.  -- Jiaqi
+6. Implement the OrderQueue class and Order class
 
-We should modularize the game as soon as possible, so that people can work simotinuously without interference.  -- Jiaqi
+7. Implement main game loop
 
-Some ideas about modularizing the game:
-  GUI
-  Images and Soundtracks
-  Game Design
-  core mechanics
-  Management amoung different modules
-       -- Jiaqi
+8. Draw stand-in graphics
 
-Jan 26 Meeting Update:
-  Core Mechanics
-  Map (generator/static?)
-  Interface (I/O) menu, etc
-  AI (AI and human inherit from player)
-  Network Play
-  Files (save maps, game state)
-  Game art
-  Grid-based
-  Turn based
-  Create UML diagram for classes
-  No game engine as of yet?
+9. Implement game window
+
+10. Implement control input
+
+11. Implement menu system
+
