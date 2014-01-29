@@ -10,8 +10,7 @@ and anything else we come up with!
 
 This game will be a unique blend of turn-based and real-time gameplay elements.
 
-We are writing the game as a desktop application in Java and
-a not-yet-chosen media framework (likely SDL).
+We are writing the game as a desktop application in Java.
 
 --
 
