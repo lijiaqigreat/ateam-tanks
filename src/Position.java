@@ -41,4 +41,9 @@ class Position
     {
         return z;
     }
+
+    public String toString ()
+    {
+        return "(" + x + ", " + y + ", " + z + ")";
+    }
 }

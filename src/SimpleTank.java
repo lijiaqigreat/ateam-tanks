@@ -1,13 +1,36 @@
+import java.util.ArrayList;
+
 class SimpleTank extends Sprite
 {
-    int speed;
-    int turning;
-    OrdersQueue queue;
+    private int speed;
+    private int handling;
+    private OrderQueue orders;
 
-    public SimpleTank ( Position p, int speed, int turning )
+    public SimpleTank ( ArrayList<Sprite> sprites, Position p, int speed, int handling )
     {
-        super ( p );
+        super ( sprites, p );
         this.speed = speed;
-        this.turning = turning;
-        OrdersQueue = new OrdersQueue ();
+        this.handling = handling;
+        OrderQueue orders = new OrderQueue ();
     }
+    
+    public void giveOrders ( OrderQueue newOrders )
+    {
+        orders = newOrders;
+    }
+
+    public int getSpeed ()
+    {
+        return speed;
+    }
+    public int getHandling ()
+    {
+        return handling;
+    }
+
+    public int update ()
+    {
+        orders.exec( this );
+        return 0;
+    }
+}

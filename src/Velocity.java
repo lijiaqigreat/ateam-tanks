@@ -8,9 +8,9 @@ class Velocity
 
     public Velocity ( int speed, int direction, int inclination ) //direction and inclination are in degrees
     {
-        vx = ( int ) Math.cos ( Math.toRadians ( ( double ) direction ) ) * ( double ) speed;
-        vy = ( int ) Math.sin ( Math.toRadians ( ( double ) direction ) ) * ( double ) speed;
-        vz = ( int ) Math.sin ( Math.toRadians ( ( double ) inclination ) ) * ( double ) speed;
+        vx = ( int ) ( Math.cos ( Math.toRadians ( ( double ) direction ) ) * ( double ) speed ) ;
+        vy = ( int ) ( Math.sin ( Math.toRadians ( ( double ) direction ) ) * ( double ) speed ) ;
+        vz = ( int ) ( Math.sin ( Math.toRadians ( ( double ) inclination ) ) * ( double ) speed ) ;
     }
     public Velocity ( Velocity v )
     {
@@ -19,21 +19,21 @@ class Velocity
         this.vz = v.vz;
     }
 
-    public add ( Velocity v )
+    public void add ( Velocity v )
     {
         vx += v.vx;
         vy += v.vy;
         vz += v.vz;
     }
-    public getX ()
+    public int getX ()
     {
         return vx;
     }
-    public getY ()
+    public int getY ()
     {
         return vy;
     }
-    public getZ ()
+    public int getZ ()
     {
         return vz;
     }
