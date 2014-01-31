@@ -1,9 +1,17 @@
+/*
+ * A tank.
+ *
+ * Not sure why I called it SimpleTank -- I did not
+ * have a more complicated form in mind
+ * (it might get renamed to Tank)
+ */
+
 import java.util.ArrayList;
 
 class SimpleTank extends Sprite
 {
-    private int speed;
-    private int handling;
+    private int speed; //how far a frame of MoveOrder will move the tank
+    private int handling; //how far a frame of TurnOrder will turn the tank
     private OrderQueue orders;
 
     public SimpleTank ( ArrayList<Sprite> sprites, Position p, int speed, int handling )

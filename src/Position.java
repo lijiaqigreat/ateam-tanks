@@ -1,3 +1,7 @@
+/*
+ * A position of an object on the field
+ */
+
 class Position
 {
     private int x;
@@ -22,6 +26,8 @@ class Position
         p.y = y;
         p.z = z;
     }
+    
+    //This is supposed to be a simple way of producing adjacent positions for movement
     public Position ( Position prev, Velocity v )
     {
         x = v.getX () + prev.getX ();

@@ -1,3 +1,9 @@
+/*
+ * An initial test of the class structures using a set of defined orders.
+ *
+ * No graphics -- the tank position is just printed to the screen after each frame.
+ */
+
 import java.util.ArrayList;
 
 public class CoreTest

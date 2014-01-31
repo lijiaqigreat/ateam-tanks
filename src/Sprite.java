@@ -1,3 +1,16 @@
+/*
+ * This is a general class for anything that might
+ * be placed, removed, or move or change in any way
+ * on the field during play. The idea is that the main
+ * game loop can iterate over a list of these and update
+ * each one.
+ * And then the graphical interface can iterate over the list
+ * and display each one.
+ *
+ * So far only tanks use them, but the next obvious user would
+ * be a bullet
+ */
+
 import java.util.ArrayList;
 
 public abstract class Sprite

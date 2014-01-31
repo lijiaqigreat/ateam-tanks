@@ -1,6 +1,10 @@
+/*
+ * An order for turning the tank
+ */
+
 public class TurnOrder extends Order
 {
-    int direction;
+    int direction; // 1 is clockwise, -1 is counter-clockwise
 
     public TurnOrder ( int frames, int direction )
     {

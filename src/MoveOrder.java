@@ -1,6 +1,10 @@
+/*
+ * An order class for moving forward and backward
+ */
+
 public class MoveOrder extends Order
 {
-    int direction;
+    int direction; // 1 for forward, -1 for back
 
     public MoveOrder ( int frames, int direction )
     {

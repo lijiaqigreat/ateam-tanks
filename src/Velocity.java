@@ -1,3 +1,15 @@
+/*
+ * This was intended to be something a bullet had as state
+ * to represent its current velocity.
+ *
+ * Right now it is just used to produce adjacent positions
+ * for tanks as they iterate through a MoveOrder
+ *
+ * Will likely be combined with Position for a more general Vector3D,
+ * as per lijiaqigreat's suggestion
+ */
+
+
 import java.lang.Math;
 
 class Velocity
