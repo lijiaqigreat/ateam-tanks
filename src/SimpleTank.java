@@ -14,9 +14,9 @@ class SimpleTank extends Sprite
     private double handling; //how far a frame of TurnOrder will turn the tank
     private OrderQueue orders;
 
-    public SimpleTank ( ArrayList<Sprite> sprites, Position p, double speed, double handling )
+    public SimpleTank ( ArrayList<Sprite> sprites, Vector3D position, Direction direction, double speed, double handling )
     {
-        super ( sprites, p );
+        super ( sprites, position, direction );
         this.speed = speed;
         this.handling = handling;
         OrderQueue orders = new OrderQueue ();

@@ -16,29 +16,29 @@ import java.util.ArrayList;
 public abstract class Sprite
 {
     ArrayList<Sprite> sprites;
-    protected Position p;
+    protected Vector3D p;
     protected Direction d;
 
-    public Sprite ( ArrayList<Sprite> sprites, Position p, Direction d )
+    public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d )
     {
         this.sprites = sprites;
         this.sprites.add ( this );
 
-        this.p = new Position ( p );
-        this.d = new Position ( d );
+        this.p = new Vector3D ( p );
+        this.d = new Direction ( d );
     }
 
     public abstract int update ();
 
-    public Position getPosition ()
+    public Vector3D getPosition ()
     {
         return p;
     }
-    public void setPosition ( Position p )
+    public void setPosition ( Vector3D p )
     {
         this.p = p;
     }
-    public int getDirection ()
+    public Direction getDirection ()
     {
         return d;
     }

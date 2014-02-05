@@ -32,7 +32,12 @@ public class Direction
         return dir;
     }
 
-    private void round ( double dir )
+    public String toString ()
+    {
+        return "[" + dir + "]";
+    }
+
+    private double round ( double dir )
     {
         return dir % 360.0;
     }
