@@ -17,14 +17,15 @@ public abstract class Sprite
 {
     ArrayList<Sprite> sprites;
     protected Position p;
-    protected int direction;
+    protected Direction d;
 
-    public Sprite ( ArrayList<Sprite> sprites, Position p )
+    public Sprite ( ArrayList<Sprite> sprites, Position p, Direction d )
     {
         this.sprites = sprites;
         this.sprites.add ( this );
 
         this.p = new Position ( p );
+        this.d = new Position ( d );
     }
 
     public abstract int update ();
@@ -39,11 +40,11 @@ public abstract class Sprite
     }
     public int getDirection ()
     {
-        return direction;
+        return d;
     }
-    public void setDirection ( int d )
+    public void setDirection ( Direction d )
     {
-        direction = d;
+        this.d = d;
     }
 
     public void kill ()
