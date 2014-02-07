@@ -7,11 +7,13 @@
  *
  */
 
+import java.util.ArrayList;
+
 public abstract class Obstacle extends Sprite
 {
-    public Obstacle ( ArrayList<Sprite> sprites, Vector3D position, Direction direction )
+    public Obstacle ( ArrayList<Sprite> sprites, Vector3D position, Direction direction, HitBox box )
     {
-        super ( sprites, position, direction );
+        super ( sprites, position, direction, box );
     }
 
     /**
