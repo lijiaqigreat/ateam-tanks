@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 class SimpleTank extends Sprite
 {
-    private int speed; //how far a frame of MoveOrder will move the tank
-    private int handling; //how far a frame of TurnOrder will turn the tank
+    private double speed; //how far a frame of MoveOrder will move the tank
+    private double handling; //how far a frame of TurnOrder will turn the tank
     private OrderQueue orders;
 
-    public SimpleTank ( ArrayList<Sprite> sprites, Position p, int speed, int handling )
+    public SimpleTank ( ArrayList<Sprite> sprites, Vector3D position, Direction direction, double speed, double handling )
     {
-        super ( sprites, p );
+        super ( sprites, position, direction );
         this.speed = speed;
         this.handling = handling;
         OrderQueue orders = new OrderQueue ();
@@ -27,11 +27,11 @@ class SimpleTank extends Sprite
         orders = newOrders;
     }
 
-    public int getSpeed ()
+    public double getSpeed ()
     {
         return speed;
     }
-    public int getHandling ()
+    public double getHandling ()
     {
         return handling;
     }

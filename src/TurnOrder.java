@@ -25,6 +25,6 @@ public class TurnOrder extends Order
     @Override
     protected void execSpecific ( SimpleTank tank )
     {
-        tank.setDirection ( tank.getDirection () + direction * tank.getHandling () );
+        tank.setDirection ( new Direction ( tank.getDirection().getValue() + direction * tank.getHandling () ) );
     }
 }

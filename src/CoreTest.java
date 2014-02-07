@@ -11,7 +11,7 @@ public class CoreTest
     public static void main ( String args[] )
     {
         ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-        SimpleTank tank1 = new SimpleTank ( sprites, new Position ( 2000, 2000, 0 ), 20, 5 );
+        SimpleTank tank1 = new SimpleTank ( sprites, new Vector3D ( 2000, 2000, 0 ), new Direction ( 0 ), 20, 5 );
 
         OrderQueue q = new OrderQueue();
         q.add ( new MoveOrder ( 10, 1 ) );
@@ -26,7 +26,7 @@ public class CoreTest
             for ( Sprite sprite : sprites )
             {
                 sprite.update();
-                System.out.println ( sprite.getPosition().toString() + " -- " + sprite.getDirection() );
+                System.out.println ( sprite.getPosition().toString() + " -- " + sprite.getDirection().toString() );
             }
         }
     }

@@ -22,6 +22,6 @@ public class MoveOrder extends Order
 
     public void execSpecific ( SimpleTank tank )
     {
-        tank.setPosition ( new Position ( tank.getPosition(), new Velocity ( tank.getSpeed() * direction, tank.getDirection(), 0 ) ) );
+        tank.setPosition ( new Vector3D ( tank.getPosition(), new Vector3D ( tank.getSpeed() * ( double ) direction, tank.getDirection(), new Direction () ) ) );
     }
 }
