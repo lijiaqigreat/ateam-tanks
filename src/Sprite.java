@@ -18,18 +18,44 @@ public abstract class Sprite
     ArrayList<Sprite> sprites;
     protected Vector3D p;
     protected Direction d;
+    protected HitBox h;
 
-    public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d )
+    public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d, HitBox h )
     {
         this.sprites = sprites;
         this.sprites.add ( this );
 
         this.p = new Vector3D ( p );
         this.d = new Direction ( d );
+        this.h = new HitBox ( h );
     }
 
     public abstract int update ();
 
+    public boolean checkCollision ( Sprite other )
+    {
+        //TODO
+        return false;
+    }
+    public ArrayList<Sprite> getAllCollisions ()
+    {
+        ArrayList<Sprite> collisions = new ArrayList<Sprite>();
+        for ( Sprite sprite : this.sprites )
+        {
+            collisions.add ( sprite );
+        }
+        
+        return collisions;
+    }
+
+    public HitBox getHitBox ()
+    {
+        return h;
+    }
+    public void setHitBox ( HitBox other )
+    {
+        h = new HitBox ( other );
+    }
     public Vector3D getPosition ()
     {
         return p;

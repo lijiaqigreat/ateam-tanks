@@ -16,7 +16,7 @@ class SimpleTank extends Sprite
 
     public SimpleTank ( ArrayList<Sprite> sprites, Vector3D position, Direction direction, double speed, double handling )
     {
-        super ( sprites, position, direction );
+        super ( sprites, position, direction, new HitBox ( 10, 5, 5 ) );
         this.speed = speed;
         this.handling = handling;
         OrderQueue orders = new OrderQueue ();
