@@ -7,6 +7,8 @@
  */
 
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.geom.*;
 
 class SimpleTank extends Sprite
 {
@@ -41,4 +43,14 @@ class SimpleTank extends Sprite
         orders.exec( this );
         return 0;
     }
+    public void paint(Graphics2D g){
+        double radius=100;
+        g.setColor(Color.red);
+        g.fill(Sprite.getCircle(p.getX(),p.getY(),radius));
+        g.setColor(Color.blue);
+        double direction=d.getValue()*Math.PI/180;
+        g.draw(new Line2D.Double(p.getX(),p.getY(),p.getX()+Math.cos(direction)*radius,
+                                                   p.getY()+Math.sin(direction)*radius));
+    }
+    
 }
