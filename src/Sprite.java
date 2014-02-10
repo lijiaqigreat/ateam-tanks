@@ -18,18 +18,18 @@ import java.awt.geom.*;
 public abstract class Sprite
 {
     ArrayList<Sprite> sprites;
-    protected Vector3D p;
-    protected Direction d;
-    protected HitBox h;
+    protected Vector3D position;
+    protected Direction direction;
+    protected HitBox hitbox;
 
     public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d, HitBox h )
     {
         this.sprites = sprites;
         this.sprites.add ( this );
 
-        this.p = new Vector3D ( p );
-        this.d = new Direction ( d );
-        this.h = new HitBox ( h );
+        this.position= new Vector3D ( p );
+        this.direction = new Direction ( d );
+        this.hitbox = new HitBox ( h );
     }
 
     public abstract int update ();
@@ -54,27 +54,27 @@ public abstract class Sprite
 
     public HitBox getHitBox ()
     {
-        return h;
+        return hitbox;
     }
     public void setHitBox ( HitBox other )
     {
-        h = new HitBox ( other );
+        this.hitbox = new HitBox ( other );
     }
     public Vector3D getPosition ()
     {
-        return p;
+        return position;
     }
     public void setPosition ( Vector3D p )
     {
-        this.p = p;
+        this.position = p;
     }
     public Direction getDirection ()
     {
-        return d;
+        return direction;
     }
     public void setDirection ( Direction d )
     {
-        this.d = d;
+        this.direction = d;
     }
 
     public void kill ()

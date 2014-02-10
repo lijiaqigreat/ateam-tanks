@@ -46,11 +46,11 @@ class SimpleTank extends Sprite
     public void paint(Graphics2D g){
         double radius=100;
         g.setColor(Color.red);
-        g.fill(Sprite.getCircle(p.getX(),p.getY(),radius));
+        g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
         g.setColor(Color.blue);
-        double direction=d.getValue()*Math.PI/180;
-        g.draw(new Line2D.Double(p.getX(),p.getY(),p.getX()+Math.cos(direction)*radius,
-                                                   p.getY()+Math.sin(direction)*radius));
+        double direction=this.direction.getValue()*Math.PI/180;
+        g.draw(new Line2D.Double(position.getX(),position.getY(),position.getX()+Math.cos(direction)*radius,
+                                                   position.getY()+Math.sin(direction)*radius));
     }
     
 }
