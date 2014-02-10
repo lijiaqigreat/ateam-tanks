@@ -12,6 +12,8 @@
  */
 
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.geom.*;
 
 public abstract class Sprite
 {
@@ -31,6 +33,8 @@ public abstract class Sprite
     }
 
     public abstract int update ();
+
+    public abstract void paint(Graphics2D g);
 
     public boolean checkCollision ( Sprite other )
     {
@@ -76,5 +80,8 @@ public abstract class Sprite
     public void kill ()
     {
         sprites.remove ( this );
+    }
+    public static Arc2D.Double getCircle(double x,double y,double radius){
+        return new Arc2D.Double(x-radius,y-radius,radius*2,radius*2,0,360,Arc2D.CHORD);
     }
 }
