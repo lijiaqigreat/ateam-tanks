@@ -20,8 +20,9 @@ public class Game
 
     private int framesPerTurn;
     private int turnLimit;
+    private int mapsize;
 
-    public Game ( ArrayList<Player> p, ArrayList<Sprite> s, InterfaceWithGame d, int frames, int turns )
+    public Game ( ArrayList<Player> p, ArrayList<Sprite> s, InterfaceWithGame d, int frames, int turns, int mapsize )
     {
         players = p;
         sprites = s;
@@ -29,11 +30,13 @@ public class Game
 
         framesPerTurn = frames;
         turnLimit = turns;
+
+        this.mapsize = mapsize;
     }
 
     public int run ()
     {
-        display.initializeDisplay ();
+        display.initializeDisplay ( sprites, mapsize );
 
         boolean running = true;
 
@@ -45,12 +48,15 @@ public class Game
                 {
                     player.giveOrders ( framesPerTurn );
                 }
+                else
+                {
+                }
             }
 
             boolean unfinishedBusiness = false; // used to check if bullets are still flying
             for ( int f = 0; f < framesPerTurn || unfinishedBusiness; f ++ )
             {
-                boolean unfinishedBusiness = false;
+                unfinishedBusiness = false;
                 for ( Sprite sprite : sprites )
                 {
                     if ( sprite.update() == 1 )
@@ -59,31 +65,28 @@ public class Game
                     }
                 }
                 
-                display.updateDisplay ( sprites );
+                display.updateDisplay ();
             }
 
             int alive = 0;
-            Player winner;
+            String winner = "Nobody";
             for ( Player player : players )
             {
                 if ( player.stillAlive() )
                 {
                     alive ++;
-                    winner = player;
+                    winner = player.getName();
                 }
             }
-            if ( alive < 1 )
+            if ( alive <= 1 )
             {
-                display.announceWinner ( "Nobody" );
-                running == false;
-            }
-            else if ( alive == 1 )
-            {
-                display.announceWinner ( winner.getName() );
-                running == false;
+                display.announceWinner ( winner );
+                running = false;
             }
         }
 
         display.cleanUpAndDestroyDisplay ();
+
+        return 0;
     }
 }

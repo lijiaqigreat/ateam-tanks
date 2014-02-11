@@ -34,7 +34,7 @@ public abstract class Sprite
 
     public abstract int update ();
 
-    public abstract void paint(Graphics2D g);
+    // public abstract void paint(Graphics2D g);
 
     public boolean checkCollision ( Sprite other )
     {

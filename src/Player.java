@@ -15,12 +15,12 @@ public class Player
     /* This is a list to allow for multiple owned units
      * per player if we wish to later implement that
      */
-    protected ArrayList<Sprite> ownedSprites;
+    protected ArrayList<SimpleTank> ownedTanks;
 
-    public Player ( String name, ArrayList<Sprite> sprites )
+    public Player ( String name, ArrayList<SimpleTank> tanks )
     {
         playerName = name;
-        ownedSprites = sprites;
+        ownedTanks = tanks;
     }
 
     /**
@@ -39,15 +39,15 @@ public class Player
      */
     public void giveOrders ( int frameLimit )
     {
-        for ( Sprite sprite : ownedSprites )
+        for ( SimpleTank tank : ownedTanks )
         {
-            sprite.giveOrders ( new OrderQueue );
+            tank.giveOrders ( new OrderQueue () );
         }
     }
 
     public boolean stillAlive ()
     {
-        return ownedSprites.size() == 0;
+        return ( ownedTanks.size() != 0 );
     }
 
     public String getName ()

@@ -8,17 +8,17 @@ public class HumanPlayer extends Player
 {
     private InterfaceWithGame display;
 
-    public HumanPlayer ( InterfaceWithGame iwg, String playerName, ArrayList<Sprite> sprites )
+    public HumanPlayer ( InterfaceWithGame iwg, String playerName, ArrayList<SimpleTank> tanks )
     {
-        super ( playerName, sprites );
+        super ( playerName, tanks );
         this.display = iwg;
     }
 
     public void giveOrders ( int frameLimit )
     {
-        for ( Sprite sprite : ownedSprites )
+        for ( SimpleTank tank : ownedTanks )
         {
-            sprite.giveOrders ( display.askForOrders ( frameLimit, sprite ) );
+            tank.giveOrders ( display.askForOrders ( frameLimit, tank ) );
         }
     }
 }
