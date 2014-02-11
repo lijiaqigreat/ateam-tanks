@@ -30,7 +30,7 @@ public interface InterfaceWithGame
      * Updates display with current positions and states
      * of sprites
      */
-    public void updateDisplay ( ArrayList<Sprite> sprites );
+    public void updateDisplay ();
 
     /**
      * Performs some arbitrary actions to prompt a human 

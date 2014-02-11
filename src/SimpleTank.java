@@ -12,16 +12,18 @@ import java.awt.geom.*;
 
 class SimpleTank extends Sprite
 {
+    private ArrayList<Sprite> playerSprites;
     private double speed; //how far a frame of MoveOrder will move the tank
     private double handling; //how far a frame of TurnOrder will turn the tank
     private OrderQueue orders;
 
-    public SimpleTank ( ArrayList<Sprite> sprites, Vector3D position, Direction direction, double speed, double handling )
+    public SimpleTank ( ArrayList<Sprite> sprites, ArrayList<Sprite> playerSprites, Vector3D position, Direction direction, double speed, double handling )
     {
         super ( sprites, position, direction, new HitBox ( 10, 5, 5 ) );
         this.speed = speed;
         this.handling = handling;
         OrderQueue orders = new OrderQueue ();
+        this.playerSprites = playerSprites;
     }
     
     public void giveOrders ( OrderQueue newOrders )
@@ -36,6 +38,12 @@ class SimpleTank extends Sprite
     public double getHandling ()
     {
         return handling;
+    }
+
+    public void kill ()
+    {
+        sprites.remove ( this );
+        playerSprites.remove ( this );
     }
 
     public int update ()

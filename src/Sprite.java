@@ -17,7 +17,7 @@ import java.awt.geom.*;
 
 public abstract class Sprite
 {
-    ArrayList<Sprite> sprites;
+    protected ArrayList<Sprite> sprites;
     protected Vector3D position;
     protected Direction direction;
     protected HitBox hitbox;
