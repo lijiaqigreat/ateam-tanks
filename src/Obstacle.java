@@ -9,7 +9,7 @@
 
 import java.util.ArrayList;
 
-public abstract class Obstacle extends Sprite
+public class Obstacle extends Sprite
 {
     public Obstacle ( ArrayList<Sprite> sprites, Vector3D position, Direction direction, HitBox box )
     {

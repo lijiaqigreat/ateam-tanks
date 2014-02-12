@@ -17,7 +17,7 @@ import java.awt.geom.*;
 
 public abstract class Sprite
 {
-    ArrayList<Sprite> sprites;
+    protected ArrayList<Sprite> sprites;
     protected Vector3D position;
     protected Direction direction;
     protected HitBox hitbox;
@@ -34,7 +34,7 @@ public abstract class Sprite
 
     public abstract int update ();
 
-    public abstract void paint(Graphics2D g);
+    // public abstract void paint(Graphics2D g);
 
     public boolean checkCollision ( Sprite other )
     {
