@@ -21,6 +21,7 @@ public abstract class Sprite
     protected Vector3D position;
     protected Direction direction;
     protected HitBox hitbox;
+    protected double hitboxRadius=10;
 
     public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d, HitBox h )
     {
@@ -38,8 +39,7 @@ public abstract class Sprite
 
     public boolean checkCollision ( Sprite other )
     {
-        //TODO
-        return false;
+        return position.distance(other.position)<hitboxRadius+other.hitboxRadius;
     }
     public ArrayList<Sprite> getAllCollisions ()
     {
