@@ -12,43 +12,76 @@
  */
 
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.geom.*;
 
 public abstract class Sprite
 {
-    ArrayList<Sprite> sprites;
-    protected Vector3D p;
-    protected Direction d;
+    protected ArrayList<Sprite> sprites;
+    protected Vector3D position;
+    protected Direction direction;
+    protected HitBox hitbox;
+    protected double hitboxRadius=10;
 
-    public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d )
+    public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d, HitBox h )
     {
         this.sprites = sprites;
         this.sprites.add ( this );
 
-        this.p = new Vector3D ( p );
-        this.d = new Direction ( d );
+        this.position= new Vector3D ( p );
+        this.direction = new Direction ( d );
+        this.hitbox = new HitBox ( h );
     }
 
     public abstract int update ();
 
+    // public abstract void paint(Graphics2D g);
+
+    public boolean checkCollision ( Sprite other )
+    {
+        return position.distance(other.position)<hitboxRadius+other.hitboxRadius;
+    }
+    public ArrayList<Sprite> getAllCollisions ()
+    {
+        ArrayList<Sprite> collisions = new ArrayList<Sprite>();
+        for ( Sprite sprite : this.sprites )
+        {
+            collisions.add ( sprite );
+        }
+        
+        return collisions;
+    }
+
+    public HitBox getHitBox ()
+    {
+        return hitbox;
+    }
+    public void setHitBox ( HitBox other )
+    {
+        this.hitbox = new HitBox ( other );
+    }
     public Vector3D getPosition ()
     {
-        return p;
+        return position;
     }
     public void setPosition ( Vector3D p )
     {
-        this.p = p;
+        this.position = p;
     }
     public Direction getDirection ()
     {
-        return d;
+        return direction;
     }
     public void setDirection ( Direction d )
     {
-        this.d = d;
+        this.direction = d;
     }
 
     public void kill ()
     {
         sprites.remove ( this );
+    }
+    public static Arc2D.Double getCircle(double x,double y,double radius){
+        return new Arc2D.Double(x-radius,y-radius,radius*2,radius*2,0,360,Arc2D.CHORD);
     }
 }
