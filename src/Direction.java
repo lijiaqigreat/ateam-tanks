@@ -4,41 +4,58 @@
  */
 public class Direction
 {
-    private double dir;
+    private double theta;
+    private double phi;
 
     public Direction ()
     {
-        dir = 0;
+        theta=0;
+        phi=0;
     }
     public Direction ( double dir )
     {
-        this.dir = round ( dir );
+        theta=dir;
+        phi=0;
     }
     public Direction ( Direction other )
     {
-        this.dir = other.dir;
+        this.theta=other.theta;
+        this.phi=other.phi;
     }
     public Direction ( Direction other, Direction offset )
     {
-        this.dir = round ( other.dir + offset.dir );
+        this.theta=round(other.theta+offset.theta);
+        this.phi=bound(other.phi+offset.phi);
     }
 
-    public void add ( Direction other )
-    {
-        this.dir = round ( this.dir + other.dir );
-    }
+    @Deprecated
     public double getValue ()
     {
-        return dir;
+        return theta;
+    }
+    public double getTheta(){
+        return theta;
+    }
+    public double getPhi(){
+        return phi;
     }
 
     public String toString ()
     {
-        return "[" + dir + "]";
+        return "[" + theta+","+phi + "]";
     }
 
-    private double round ( double dir )
+    private static double round ( double dir )
     {
-        return dir % 360.0;
+        return ((dir % 360.0)+360.)%360.;
+    }
+    private static double bound(double dir){
+        if(dir>180){
+            return 180;
+        }else if(dir<-180){
+            return -180;
+        }else{
+            return dir;
+        }
     }
 }
