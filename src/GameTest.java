@@ -5,6 +5,7 @@
  * be written to launch the games.
  */
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class GameTest
@@ -24,7 +25,7 @@ public class GameTest
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
         SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( 20, 20, 0 ), new Direction ( 60 ), 5, 5, Color.red );
         SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, 20, 0 ), new Direction ( 90 ), 10, 5, Color.blue );
-        Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), new HitBox ( 5, 5, 5 ) );
+        Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), new HitBox ( 5, 5, 5 ), Color.black );
 
         sprites.add ( t1 );
         sprites.add ( t2 );
