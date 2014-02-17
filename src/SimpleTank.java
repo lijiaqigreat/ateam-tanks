@@ -36,14 +36,16 @@ class SimpleTank extends Sprite
     private double speed; //how far a frame of MoveOrder will move the tank
     private double handling; //how far a frame of TurnOrder will turn the tank
     private OrderQueue orders;
+    private int health;
 
-    public SimpleTank ( ArrayList<Sprite> sprites, ArrayList<SimpleTank> playerTanks, Vector3D position, Direction direction, double speed, double handling , Color c)
+    public SimpleTank ( SpriteList sprites, ArrayList<SimpleTank> playerTanks, Vector3D position, Direction direction, double speed, double handling , Color c)
     {
         super ( sprites, position, direction, new HitBox ( 10, 5, 5 ), c );
         this.speed = speed;
         this.handling = handling;
         OrderQueue orders = new OrderQueue ();
         this.playerTanks = playerTanks;
+        this.health = 100;
     }
     
     public void giveOrders ( OrderQueue newOrders )
@@ -51,6 +53,22 @@ class SimpleTank extends Sprite
         orders = newOrders;
     }
 
+    /**
+     * Simply adds a SimpleBullet to the arraylist for now, will have to 
+     * be expanded to allow other types of projectiles
+     */
+    public void shoot ( Direction direction )
+    {
+        this.sprites.add(new SimpleBullet(this.sprites, new Vector3D(this.position, new Vector3D(25, direction)), direction, new HitBox(0, 0, 0)));
+    }
+    public void damage ( int intensity )
+    {
+        this . health -= intensity;
+        if ( this . health <= 0 )
+        {
+            this . kill ();
+        }
+    }
     public double getSpeed ()
     {
         return speed;

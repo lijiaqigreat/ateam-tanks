@@ -34,17 +34,18 @@ import java.util.ArrayList;
 public class Game
 {
     private ArrayList<Player> players;
-    private ArrayList<Sprite> sprites;
+    private SpriteList sprites;
     private InterfaceWithGame display;  // dat alignment
 
     private int framesPerTurn;
     private int turnLimit;
     private int mapsize;
 
-    public Game ( ArrayList<Player> p, ArrayList<Sprite> s, InterfaceWithGame d, int frames, int turns, int mapsize )
+    public Game ( ArrayList<Player> p, SpriteList s, InterfaceWithGame d, int frames, int turns, int mapsize )
     {
         players = p;
         sprites = s;
+        sprites.update();
         display = d;
 
         framesPerTurn = frames;
@@ -67,22 +68,20 @@ public class Game
                 {
                     player.giveOrders ( framesPerTurn );
                 }
-                else
-                {
-                }
             }
 
             boolean unfinishedBusiness = false; // used to check if bullets are still flying
             for ( int f = 0; f < framesPerTurn || unfinishedBusiness; f ++ )
             {
                 unfinishedBusiness = false;
-                for ( Sprite sprite : sprites )
+                for ( Sprite sprite : sprites . getSprites () )
                 {
                     if ( sprite.update() == 1 )
                     {
                         unfinishedBusiness = true;
                     }
                 }
+                sprites.update();
                 
                 display.updateDisplay ();
             }

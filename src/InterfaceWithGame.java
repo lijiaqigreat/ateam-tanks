@@ -26,8 +26,6 @@
  * menu.
  */
 
-import java.util.ArrayList;
-
 public interface InterfaceWithGame
 {
     /**
@@ -36,7 +34,7 @@ public interface InterfaceWithGame
      *
      * Returns True if successfull
      */
-    public boolean initializeDisplay ( ArrayList<Sprite> sprites, int mapSize );
+    public boolean initializeDisplay ( SpriteList sprites, int mapSize );
 
     /**
      * Contains any code needed for closing windows

@@ -22,18 +22,16 @@
  * and Game classes ( well, it does print position information )
  */
 
-import java.util.ArrayList;
-
 class DummyUI implements InterfaceWithGame
 {
-    private ArrayList<Sprite> sprites;
+    private SpriteList sprites;
     
     public DummyUI ()
     {
-        sprites = new ArrayList<Sprite>();
+        sprites = new SpriteList();
     }
 
-    public boolean initializeDisplay ( ArrayList<Sprite> sprites, int mapsize )
+    public boolean initializeDisplay ( SpriteList sprites, int mapsize )
     {
         this.sprites = sprites;
         System.out.println ( "All initialized with a mapsize of " + mapsize + "!" );
@@ -46,7 +44,7 @@ class DummyUI implements InterfaceWithGame
     }
     public void updateDisplay ()
     {
-        for ( Sprite sprite : sprites )
+        for ( Sprite sprite : sprites . getSprites () )
         {
             System.out.println ( sprite.getPosition().toString() );
         }
@@ -58,6 +56,7 @@ class DummyUI implements InterfaceWithGame
 
         OrderQueue q = new OrderQueue();
         q.add ( new MoveOrder ( frameLimit/2, 1 ) );
+        q.add ( new ShootOrder ( 90 ) );
 
         return q;
     }

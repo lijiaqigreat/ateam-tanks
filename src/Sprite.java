@@ -37,14 +37,14 @@ import java.awt.Color;
 
 public abstract class Sprite
 {
-    protected ArrayList<Sprite> sprites;
+    protected SpriteList sprites;
     protected Vector3D position;
     protected Direction direction;
     protected HitBox hitbox;
     protected double hitboxRadius=10;
     protected Color color;
 
-    public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d, HitBox h, Color c )
+    public Sprite ( SpriteList sprites, Vector3D p, Direction d, HitBox h, Color c )
     {
         this.sprites = sprites;
         this.sprites.add ( this );
@@ -57,6 +57,8 @@ public abstract class Sprite
 
     public abstract int update ();
 
+    public abstract void damage ( int intensity );
+
     // public abstract void paint(Graphics2D g);
 
     public boolean checkCollision ( Sprite other )
@@ -66,7 +68,7 @@ public abstract class Sprite
     public ArrayList<Sprite> getAllCollisions ()
     {
         ArrayList<Sprite> collisions = new ArrayList<Sprite>();
-        for ( Sprite sprite : this.sprites )
+        for ( Sprite sprite : this.sprites.getSprites() )
         {
             collisions.add ( sprite );
         }

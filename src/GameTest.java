@@ -39,7 +39,7 @@ public class GameTest
 
         DummyUI ui = new DummyUI ();
 
-        ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+        SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
         SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( 20, 20, 0 ), new Direction ( 60 ), 5, 5, Color.red );
