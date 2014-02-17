@@ -17,34 +17,28 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * This is a sprite representing a non-moving object
- * on the playing field.
- *
- * These will be the main pieces that give the map
- * variance
- *
- */
-
-import java.awt.Color;
 import java.util.ArrayList;
+import java.awt.Color;
 
-public class Obstacle extends Sprite
+public class SimpleBullet extends Projectile
 {
-    public Obstacle ( SpriteList sprites, Vector3D position, Direction direction, HitBox box, Color c )
+    public SimpleBullet ( SpriteList sprites, Vector3D position, Direction direction, HitBox hitbox )
     {
-        super ( sprites, position, direction, box, c );
+        super ( sprites, position, direction, hitbox, Color.black, new Vector3D ( 5, direction ), new Vector3D ( 0, 0, -1 ) );
+        System.out.println ( "Bullet fired!" );
     }
-
-    /**
-     * An obstacle does nothing and is affected by nothing
-     */
-    public int update ()
+    
+    public void reactToCollision ( ArrayList<Sprite> collisions )
     {
-        return 0;
+        for ( Sprite hitSprite : collisions )
+        {
+            hitSprite . damage ( 5 ); // inflicts 5 damage on sprites (or tries to, anyway)
+        }
+        this . kill (); // deletes self from the game
+        System.out.println ( "Boom!" );
     }
     public void damage ( int intensity )
     {
-        // damage does not affect it, does nothing
+        this . kill (); // deletes self from game upon any sort of damage
     }
 }

@@ -18,33 +18,21 @@
  */
 
 /**
- * This is a sprite representing a non-moving object
- * on the playing field.
- *
- * These will be the main pieces that give the map
- * variance
- *
+ * A very simple order for shooting SimpleBullets
  */
-
-import java.awt.Color;
-import java.util.ArrayList;
-
-public class Obstacle extends Sprite
+public class ShootOrder extends Order
 {
-    public Obstacle ( SpriteList sprites, Vector3D position, Direction direction, HitBox box, Color c )
+    private Direction direction;
+
+    public ShootOrder ( double theta )
     {
-        super ( sprites, position, direction, box, c );
+        super ( 1 );
+        // this type of bullet does not allow for adjusting the inclination -- it can only shoot parallel to the ground
+        this . direction = new Direction ( theta, 0 );
     }
 
-    /**
-     * An obstacle does nothing and is affected by nothing
-     */
-    public int update ()
+    public void execSpecific ( SimpleTank tank )
     {
-        return 0;
-    }
-    public void damage ( int intensity )
-    {
-        // damage does not affect it, does nothing
+        tank . shoot ( this . direction );
     }
 }
