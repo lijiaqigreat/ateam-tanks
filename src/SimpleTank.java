@@ -90,13 +90,12 @@ class SimpleTank extends Sprite
         return 0;
     }
     public void paint(Graphics2D g){
-        double radius=100;
-        g.setColor(color);
+        double radius=10;
+        g.setColor(this.color);
         g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
         g.setColor(Color.black);
         double direction=this.direction.getTheta()*Math.PI/180;
         g.draw(new Line2D.Double(position.getX(),position.getY(),position.getX()+Math.cos(direction)*radius,
                                                    position.getY()+Math.sin(direction)*radius));
     }
-
 }

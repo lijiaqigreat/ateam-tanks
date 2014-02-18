@@ -31,7 +31,7 @@
 
 import java.util.ArrayList;
 
-public class Game
+public class Game 
 {
     private ArrayList<Player> players;
     private SpriteList sprites;
@@ -62,17 +62,23 @@ public class Game
 
         for ( int t = 1; t <= turnLimit && running; t ++ )
         {
+            GameTest.debug("starting turn");
             for ( Player player : players )
             {
                 if ( player.stillAlive() )
                 {
+                    GameTest.debug("giving orders");
                     player.giveOrders ( framesPerTurn );
+                    GameTest.debug("order given");
                 }
             }
 
             boolean unfinishedBusiness = false; // used to check if bullets are still flying
             for ( int f = 0; f < framesPerTurn || unfinishedBusiness; f ++ )
             {
+                try{
+                    Thread.sleep(1000);
+                //TODO
                 unfinishedBusiness = false;
                 for ( Sprite sprite : sprites . getSprites () )
                 {
@@ -82,7 +88,9 @@ public class Game
                     }
                 }
                 sprites.update();
+                GameTest.debug("update!");
                 
+                }catch(Exception e){}
                 display.updateDisplay ();
             }
 
@@ -104,7 +112,6 @@ public class Game
         }
 
         display.cleanUpAndDestroyDisplay ();
-
         return 0;
     }
 }
