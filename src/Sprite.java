@@ -43,6 +43,7 @@ public abstract class Sprite
     protected HitBox hitbox;
     protected double hitboxRadius=10;
     protected Color color;
+    protected boolean alive;
 
     public Sprite ( SpriteList sprites, Vector3D p, Direction d, HitBox h, Color c )
     {
@@ -53,6 +54,7 @@ public abstract class Sprite
         this.direction = new Direction ( d );
         this.hitbox = new HitBox ( h );
         this.color = c;
+        this.alive = true;
     }
 
     public abstract int update ();
@@ -111,6 +113,7 @@ public abstract class Sprite
 
     public void kill ()
     {
+        this . alive = false;
         sprites.remove ( this );
     }
     public static Arc2D.Double getCircle(double x,double y,double radius){
