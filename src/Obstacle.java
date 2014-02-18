@@ -28,6 +28,7 @@
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.awt.Graphics2D;
 
 public class Obstacle extends Sprite
 {
@@ -47,4 +48,5 @@ public class Obstacle extends Sprite
     {
         // damage does not affect it, does nothing
     }
+    public void paint(Graphics2D g){}
 }

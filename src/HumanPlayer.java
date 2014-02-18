@@ -38,7 +38,7 @@ public class HumanPlayer extends Player
     {
         for ( SimpleTank tank : ownedTanks )
         {
-            tank.giveOrders ( display.askForOrders ( frameLimit, tank ) );
+            tank.giveOrders ( display.askForOrders ( frameLimit, tank) );
         }
     }
 }
