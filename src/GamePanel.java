@@ -108,7 +108,7 @@ public class GamePanel extends JPanel implements InterfaceWithGame, KeyListener{
             sprite.paint(g2);
         }
         if(state==1){
-            mainTank.paint(g2);
+            //mainTank.paint(g2);
         }
     }
     @Override

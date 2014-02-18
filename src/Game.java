@@ -59,6 +59,9 @@ public class Game
             boolean unfinishedBusiness = false; // used to check if bullets are still flying
             for ( int f = 0; f < framesPerTurn || unfinishedBusiness; f ++ )
             {
+                try{
+                    Thread.sleep(1000);
+                //TODO
                 unfinishedBusiness = false;
                 for ( Sprite sprite : sprites )
                 {
@@ -69,9 +72,6 @@ public class Game
                 }
                 GameTest.debug("update!");
                 
-                try{
-                    Thread.sleep(1000);
-                //TODO
                 }catch(Exception e){}
                 display.updateDisplay ();
             }
