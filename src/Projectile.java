@@ -48,13 +48,24 @@ public abstract class Projectile extends Sprite
 
     public int update ()
     {
-        this.position = new Vector3D ( this.position, this.velocity );
-        this.velocity = new Vector3D ( this.velocity, this.gravity );
-        ArrayList<Sprite> coll = getAllCollisions ();
-        if ( coll . size () > 0 )
+        if ( this . alive )
         {
-            reactToCollision ( coll );
+            this.position = new Vector3D ( this.position, this.velocity );
+            this.velocity = new Vector3D ( this.velocity, this.gravity );
+            ArrayList<Sprite> coll = getAllCollisions ();
+            if ( coll . size () > 0 )
+            {
+                reactToCollision ( coll );
+            }
+            else if ( this . position . getZ () <= 0 )
+            {
+                reactToCollision ( new ArrayList<Sprite>() );
+            }
+            return 1;
         }
-        return 1;
+        else
+        {
+            return 0;
+        }
     }
 }
