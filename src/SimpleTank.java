@@ -51,9 +51,8 @@ class SimpleTank extends Sprite
         orders.exec( this );
         return 0;
     }
-    /*
     public void paint(Graphics2D g){
-        double radius=100;
+        double radius=10;
         g.setColor(Color.red);
         g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
         g.setColor(Color.blue);
@@ -61,6 +60,5 @@ class SimpleTank extends Sprite
         g.draw(new Line2D.Double(position.getX(),position.getY(),position.getX()+Math.cos(direction)*radius,
                                                    position.getY()+Math.sin(direction)*radius));
     }
-    */
     
 }

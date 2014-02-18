@@ -12,7 +12,7 @@
 
 import java.util.ArrayList;
 
-public class Game
+public class Game 
 {
     private ArrayList<Player> players;
     private ArrayList<Sprite> sprites;
@@ -42,11 +42,14 @@ public class Game
 
         for ( int t = 1; t <= turnLimit && running; t ++ )
         {
+            GameTest.debug("starting turn");
             for ( Player player : players )
             {
                 if ( player.stillAlive() )
                 {
+                    GameTest.debug("giving orders");
                     player.giveOrders ( framesPerTurn );
+                    GameTest.debug("order given");
                 }
                 else
                 {
@@ -64,7 +67,12 @@ public class Game
                         unfinishedBusiness = true;
                     }
                 }
+                GameTest.debug("update!");
                 
+                try{
+                    Thread.sleep(1000);
+                //TODO
+                }catch(Exception e){}
                 display.updateDisplay ();
             }
 
@@ -86,7 +94,6 @@ public class Game
         }
 
         display.cleanUpAndDestroyDisplay ();
-
         return 0;
     }
 }

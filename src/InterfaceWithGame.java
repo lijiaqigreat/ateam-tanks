@@ -52,7 +52,7 @@ public interface InterfaceWithGame
      * to the sprite directly -- it returns the OrderQueue
      * to the player and the player applies it
      */
-    public OrderQueue askForOrders ( int frameLimit, Sprite sprite );
+    public OrderQueue askForOrders ( int frameLimit, SimpleTank tank);
 
     /**
      * Perform some display to congratulate the winning

@@ -32,7 +32,7 @@ class DummyUI implements InterfaceWithGame
             System.out.println ( sprite.getPosition().toString() );
         }
     }
-    public OrderQueue askForOrders ( int frameLimit, Sprite sprite )
+    public OrderQueue askForOrders ( int frameLimit, SimpleTank sprite )
     {
         System.out.println ( "There are only " + frameLimit + " frames in this turn." );
         System.out.println ( "You wanted to move forward for " + frameLimit/2 + " frames, right?" );

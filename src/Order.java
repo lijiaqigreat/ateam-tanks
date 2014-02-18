@@ -31,4 +31,7 @@ public abstract class Order
     {
         return frames;
     }
+    public Object clone(){
+        return null;
+    }
 }

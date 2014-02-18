@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.geom.*;
 
-public abstract class Sprite
+public abstract class Sprite extends Object
 {
     protected ArrayList<Sprite> sprites;
     protected Vector3D position;
     protected Direction direction;
     protected HitBox hitbox;
-    protected double hitboxRadius=10;
+    protected double hitboxRadius=1;
 
     public Sprite ( ArrayList<Sprite> sprites, Vector3D p, Direction d, HitBox h )
     {
@@ -35,7 +35,7 @@ public abstract class Sprite
 
     public abstract int update ();
 
-    // public abstract void paint(Graphics2D g);
+    public abstract void paint(Graphics2D g);
 
     public boolean checkCollision ( Sprite other )
     {
@@ -43,12 +43,14 @@ public abstract class Sprite
     }
     public ArrayList<Sprite> getAllCollisions ()
     {
+
         ArrayList<Sprite> collisions = new ArrayList<Sprite>();
         for ( Sprite sprite : this.sprites )
         {
-            collisions.add ( sprite );
+            if(sprite!=this&&checkCollision(sprite)){
+                collisions.add ( sprite );
+            }
         }
-        
         return collisions;
     }
 

@@ -8,6 +8,7 @@
  */
 
 import java.util.ArrayList;
+import java.awt.Graphics2D;
 
 public class Obstacle extends Sprite
 {
@@ -23,4 +24,5 @@ public class Obstacle extends Sprite
     {
         return 0;
     }
+    public void paint(Graphics2D g){}
 }
