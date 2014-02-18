@@ -46,7 +46,7 @@ class DummyUI implements InterfaceWithGame
     {
         for ( Sprite sprite : sprites . getSprites () )
         {
-            System.out.println ( sprite.getPosition().toString() );
+            System.out.println ( sprite.getClass().getName() + " -- " + sprite.getPosition().toString() );
         }
     }
     public OrderQueue askForOrders ( int frameLimit, Sprite sprite )
