@@ -64,7 +64,9 @@ public class GamePanel extends JPanel implements InterfaceWithGame, KeyListener{
         */
 
         OrderQueue q = new OrderQueue();
+        q.add ( new ShootOrder ( 5 ));
         q.add ( new MoveOrder ( 10, 1 ) );
+        q.add ( new TurnOrder ( 2, -1 ) );
 
         return q;
     }
@@ -106,6 +108,7 @@ public class GamePanel extends JPanel implements InterfaceWithGame, KeyListener{
         g2.fill(gameViewRect);
         for(Sprite sprite:sprites.getSprites()){
             sprite.paint(g2);
+            System.out.println ( sprite.getClass().getName() + " painted!!!" );
         }
         if(state==1){
             //mainTank.paint(g2);

@@ -76,13 +76,23 @@ public class SpriteList
     {
         for ( Sprite deadSprite : this . toBeRemoved )
         {
-            this . sprites . remove ( deadSprite );
+            boolean success = false;
+            success = this . sprites . remove ( deadSprite );
+            if ( success )
+            {
+                System.out.println ( deadSprite . getClass () . getName () + " removed" );
+            }
+            else
+            {
+                System.out.println ( "REMOVE FAILED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
+            }
         }
         this . toBeRemoved = new ArrayList<Sprite>();
 
         for ( Sprite newSprite : this . toBeAdded )
         {
             this . sprites . add ( newSprite );
+            System.out.println ( newSprite . getClass () . getName () + " added" );
         }
         this . toBeAdded = new ArrayList<Sprite>();
     }

@@ -33,6 +33,7 @@ public class ShootOrder extends Order
 
     public void execSpecific ( SimpleTank tank )
     {
+        System.out.println ( "Shooting" );
         tank . shoot ( this . direction );
     }
 }
