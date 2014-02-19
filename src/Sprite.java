@@ -48,7 +48,6 @@ public abstract class Sprite extends Object
     public Sprite ( SpriteList sprites, Vector3D p, Direction d, HitBox h, Color c )
     {
         this.sprites = sprites;
-        this.sprites.add ( this );
 
         this.position= new Vector3D ( p );
         this.direction = new Direction ( d );
