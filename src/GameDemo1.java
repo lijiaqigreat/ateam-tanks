@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 
+import java.io.Console;
+
 public class GameDemo1
 {
     public static void main ( String args[] )
@@ -71,6 +73,14 @@ public class GameDemo1
 
     }
     public static void test2(){
+
+        Console in = System.console();
+
+        System.out.println ( "Player 1, please enter your name:");
+        String player1Name = in.readLine ( ">>> " );
+        System.out.println ( "Player 2, please enter your name:");
+        String player2Name = in.readLine ( ">>> " );
+
         System.out.println ( "/// Game Demo 1 Starting ///\n" );
 
         int framesPerTurn = 60;
@@ -99,8 +109,8 @@ public class GameDemo1
         p2tanks.add ( t2 );
 
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add ( new HumanPlayer ( ui, "player1", p1tanks, Color.red ) );
-        players.add ( new HumanPlayer ( ui, "player2", p2tanks, Color.red ) );
+        players.add ( new HumanPlayer ( ui, player1Name, p1tanks, Color.red ) );
+        players.add ( new HumanPlayer ( ui, player2Name, p2tanks, Color.red ) );
 
         Game game = new Game ( players, sprites, ui, framesPerTurn, turnLimit, mapsize );
 

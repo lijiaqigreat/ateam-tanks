@@ -47,7 +47,7 @@ public class SimpleBulletExplosion extends Sprite
                 this . hitboxRadius = 3;
                 break;
             case 1:
-                c = Color.yellow;
+                c = Color.red;
                 this . hitboxRadius = 2;
                 break;
             case 0:

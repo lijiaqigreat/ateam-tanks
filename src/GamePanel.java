@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements InterfaceWithGame, KeyListener{
         }
     }
     @Override
-    public OrderQueue askForOrders ( int frameLimit, SimpleTank tank){
+    public OrderQueue askForOrders ( String playerName, int frameLimit, SimpleTank tank){
         /*
         this.mainTank=tank;
         this.frameLimit=frameLimit;

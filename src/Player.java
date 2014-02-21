@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class Player
 {
-    private String playerName;
+    protected String playerName;
     private Color color;
 
     /* This is a list to allow for multiple owned units

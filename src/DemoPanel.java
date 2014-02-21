@@ -65,12 +65,14 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
         //}
     }
     @Override
-    public OrderQueue askForOrders ( int frameLimit, SimpleTank tank){
+    public OrderQueue askForOrders ( String playerName, int frameLimit, SimpleTank tank){
         OrderQueue q = new OrderQueue();
         boolean keepgoing = true;
         int frames = 0;
         Console in = System.console();
-        System.out.println ( "Please allocate orders to your tank" );
+        System.out.println ();
+        System.out.println ();
+        System.out.println ( playerName + ", please allocate orders to your tank." );
         while ( keepgoing && frames < frameLimit )
         {
             String type = "f";
@@ -164,6 +166,9 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
     public void announceWinner ( String winnerName ){
         state=2;
         this.winnerName=winnerName;
+
+        System.out.println();
+        System.out.println ( winnerName + " is winner!!1!" );
     }
 
     public void updateTransform(Graphics2D g2){
