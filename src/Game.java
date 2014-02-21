@@ -70,6 +70,12 @@ public class Game
                     GameTest.debug("giving orders");
                     player.giveOrders ( framesPerTurn );
                     GameTest.debug("orders given");
+                    for ( int g = 0; g < 300; g ++ )
+                    {
+                        // So that each player cannot read
+                        // the orders from the player above
+                        System.out.println();
+                    }
                 }
             }
 
