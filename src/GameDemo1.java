@@ -83,7 +83,7 @@ public class GameDemo1
 
         System.out.println ( "/// Game Demo 1 Starting ///\n" );
 
-        int framesPerTurn = 60;
+        int framesPerTurn = 100;
         int turnLimit = 20;
         int mapsize = 200;
 
@@ -98,14 +98,18 @@ public class GameDemo1
         SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
-        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -50, -2, 10 ), new Direction ( 0 ), 3, 5, Color.red );
-        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, 2, 10 ), new Direction ( 180 ), 3, 5, Color.blue );
-        Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), 7 );
+        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -100, -6, 10 ), new Direction ( 0 ), 1.5, 2.5, Color.red );
+        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 100, 6, 10 ), new Direction ( 180 ), 1.5, 2.5, Color.blue );
+        sprites.add ( new Obstacle ( sprites, new Vector3D ( 0, 0, 20 ), new Direction ( 0 ), 20 ) );
+        sprites.add ( new Obstacle ( sprites, new Vector3D ( 15, 60, 6 ), new Direction ( 0 ), 6 ) );
+        sprites.add ( new Obstacle ( sprites, new Vector3D ( 0, -80, 6 ), new Direction ( 0 ), 6 ) );
+        sprites.add ( new Obstacle ( sprites, new Vector3D ( 20, -100, 6 ), new Direction ( 0 ), 12 ) );
+        sprites.add ( new Obstacle ( sprites, new Vector3D ( -88, 60, 6 ), new Direction ( 0 ), 30 ) );
 
         sprites.add ( t1 );
-        sprites.add ( t2 );
-        sprites.add ( o1 );
         p1tanks.add ( t1 );
+
+        sprites.add ( t2 );
         p2tanks.add ( t2 );
 
         ArrayList<Player> players = new ArrayList<Player>();

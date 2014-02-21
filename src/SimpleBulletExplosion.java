@@ -28,7 +28,7 @@ public class SimpleBulletExplosion extends Sprite
     public SimpleBulletExplosion ( SpriteList sprites, Vector3D position )
     {
         super ( sprites, position, new Direction (0, 0), 4 );
-        frames = 3;
+        frames = 9;
         c = Color.yellow;
     }
 
@@ -36,16 +36,23 @@ public class SimpleBulletExplosion extends Sprite
     {
         switch ( frames )
         {
-            case 3:
+            case 9:
                 for ( Sprite coll : this . getAllCollisions () )
                 {
                     coll . damage ( 40 );
                 }
                 break;
-            case 2:
+            case 8:
+            case 7:
+                break;
+            case 6:
+            case 5:
+            case 4:
                 c = Color.orange;
                 this . hitboxRadius = 3;
                 break;
+            case 3:
+            case 2:
             case 1:
                 c = Color.red;
                 this . hitboxRadius = 2;

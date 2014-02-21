@@ -25,7 +25,7 @@ public class SimpleBullet extends Projectile
 {
     public SimpleBullet ( SpriteList sprites, Vector3D position, Direction direction )
     {
-        super ( sprites, position, direction, 2, Color.black, new Vector3D ( 8, direction ), new Vector3D ( 0, 0, -0.03 ) );
+        super ( sprites, position, direction, 2, Color.black, new Vector3D ( 8, direction ), new Vector3D ( 0, 0, -0.015 ) );
         //System.out.println ( "Bullet fired!" );
     }
     
