@@ -69,7 +69,7 @@ public class Game
                 {
                     GameTest.debug("giving orders");
                     player.giveOrders ( framesPerTurn );
-                    GameTest.debug("order given");
+                    GameTest.debug("orders given");
                 }
             }
 
@@ -88,7 +88,7 @@ public class Game
                     }
                 }
                 sprites.update();
-                GameTest.debug("update!");
+                GameTest.debug("update! frame #" + f );
                 
                 }catch(Exception e){}
                 display.updateDisplay ();
