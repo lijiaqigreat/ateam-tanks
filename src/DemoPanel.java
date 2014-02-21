@@ -157,8 +157,13 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
                 System.out.println ( "Frames filled for this turn" );
             }
         }
-        System.out.println();
-        System.out.println();
+        for ( int g = 0; g < 300; g ++ )
+        {
+            // clears the screen
+            // so other players
+            // cant read moves
+            System.out.println();
+        }
              
         return q;
     }
@@ -168,7 +173,7 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
         this.winnerName=winnerName;
 
         System.out.println();
-        System.out.println ( winnerName + " is winner!!1!" );
+        System.out.println ( winnerName + " is winner!!!!1!" );
     }
 
     public void updateTransform(Graphics2D g2){
