@@ -133,13 +133,17 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
             }
             if ( type.equals ( "s" ) || type.equals ( "shoot" ) )
             {
-                int f = 3;
+                int f = 15;
                 if ( frames+f <= frameLimit )
                 {
                     frames += f;
                     System.out.println ( "In what direction? ( 0 - 359 )" );
                     int d = Integer.parseInt ( in.readLine ( ">>> " ) );
+                    q.add ( new ShootOrder ( ( double ) (d+1)  ) );
                     q.add ( new ShootOrder ( ( double ) d  ) );
+                    q.add ( new ShootOrder ( ( double ) (d-5)  ) );
+                    q.add ( new ShootOrder ( ( double ) (d-3)  ) );
+                    q.add ( new ShootOrder ( ( double ) (d+4)  ) );
                     System.out.println ( "Ordered shoot (requires " + f + " frames." );
                 }
                 else
