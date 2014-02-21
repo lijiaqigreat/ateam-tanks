@@ -18,27 +18,17 @@
  */
 
 /**
- * A player class for a human
+ * A very simple order for shooting SimpleBullets
  */
-
-import java.awt.Color;
-import java.util.ArrayList;
-
-public class HumanPlayer extends Player
+public class WaitOrder extends Order
 {
-    private InterfaceWithGame display;
-
-    public HumanPlayer ( InterfaceWithGame iwg, String playerName, ArrayList<SimpleTank> tanks , Color c)
+    public WaitOrder ( int frames )
     {
-        super ( playerName, tanks , c);
-        this.display = iwg;
+        super ( frames );
     }
 
-    public void giveOrders ( int frameLimit )
+    public void execSpecific ( SimpleTank tank )
     {
-        for ( SimpleTank tank : ownedTanks )
-        {
-            tank.giveOrders ( display.askForOrders ( this . playerName, frameLimit, tank) );
-        }
+        // Whistles lazily
     }
 }

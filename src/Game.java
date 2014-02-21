@@ -30,6 +30,7 @@
  */
 
 import java.util.ArrayList;
+import java.io.Console;
 
 public class Game 
 {
@@ -40,6 +41,7 @@ public class Game
     private int framesPerTurn;
     private int turnLimit;
     private int mapsize;
+    private Console console;
 
     public Game ( ArrayList<Player> p, SpriteList s, InterfaceWithGame d, int frames, int turns, int mapsize )
     {
@@ -52,6 +54,8 @@ public class Game
         turnLimit = turns;
 
         this.mapsize = mapsize;
+
+        console = System.console();
     }
 
     public int run ()
@@ -69,15 +73,17 @@ public class Game
                 {
                     GameTest.debug("giving orders");
                     player.giveOrders ( framesPerTurn );
-                    GameTest.debug("order given");
+                    GameTest.debug("orders given");
                 }
             }
+
+            console . readLine ( "Press enter to run the turn: " );
 
             boolean unfinishedBusiness = false; // used to check if bullets are still flying
             for ( int f = 0; f < framesPerTurn || unfinishedBusiness; f ++ )
             {
                 try{
-                    Thread.sleep(1000);
+                    Thread.sleep(60);
                 //TODO
                 unfinishedBusiness = false;
                 for ( Sprite sprite : sprites . getSprites () )
@@ -88,7 +94,7 @@ public class Game
                     }
                 }
                 sprites.update();
-                GameTest.debug("update!");
+                GameTest.debug("update! frame #" + f );
                 
                 }catch(Exception e){}
                 display.updateDisplay ();

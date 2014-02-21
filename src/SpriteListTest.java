@@ -27,7 +27,7 @@ public static void main ( String args[] )
 
     System.out.println ( "Size of empty list is " + list.getSprites().size() );
 
-    Obstacle o1 = new Obstacle ( list, new Vector3D(0,0,0), new Direction(0,0), new HitBox(1,1,1), Color.red );
+    Obstacle o1 = new Obstacle ( list, new Vector3D(0,0,0), new Direction(0,0), 4 );
     list.add(o1);
 
     System.out.println ( "Size of empty list is " + list.getSprites().size() );
