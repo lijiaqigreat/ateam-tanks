@@ -23,10 +23,10 @@ import java.awt.Graphics2D;
 
 public class SimpleBullet extends Projectile
 {
-    public SimpleBullet ( SpriteList sprites, Vector3D position, Direction direction, HitBox hitbox )
+    public SimpleBullet ( SpriteList sprites, Vector3D position, Direction direction )
     {
-        super ( sprites, position, direction, hitbox, Color.black, new Vector3D ( 5, direction ), new Vector3D ( 0, 0, -1 ) );
-        System.out.println ( "Bullet fired!" );
+        super ( sprites, position, direction, 2, Color.black, new Vector3D ( 5, direction ), new Vector3D ( 0, 0, -1 ) );
+        //System.out.println ( "Bullet fired!" );
     }
     
     public void reactToCollision ( ArrayList<Sprite> collisions )
@@ -37,12 +37,12 @@ public class SimpleBullet extends Projectile
             {
                 hitSprite . damage ( 5 ); // inflicts 5 damage on sprites (or tries to, anyway)
             }
-            System.out.println ( "Boom!" );
+            //System.out.println ( "Boom!" );
             this . kill (); // deletes self from the game
         }
     }
     public void paint(Graphics2D g){
-        double radius=2;
+        double radius=this.hitboxRadius;
         g.setColor(Color.white);
         g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
     }
@@ -50,7 +50,7 @@ public class SimpleBullet extends Projectile
     {
         if ( this . alive )
         {
-            System.out.println ( "Boom!" );
+            //System.out.println ( "Boom!" );
             this . kill (); // deletes self from game upon any sort of damage
         }
     }

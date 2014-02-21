@@ -30,9 +30,9 @@ public abstract class Projectile extends Sprite
     protected Vector3D velocity;
     protected Vector3D gravity;
 
-    public Projectile ( SpriteList sprites, Vector3D position, Direction direction, HitBox hitbox, Color color, Vector3D velocity, Vector3D gravity )
+    public Projectile ( SpriteList sprites, Vector3D position, Direction direction, double hitboxRadius, Color color, Vector3D velocity, Vector3D gravity )
     {
-        super ( sprites, position, direction, hitbox, color );
+        super ( sprites, position, direction, hitboxRadius );
         this.velocity = velocity;
         this.gravity = gravity;
     }

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 
-public class GameTest
+public class GameDemo1
 {
     public static void main ( String args[] )
     {
@@ -38,8 +38,8 @@ public class GameTest
     public static void test1(){
         System.out.println ( "/// GameTest Starting ///\n" );
 
-        int framesPerTurn = 10;
-        int turnLimit = 3;
+        int framesPerTurn = 60;
+        int turnLimit = 20;
         int mapsize = 200;
 
         DummyUI ui = new DummyUI ();
@@ -47,8 +47,8 @@ public class GameTest
         SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
-        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( 20, 20, 0 ), new Direction ( 60 ), 5, 5, Color.red );
-        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, 20, 0 ), new Direction ( 90 ), 10, 5, Color.blue );
+        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -50, 20, 0 ), new Direction ( 60 ), 5, 5, Color.red );
+        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, -20, 0 ), new Direction ( 90 ), 10, 5, Color.blue );
         Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), 12 );
 
         sprites.add ( t1 );
@@ -73,11 +73,11 @@ public class GameTest
     public static void test2(){
         System.out.println ( "/// GameTest Starting ///\n" );
 
-        int framesPerTurn = 20;
-        int turnLimit = 3;
+        int framesPerTurn = 60;
+        int turnLimit = 20;
         int mapsize = 200;
 
-        GamePanel ui=new GamePanel();
+        DemoPanel ui=new DemoPanel();
         JFrame frame=new JFrame("ateam-tanks");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,500);
@@ -91,7 +91,7 @@ public class GameTest
         SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
-        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( 20, 20, 50 ), new Direction ( 60 ), 5, 5, Color.red );
+        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -60, -20, 50 ), new Direction ( 60 ), 5, 5, Color.red );
         SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, 20, 50 ), new Direction ( 90 ), 10, 5, Color.blue );
         Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), 7 );
 

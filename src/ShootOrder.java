@@ -26,14 +26,17 @@ public class ShootOrder extends Order
 
     public ShootOrder ( double theta )
     {
-        super ( 1 );
+        super ( 3 );
         // this type of bullet does not allow for adjusting the inclination -- it can only shoot parallel to the ground
         this . direction = new Direction ( theta, 0 );
     }
 
     public void execSpecific ( SimpleTank tank )
     {
-        System.out.println ( "Shooting" );
-        tank . shoot ( this . direction );
+        if ( this.frames == 2 )
+        {
+            System.out.println ( "Shooting" );
+            tank . shoot ( this . direction );
+        }
     }
 }
