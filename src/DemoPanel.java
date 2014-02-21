@@ -124,7 +124,7 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
                     f = frameLimit - frames;
                     frames = frameLimit;
                 }
-                System.out.println ( "And in what direction? ( 1 = clockwise, -1 = counter-clockwise )" );
+                System.out.println ( "And in what direction? ( -1 = clockwise, 1 = counter-clockwise )" );
                 int d = Integer.parseInt ( in.readLine ( ">>> " ) );
                 q.add ( new TurnOrder ( f, d ) );
                 System.out.println ( "Ordered move for " + f + " frames." );

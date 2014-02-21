@@ -47,8 +47,8 @@ public class GameDemo1
         SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
-        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -50, 20, 0 ), new Direction ( 60 ), 5, 5, Color.red );
-        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, -20, 0 ), new Direction ( 90 ), 10, 5, Color.blue );
+        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -50, 2, 0 ), new Direction ( 0 ), 5, 5, Color.red );
+        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, -2, 0 ), new Direction ( 180 ), 10, 5, Color.blue );
         Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), 12 );
 
         sprites.add ( t1 );
@@ -71,7 +71,7 @@ public class GameDemo1
 
     }
     public static void test2(){
-        System.out.println ( "/// GameTest Starting ///\n" );
+        System.out.println ( "/// Game Demo 1 Starting ///\n" );
 
         int framesPerTurn = 60;
         int turnLimit = 20;
@@ -85,14 +85,11 @@ public class GameDemo1
         frame.add(ui,BorderLayout.CENTER);
         frame.setVisible(true);
 
-        System.out.println ( "/// GameTest Starting ///\n" );
-
-
         SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
-        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -60, -20, 50 ), new Direction ( 60 ), 5, 5, Color.red );
-        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, 20, 50 ), new Direction ( 90 ), 10, 5, Color.blue );
+        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -50, -2, 10 ), new Direction ( 0 ), 3, 5, Color.red );
+        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 50, 2, 10 ), new Direction ( 180 ), 3, 5, Color.blue );
         Obstacle o1 = new Obstacle ( sprites, new Vector3D ( 100, 40, 0 ), new Direction ( 0 ), 7 );
 
         sprites.add ( t1 );

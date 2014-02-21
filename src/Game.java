@@ -77,7 +77,7 @@ public class Game
             for ( int f = 0; f < framesPerTurn || unfinishedBusiness; f ++ )
             {
                 try{
-                    Thread.sleep(1000);
+                    Thread.sleep(80);
                 //TODO
                 unfinishedBusiness = false;
                 for ( Sprite sprite : sprites . getSprites () )

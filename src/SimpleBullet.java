@@ -25,7 +25,7 @@ public class SimpleBullet extends Projectile
 {
     public SimpleBullet ( SpriteList sprites, Vector3D position, Direction direction )
     {
-        super ( sprites, position, direction, 2, Color.black, new Vector3D ( 5, direction ), new Vector3D ( 0, 0, -1 ) );
+        super ( sprites, position, direction, 2, Color.black, new Vector3D ( 8, direction ), new Vector3D ( 0, 0, -0.03 ) );
         //System.out.println ( "Bullet fired!" );
     }
     
@@ -33,10 +33,15 @@ public class SimpleBullet extends Projectile
     {
         if ( this . alive )
         {
-            for ( Sprite hitSprite : collisions )
+            if ( collisions . size () > 0 )
             {
-                hitSprite . damage ( 5 ); // inflicts 5 damage on sprites (or tries to, anyway)
+                // only happens if it hits another sprite, not the ground
+                this . sprites . add ( new SimpleBulletExplosion ( this . sprites, this . position ) );
             }
+            //for ( Sprite hitSprite : collisions )
+            //{
+            //    hitSprite . damage ( 5 ); // inflicts 5 damage on sprites (or tries to, anyway)
+            //}
             //System.out.println ( "Boom!" );
             this . kill (); // deletes self from the game
         }
