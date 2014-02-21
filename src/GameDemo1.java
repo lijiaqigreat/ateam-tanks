@@ -30,6 +30,8 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 
 import java.io.Console;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class GameDemo1
 {
@@ -76,10 +78,19 @@ public class GameDemo1
 
         Console in = System.console();
 
+        System.out.println();
+        System.out.println();
+
+        System.out.println( "    A-Team Games Presents: Some sort of tank game!" );
+
+        System.out.println();
+        System.out.println();
         System.out.println ( "Player 1, please enter your name:");
         String player1Name = in.readLine ( ">>> " );
+        System.out.println();
         System.out.println ( "Player 2, please enter your name:");
         String player2Name = in.readLine ( ">>> " );
+        System.out.println();
 
         System.out.println ( "/// Game Demo 1 Starting ///\n" );
 
@@ -98,8 +109,8 @@ public class GameDemo1
         SpriteList sprites = new SpriteList();
         ArrayList<SimpleTank> p1tanks = new ArrayList<SimpleTank>();
         ArrayList<SimpleTank> p2tanks = new ArrayList<SimpleTank>();
-        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -100, -6, 10 ), new Direction ( 0 ), 1.5, 2.5, Color.red );
-        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 100, 6, 10 ), new Direction ( 180 ), 1.5, 2.5, Color.blue );
+        SimpleTank t1 = new SimpleTank ( sprites, p1tanks, new Vector3D ( -100, -6, 10 ), new Direction ( 0 ), 2.5, 3.5, Color.red );
+        SimpleTank t2 = new SimpleTank ( sprites, p2tanks, new Vector3D ( 100, 6, 10 ), new Direction ( 180 ), 2.9, 5.5, Color.blue );
         sprites.add ( new Obstacle ( sprites, new Vector3D ( 0, 0, 20 ), new Direction ( 0 ), 20 ) );
         sprites.add ( new Obstacle ( sprites, new Vector3D ( 15, 60, 6 ), new Direction ( 0 ), 6 ) );
         sprites.add ( new Obstacle ( sprites, new Vector3D ( 0, -80, 6 ), new Direction ( 0 ), 6 ) );
