@@ -29,31 +29,65 @@ We are writing the game as a desktop application in Java.
 ------------------------------------------------------------------------------------
 Directory src Files
 ------------------------------------------------------------------------------------
-1) Direction.java
-2) DummyUI.java
-3) Game.java
-4) GamePanel.java
-5) GameTest.java
-6) HitBox.java
-7) HumanPlayer.java
-8) InterfaceWithGame.java
-9) MoveOrder.java
-10) Obstacle.java
-11) Order.java
-12) OrderQueue.java
-13) Player.java
-14) Projectile.java
-15) ReadsMaps.java
-16) ShootOrder.java
-17) SimpleBullet.java
-18) SimpleTank.java
-19) Sprite.java
-20) SpriteList.java
-21) SpriteListTest.java
-22) TurnOrder.java
-23) Vector3D.java
+1) DemoPanel.java
+2) Direction.java
+3) DummyUI.java
+4) Game.java
+5) GameDemo1.java
+6) GamePanel.java
+7) GameTest.java
+8) HitBox.java
+9) HumanPlayer.java
+10) InterfaceWithGame.java
+11) MoveOrder.java
+12) Obstacle.java
+13) Order.java
+14) OrderQueue.java
+15) Player.java
+16) Projectile.java
+17) ReadsMaps.java
+18) ShootOrder.java
+19) SimpleBullet.java
+20) SimpleBulletExplosion.java
+21) SimpleTank.java
+22) Sprite.java
+23) SpriteList.java
+24) SpriteListTest.java
+25) TurnOrder.java
+26) Vector3D.java
+27) WaitOrder.java
 ------------------------------------------------------------------------------------
-1) Direction.java
+1) DemoPanel.java
+------------------------------------------------------------------------------------
+Extends JPanel
+
+Implements InterfaceWithGame, KeyListener
+
+Fields:
+	int state
+		if 0: display
+		if 1: give order
+		if 2: announce winner
+	SpriteList sprites
+	Rectangle2D.Double gameViewRect
+	Game game
+	SimpleTank mainTank
+	int frameLimit
+	OrderQueue orderQueue
+	String winnerName
+	
+Functions:
+	boolean initializeDisplay(SpriteList sprites, int mapSize)
+	void cleanUpAndDestroyDisplay()
+	OrderQueue askForOrders(String playerName, int frameLimit, SimpleTank tank)
+	void announceWinner(String winnerName)
+	void updateTransform(Graphics2D g2)
+	void paint(Graphics g)
+	void keyTyped(KeyEvent e)
+	void keyPressed(KeyEvent e)
+	void keyReleased(KeyEvent e)
+------------------------------------------------------------------------------------
+2) Direction.java
 ------------------------------------------------------------------------------------
 A class to abstract sprite directions
 
@@ -81,7 +115,7 @@ Functions:
 		private static
 		returns bounded double dir
 ------------------------------------------------------------------------------------
-2) DummyUI.java
+3) DummyUI.java
 ------------------------------------------------------------------------------------
 implements InterfaceWithGame
 
@@ -99,10 +133,11 @@ Functions:
 	boolean initializeDisplay(SpriteList sprites, int mapsize)
 	void cleanUpAndDestroyDisplay()
 	void updateDisplay()
+	OrderQueue askForOrders(String playerName, int frameLimit, SimpleTank sprite)
 	void announceWinner(String winnerName)
 		prints message for winner
 ------------------------------------------------------------------------------------
-3) Game.java
+4) Game.java
 ------------------------------------------------------------------------------------
 A game class that holds all relevant data and the game interfacee and runs the main game loop
 
@@ -115,6 +150,7 @@ Fields:
 	int framesPerTurn
 	int turnLimit
 	int mapsize
+	Console console
 	
 Constructors:
 	Game(ArrayList<Player> p, SpriteList s, InterfaceWithGame d, int frames, int turns, int mapsize)
@@ -124,7 +160,21 @@ Functions:
 		initialize display
 		runs the game
 ------------------------------------------------------------------------------------
-4) GamePanel.java
+5) GameDemo1.java
+------------------------------------------------------------------------------------
+A core test for the Game/Player structure, as well as the dummy ui
+
+Acting in place of the main gui menu that will eventually be written to launch games
+
+Similar to GameTest.java
+
+Functions:
+	static void main(String args[])
+	static void test1()
+	static void test2()
+	static void debug(String s)
+------------------------------------------------------------------------------------
+6) GamePanel.java
 ------------------------------------------------------------------------------------
 Extends JPanel
 
@@ -147,7 +197,7 @@ Functions:
 	boolean initializeDisplay(SpriteList sprites, int mapSize)
 	void cleanUpAndDestroyDisplay()
 	void updateDisplay()
-	OrderQueue askForOrders(int frameLimit, SimpleTank tank)
+	OrderQueue askForOrders(String playerName, int frameLimit, SimpleTank tank)
 	void announceWinner(String winnerName)
 	void updateTransform(Graphics2D g2)
 	void paint(Graphics g)
@@ -156,7 +206,7 @@ Functions:
 	void keyPressed(KeyEvent e)
 	void keyReleased(KeyEvent e)
 ------------------------------------------------------------------------------------
-5) GameTest.java
+7) GameTest.java
 ------------------------------------------------------------------------------------
 A core test for the Game/Player structure, as well as dummy ui
 
@@ -169,7 +219,7 @@ Functions:
 	void test2()
 	void debug(String s)
 ------------------------------------------------------------------------------------
-6) HitBox.java
+8) HitBox.java
 ------------------------------------------------------------------------------------
 A rectangular prism in which a sprite resides
 
@@ -193,7 +243,7 @@ Functions:
 	double getHeight()
 		returns the height of the HitBox
 ------------------------------------------------------------------------------------
-7) HumanPlayer.java
+9) HumanPlayer.java
 ------------------------------------------------------------------------------------
 Extends Player
 
@@ -208,7 +258,7 @@ Constructors:
 Functions:
 	void giveOrders(int frameLimit)
 ------------------------------------------------------------------------------------
-8) InterfaceWithGame.java
+10) InterfaceWithGame.java
 ------------------------------------------------------------------------------------
 An interface for a general ui (graphical or not) that the game would use during the order-getting and running phases
 
@@ -221,12 +271,12 @@ Functions:
 		Contains code needed for closing windows or cleaning up other interface elements
 	void updateDisplay()
 		Updates display with current positions and states of sprites
-	OrderQueue askForOrders(int frameLimit, Simpletank tank)
+	OrderQueue askForOrders(String playerName, int frameLimit, Simpletank tank)
 		Performs arbitrary actions to prompt a human player for orders for a particular unit and gets those orders
-	void announceWinner()
+	void announceWinner(String winnerName)
 		Performs some display to congratulate the winning player
 ------------------------------------------------------------------------------------
-9) MoveOrder.java
+11) MoveOrder.java
 ------------------------------------------------------------------------------------
 Extends Order
 
@@ -245,11 +295,11 @@ Functions:
 		returns direction
 	void execSpecific(SimpleTank tank)
 ------------------------------------------------------------------------------------
-10) Obtsacle.java
+12) Obtsacle.java
 ------------------------------------------------------------------------------------
 Extends Sprite
 
-A sprite represnting a non-moving object on the playing field
+A sprite representing a non-moving object on the playing field
 
 Constructors:
 	Obstacle(SpriteList sprites, Vector3D position, Direction direction, HitBox box, color c)
@@ -260,7 +310,7 @@ Functions:
 		does nothing
 	void paint(Graphics2D g)
 ------------------------------------------------------------------------------------
-11) Order.java
+13) Order.java
 ------------------------------------------------------------------------------------
 An abstract class
 
@@ -284,7 +334,7 @@ Functions:
 		returns number of frames
 	Object clone()
 ------------------------------------------------------------------------------------
-12) OrderQueue.java
+14) OrderQueue.java
 ------------------------------------------------------------------------------------
 A containing class for a list of orders that each tank recieves at the beginning of each turn
 
@@ -310,13 +360,14 @@ Functions:
 		return 0 when successful
 		return 1 when queue is empty
 ------------------------------------------------------------------------------------
-13) Player.java
+15) Player.java
 ------------------------------------------------------------------------------------
 A class to represent a player, for the purpose of sprite ownership and orders allocation
 
 Fields:
 	String playerName
 	Color color
+	ArrayList<SimpleTank> owndedTanks
 	
 Constructors:
 	Player( String name, ArrayList<SimpleTank> tanks, Color c)
@@ -331,7 +382,7 @@ Functions:
 	Color getColor()
 		returns the color of the player
 ------------------------------------------------------------------------------------
-14) Projectile.java
+16) Projectile.java
 ------------------------------------------------------------------------------------
 An abstract class that extends Sprite
 
@@ -348,16 +399,16 @@ Functions:
 		method for exploding or inflicting damage or whatever the projectile is suppose to do upon hitting another sprite
 	void damage(int intensity)
 		abstract
-	itn update
+	int update
 ------------------------------------------------------------------------------------
-15) ReadsMaps.java
+17) ReadsMaps.java
 ------------------------------------------------------------------------------------
 An interface that takes the name of a text file and generates a list of sprites from it
 
 Fields:
 	ArrayList<Sprite> readMap(String nameOfMapFile)
 ------------------------------------------------------------------------------------
-16) ShootOrder.java
+18) ShootOrder.java
 ------------------------------------------------------------------------------------
 Extends Order
 
@@ -372,19 +423,35 @@ Constructors:
 Functions:
 	void execSpecific(SimpleTank tank)
 ------------------------------------------------------------------------------------
-17) SimpleBullet.java
+19) SimpleBullet.java
 ------------------------------------------------------------------------------------
 Extends projectile
 
 Constructors:
-	SimpleBullet(SpriteList sprites, Vector3D position, Direction direction, HitBox hitbox)
+	SimpleBullet(SpriteList sprites, Vector3D position, Direction direction)
 	
 Functions:
 	void reactToCollision(ArrayList<Sprite> collision)
 	void paint(Graphics2D g)
 	void damage(int intensity)
 ------------------------------------------------------------------------------------
-18) SimpleTank.java
+20) SimpleBulletExplosion.java
+------------------------------------------------------------------------------------
+Extends Sprite
+
+Fields:
+	int frames
+	Color c
+
+Constructors:
+	SimpleBulletExplosion(SpriteList sprites, Vector3D position)
+	
+Functions:
+	int update()
+	void damage(int intensity)
+	void paint(Graphics2D g)
+------------------------------------------------------------------------------------
+21) SimpleTank.java
 ------------------------------------------------------------------------------------
 Extends Sprite
 
@@ -396,6 +463,7 @@ Fields:
 	double handling
 	OrderQueue orders
 	int health
+	Color color
 	
 Constructors:
 	SimpleTank(SpriteList sprites, ArrayList<SimpleTank> playerTanks, Vector3D position, Direction direction, double speed, double handling, Color c)
@@ -413,7 +481,7 @@ Functions:
 	void paint(Graphics2D g)
 		Paints tank on screen
 ------------------------------------------------------------------------------------
-19) Sprite.java
+22) Sprite.java
 ------------------------------------------------------------------------------------
 Abstract class that extends Object
 
@@ -425,13 +493,11 @@ Fields:
 	SpriteList sprites
 	Vector3D position
 	Direction direction
-	HitBox hitbox
-	Color color
 	boolean alive
 	double hitboxRadius
 	
 Constructors:
-	Sprite(SpriteList sprites, Vector3D p, Direction d, HitBox h, Color c)
+	Sprite(SpriteList sprites, Vector3D p, Direction d, double hr)
 	
 Functions
 	abstract int update()
@@ -439,10 +505,6 @@ Functions
 	abstract void paint(Graphics2D g)
 	boolean checkCollision(Sprite other)
 	Arraylist<Sprite> getAllCollisions()
-	HitBox getHitBox()
-		returns hitbox of the sprite
-	void setHitBox(HitBox other)
-		sets the hitbox of the sprite
 	Vector3D getPosition()
 		returns the position of the sprite
 	void setPosition(Vector3D p)
@@ -451,14 +513,10 @@ Functions
 		returns the direction of the sprite
 	void setDirection(Direction d)
 		sets the direction of the sprite
-	Color getColor()
-		returns the color of the sprite
-	void setColor(Color c)
-		sets the color of the sprite
 	void kill()
 	static Arc2D.Double getCircle(double x, double y, double radius)
 ------------------------------------------------------------------------------------
-20) SpriteList.java
+23) SpriteList.java
 ------------------------------------------------------------------------------------
 Class abstracts the workings of the sprite list
 
@@ -478,18 +536,17 @@ Functions:
 	ArrayList<Sprite> getSprites()
 		returns the sprites
 	void add(Sprite newSprite)
-		adds a new sprite to the list
 	void remove(Sprite deadSprite)
 	void update()
 ------------------------------------------------------------------------------------
-21) SpriteListTest.java
+24) SpriteListTest.java
 ------------------------------------------------------------------------------------
 A test for sprite lists
 
 Functions:
 	void main(Strings args[])
 ------------------------------------------------------------------------------------
-22) TurnOrder.java
+25) TurnOrder.java
 ------------------------------------------------------------------------------------
 Extends Order
 
@@ -506,7 +563,7 @@ Functions:
 		returns the direction of the order
 	void execSpecific(SimpleTank tank)
 ------------------------------------------------------------------------------------
-23) Vector3D.java
+26) Vector3D.java
 ------------------------------------------------------------------------------------
 A class to represent vectors
 
@@ -531,4 +588,16 @@ Functions:
 		returns the y of the vector
 	double getZ()
 		returns the z of the vector
+------------------------------------------------------------------------------------
+27) WaitOrder.java
+------------------------------------------------------------------------------------
+Extends Order
+
+A very simple order for shooting SimpleBullets
+
+Constructors:
+	WaitOrder(int frames)
+
+Functions:
+	void execSpecific(SimpleTank tank)
 ------------------------------------------------------------------------------------
