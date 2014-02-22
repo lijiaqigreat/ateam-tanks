@@ -27,7 +27,7 @@
  */
 public abstract class Order
 {
-    private int frames;
+    protected int frames;
 
     /**
      * @param frames have to be greater than 0

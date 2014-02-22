@@ -32,9 +32,9 @@ import java.awt.Graphics2D;
 
 public class Obstacle extends Sprite
 {
-    public Obstacle ( SpriteList sprites, Vector3D position, Direction direction, HitBox box, Color c )
+    public Obstacle ( SpriteList sprites, Vector3D position, Direction direction, double hitboxRadius )
     {
-        super ( sprites, position, direction, box, c );
+        super ( sprites, position, direction, hitboxRadius );
     }
 
     /**
@@ -48,5 +48,9 @@ public class Obstacle extends Sprite
     {
         // damage does not affect it, does nothing
     }
-    public void paint(Graphics2D g){}
+    public void paint(Graphics2D g){
+        double radius=this.hitboxRadius;
+        g.setColor(Color.white);
+        g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
+    }
 }

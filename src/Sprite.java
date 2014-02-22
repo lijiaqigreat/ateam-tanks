@@ -40,19 +40,16 @@ public abstract class Sprite extends Object
     protected SpriteList sprites;
     protected Vector3D position;
     protected Direction direction;
-    protected HitBox hitbox;
-    protected Color color;
     protected boolean alive;
-    protected double hitboxRadius=1;
+    protected double hitboxRadius;
 
-    public Sprite ( SpriteList sprites, Vector3D p, Direction d, HitBox h, Color c )
+    public Sprite ( SpriteList sprites, Vector3D p, Direction d, double hr )
     {
         this.sprites = sprites;
 
         this.position= new Vector3D ( p );
         this.direction = new Direction ( d );
-        this.hitbox = new HitBox ( h );
-        this.color = c;
+        this.hitboxRadius = hr;
         this.alive = true;
     }
 
@@ -79,14 +76,6 @@ public abstract class Sprite extends Object
         return collisions;
     }
 
-    public HitBox getHitBox ()
-    {
-        return hitbox;
-    }
-    public void setHitBox ( HitBox other )
-    {
-        this.hitbox = new HitBox ( other );
-    }
     public Vector3D getPosition ()
     {
         return position;
@@ -102,14 +91,6 @@ public abstract class Sprite extends Object
     public void setDirection ( Direction d )
     {
         this.direction = d;
-    }
-    public Color getColor ()
-    {
-        return color;
-    }
-    public void setColor (Color c) 
-    {
-        this.color = c;
     }
 
     public void kill ()

@@ -37,15 +37,17 @@ class SimpleTank extends Sprite
     private double handling; //how far a frame of TurnOrder will turn the tank
     private OrderQueue orders;
     private int health;
+    private Color color;
 
     public SimpleTank ( SpriteList sprites, ArrayList<SimpleTank> playerTanks, Vector3D position, Direction direction, double speed, double handling , Color c)
     {
-        super ( sprites, position, direction, new HitBox ( 10, 5, 5 ), c );
+        super ( sprites, position, direction, 10 );
         this.speed = speed;
         this.handling = handling;
         OrderQueue orders = new OrderQueue ();
         this.playerTanks = playerTanks;
         this.health = 100;
+        this.color = c;
     }
     
     public void giveOrders ( OrderQueue newOrders )
@@ -59,7 +61,7 @@ class SimpleTank extends Sprite
      */
     public void shoot ( Direction direction )
     {
-        this.sprites.add(new SimpleBullet(this.sprites, new Vector3D(this.position, new Vector3D(25, direction)), direction, new HitBox(0, 0, 0)));
+        this.sprites.add(new SimpleBullet(this.sprites, new Vector3D(this.position, new Vector3D(25, direction)), direction ));
     }
     public void damage ( int intensity )
     {
@@ -90,7 +92,7 @@ class SimpleTank extends Sprite
         return 0;
     }
     public void paint(Graphics2D g){
-        double radius=10;
+        double radius=this.hitboxRadius;
         g.setColor(this.color);
         g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
         g.setColor(Color.black);
