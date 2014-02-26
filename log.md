@@ -1,5 +1,8 @@
-Sprint 2  Backlog - Current Sprint Goal: Have a playable (locally-) multiplayer tank battle game
+Sprint 2  Backlog
 =================
+
+Goal: A networked game with a fully graphical interface
+-------------------------------------------------------
 
 S = started
 
