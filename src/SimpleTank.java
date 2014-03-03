@@ -80,6 +80,11 @@ class SimpleTank extends Sprite
         return handling;
     }
 
+    public Color getColor ()
+    {
+        return color;
+    }
+
     public void kill ()
     {
         sprites.remove ( this );

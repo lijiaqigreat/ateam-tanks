@@ -46,6 +46,8 @@ public abstract class Order
 
     protected abstract void execSpecific ( SimpleTank tank );
 
+    public void walk ( UnitModel model, Graphics2D g );
+
     public int getFrames ()
     {
         return frames;

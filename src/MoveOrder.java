@@ -39,6 +39,18 @@ public class MoveOrder extends Order
         return direction;
     }
 
+    public void walk ( UnitModel model, Graphics2D g )
+    {
+        //move the model and save its start and end positions
+        Vector3D oldP = model . getPosition ();
+        model.setPosition(new Vector3D(model.getPosition(), new Vector3D(model.getSpeed() * (double)direction, model.getDirection())));
+        Vector3D newP = model . getPosition ();
+        //paint a line from start to end
+        g . setColor ( Color . white );
+        g . draw ( new Line2D . Double ( oldP.getX(), oldP.getY(), newP.getX(), newP.getY() ) );
+        //there is no return value because the model was passed by reference
+    }
+
     public void execSpecific ( SimpleTank tank )
     {
         Vector3D oldPosition=tank.getPosition();

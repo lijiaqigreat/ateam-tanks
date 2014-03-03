@@ -41,6 +41,14 @@ public class TurnOrder extends Order
         return direction;
     }
 
+    public void walk ( UnitModel model, Graphics2D g )
+    {
+        model.setDirection ( new Direction ( model.getDirection().getTheta() + direction * model.getHandling () ) );
+        //No painting is necessary for a turn.
+        //Either the next move line or the end orientation of the model will demonstrate
+        //the effects of the turn.
+    }
+
     @Override
     protected void execSpecific ( SimpleTank tank )
     {
