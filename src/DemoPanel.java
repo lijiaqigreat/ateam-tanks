@@ -44,6 +44,10 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
     OrderQueue orderQueue=null;
 
     String winnerName=null;
+
+    OrderQueue orders = new OrderQueue ();
+    UnitModel model = new UnitModel ();
+
     @Override
     public boolean initializeDisplay ( SpriteList sprites, int mapSize ){
         this.sprites=sprites;
@@ -65,7 +69,7 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
         //}
     }
     @Override
-    public OrderQueue askForOrders ( String playerName, int frameLimit, SimpleTank tank){
+    public OrderQueue askForOrders ( String playerName, int frameLimit, SimpleTank tank ){
         OrderQueue q = new OrderQueue();
         boolean keepgoing = true;
         int frames = 0;
@@ -160,6 +164,9 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
             {
                 System.out.println ( "Frames filled for this turn" );
             }
+            this . model = new UnitModel ( tank );
+            this . orders = q;
+            this . repaint ();
         }
         for ( int g = 0; g < 300; g ++ )
         {
@@ -168,9 +175,12 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
             // cant read moves
             System.out.println();
         }
-             
+        this . orders = new OrderQueue ();
+        this . model = new UnitModel ();
+        this . repaint ();
         return q;
     }
+
     @Override
     public void announceWinner ( String winnerName ){
         state=2;
@@ -217,6 +227,7 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
         if(state==1){
             //mainTank.paint(g2);
         }
+        orders.walkModel ( model, g2 );
     }
     @Override
     public void keyTyped(KeyEvent e){

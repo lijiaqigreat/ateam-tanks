@@ -23,6 +23,8 @@
  * each frame, it turns tank by <code>tank.getHandling()</code> angle.
  */
 
+import java.awt.*;
+import java.awt.geom.*;
 public class TurnOrder extends Order
 {
     private int direction; // 1 is clockwise, -1 is counter-clockwise
@@ -39,6 +41,19 @@ public class TurnOrder extends Order
 
     public int getDirection(){
         return direction;
+    }
+
+    public void walk ( UnitModel model, Graphics2D g )
+    {
+        model.setDirection ( new Direction ( model.getDirection().getTheta() + direction * model.getHandling () * this.frames ) );
+        double radius = 5;
+        g.setColor(Color.green);
+        g.draw(Sprite.getCircle(model.getPosition().getX(),model.getPosition().getY(),radius));
+        double dir=model.getDirection().getTheta()*Math.PI/180;
+        g.draw(new Line2D.Double(model.getPosition().getX(),model.getPosition().getY(),model.getPosition().getX()+Math.cos(dir)*radius,model.getPosition().getY()+Math.sin(dir)*radius));
+        //No painting is necessary for a turn.
+        //Either the next move line or the end orientation of the model will demonstrate
+        //the effects of the turn.
     }
 
     @Override

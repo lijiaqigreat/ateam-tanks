@@ -23,6 +23,8 @@
  * each frame, it moves tank by <code>tank.getSpeed()()</code> units.
  */
 
+import java.awt.*;
+import java.awt.geom.*;
 public class MoveOrder extends Order
 {
     private int direction; // 1 for forward, -1 for back
@@ -37,6 +39,18 @@ public class MoveOrder extends Order
     }
     public int getDirection(){
         return direction;
+    }
+
+    public void walk ( UnitModel model, Graphics2D g )
+    {
+        //move the model and save its start and end positions
+        Vector3D oldP = model . getPosition ();
+        model.setPosition(new Vector3D(model.getPosition(), new Vector3D(model.getSpeed() * (double)direction * this.frames, model.getDirection())));
+        Vector3D newP = model . getPosition ();
+        //paint a line from start to end
+        g . setColor ( Color . white );
+        g . draw ( new Line2D . Double ( oldP.getX(), oldP.getY(), newP.getX(), newP.getY() ) );
+        //there is no return value because the model was passed by reference
     }
 
     public void execSpecific ( SimpleTank tank )

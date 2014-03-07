@@ -20,11 +20,18 @@
 /**
  * A very simple order for shooting SimpleBullets
  */
+import java.awt.*;
 public class WaitOrder extends Order
 {
     public WaitOrder ( int frames )
     {
         super ( frames );
+    }
+
+    public void walk ( UnitModel model, Graphics2D g )
+    {
+        //there is no graphical representation necessary for a wait,
+        //and the model is unchanged by a wait
     }
 
     public void execSpecific ( SimpleTank tank )

@@ -25,6 +25,7 @@
  * of the game (frames are the basic unit of game progression --
  * they represent one pass of the main game loop
  */
+import java.awt.*;
 public abstract class Order
 {
     protected int frames;
@@ -45,6 +46,8 @@ public abstract class Order
     }
 
     protected abstract void execSpecific ( SimpleTank tank );
+
+    public abstract void walk ( UnitModel model, Graphics2D g );
 
     public int getFrames ()
     {
