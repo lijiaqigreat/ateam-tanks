@@ -39,13 +39,31 @@ class UnitModel
     private Vector3D position;
     private Direction direction;
 
+    public UnitModel ()
+    {
+        this . speed = 0;
+        this . handling = 0;
+        this . color = Color.green;
+        this . position = new Vector3D ( 0, 0, 0 );
+        this . direction = new Direction ( 0, 0 );
+    }
+
     public UnitModel ( SimpleTank tank )
     {
         this . speed = tank . getSpeed ();
         this . handling = tank . getHandling ();
         this . color = tank . getColor ();
-        this . position = new Vector3D ( tank . getPostition () );
+        this . position = new Vector3D ( tank . getPosition () );
         this . direction = new Direction ( tank . getDirection () );
+    }
+
+    public double getSpeed ()
+    {
+        return speed;
+    }
+    public double getHandling ()
+    {
+        return handling;
     }
 
     public Vector3D getPosition ()

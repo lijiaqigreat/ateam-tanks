@@ -20,6 +20,8 @@
 /**
  * A very simple order for shooting SimpleBullets
  */
+import java.awt.*;
+import java.awt.geom.*;
 public class ShootOrder extends Order
 {
     private Direction direction;
@@ -36,7 +38,7 @@ public class ShootOrder extends Order
         //The model is not altered in any way
         //A line is painted radiating from the model in the
         // direction that the bullet was fired
-        Vector3D startP = new Vector3D ( model.position, new Vector3D(12, this.direction) );
+        Vector3D startP = new Vector3D ( model.getPosition(), new Vector3D(12, this.direction) );
         Vector3D endP = new Vector3D ( startP, new Vector3D(20, this.direction) );
         g . setColor ( Color . red );
         g . draw ( new Line2D . Double ( startP.getX(), startP.getY(), endP.getX(), endP.getY() ) );

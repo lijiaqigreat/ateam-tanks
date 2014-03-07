@@ -20,6 +20,7 @@
 /**
  * A very simple order for shooting SimpleBullets
  */
+import java.awt.*;
 public class WaitOrder extends Order
 {
     public WaitOrder ( int frames )
