@@ -3,37 +3,56 @@ import java.io.*;
 
 public class NetTestServer
 {
+    static ServerSocket server;
+    static Socket conn;
+    static InputStream in;
+    static BufferedReader br;
 
-public static void main ( String args[] )
-{
-    try {
-
-    ServerSocket server = new ServerSocket(8887);
-
-    Socket connection = server . accept ();
-
-
-    InputStream in = connection . getInputStream ();
-    BufferedReader br = new BufferedReader ( new InputStreamReader ( in ) );
-
-    String line = br . readLine ();
-
-    String outLine = "pong";
-    if ( line . equals ( "ping" ) )
+    public static void main ( String args[] )
     {
-        // keep pong
+        start ();
+        // foreverrrr
+        while ( true )
+        {
+            System . out . println ( read () );
+        }
     }
-    else
-    {
-        outLine = line;
-    }
-    System . out . println ( outLine );
 
-    }
-    catch ( IOException e )
+    private static void start ()
     {
-        // who really cares..
+        try
+        {
+            server = new ServerSocket(8887);
+            conn = server . accept ();
+            in = conn . getInputStream ();
+            br = new BufferedReader ( new InputStreamReader ( in ) );
+        }
+        catch ( IOException e )
+        {
+            // ..
+        }
     }
-}
+
+    private static String read ()
+    {
+        String outLine = "error";
+        try
+        {
+            String line = br . readLine ();
+            if ( line . equals ( "ping" ) )
+            {
+                outLine = "pong";
+            }
+            else
+            {
+                outLine = line;
+            }
+        }
+        catch ( IOException e )
+        {
+            // meh
+        }
+        return outLine;
+    }
 
 }
