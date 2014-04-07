@@ -82,8 +82,10 @@ public class GameServer extends Thread
                 System.out.println("Waiting on " + p.getName() + " for orders");
                 // getOrders() will hang until the player has a set of orders ready
                 ArrayList<OrderQueue> os = p.getOrders();
+                System.out.println("orders got by gameserver");
                 ArrayList<Sprite> ss = this.sprites.getOwnedBy(p.ID());
                 matchOrders(os, ss);
+                System.out.println("escaped match");
                 System.out.println("Orders recieved from " + p.getName());
             }
             // give each player the runnable list
@@ -123,6 +125,7 @@ public class GameServer extends Thread
             // all are blanked first in case they dont get a new queue
             sprite.giveOrders(new OrderQueue());
         }
+        System.out.println("a");
         for (OrderQueue q : os)
         {
             for (Sprite sprite : ss)
@@ -133,6 +136,7 @@ public class GameServer extends Thread
                 }
             }
         }
+        System.out.println("b");
     }
 
     private void clearDeadPlayers()

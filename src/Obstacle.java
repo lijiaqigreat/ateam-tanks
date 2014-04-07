@@ -29,8 +29,9 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
+import java.io.*;
 
-public class Obstacle extends Sprite
+public class Obstacle extends Sprite implements Serializable
 {
     public Obstacle(Vector3D position, Direction direction, double hitboxRadius)
     {

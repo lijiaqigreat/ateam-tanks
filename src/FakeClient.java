@@ -36,6 +36,12 @@ public class FakeClient
         System.out.println("past ct setup");
         con.start();
         con.sendName(System.console().readLine("enter name: "));
+        while (true)
+        {
+            SpriteList s = this.con.getSettledSprites();
+            System.console().readLine("press enter to send empty orders");
+            con.sendOrders(new ArrayList<OrderQueue>());
+        }
     }
 
     private class ConnectionThread extends Thread
@@ -61,7 +67,7 @@ public class FakeClient
             } catch (IOException e) {
                 System.out.println("ConnectionThread init failed");
             } catch (InterruptedException e) {
-                // ...
+                System.out.println("interupt");
             }
             this.orderDump = new LinkedBlockingDeque<ArrayList<OrderQueue>>();
             this.spriteDump = new LinkedBlockingDeque<SpriteList>();
@@ -69,10 +75,24 @@ public class FakeClient
             this.playerNameDump = new LinkedBlockingDeque<String>();
         }
 
+        public SpriteList getSettledSprites()
+        {
+            SpriteList s = this.waitGet(settledSpriteDump);
+            return s;
+        }
+
         public void sendName(String name)
         {
             try {
                 this.playerNameDump.put(name);
+            } catch (InterruptedException e) {
+                System.out.println("i dont even know");
+            }
+        }
+        public void sendOrders(ArrayList<OrderQueue> o)
+        {
+            try {
+                this.orderDump.put(o);
             } catch (InterruptedException e) {
                 System.out.println("i dont even know");
             }
@@ -86,6 +106,35 @@ public class FakeClient
                 System.out.println("name sent");
             } catch (IOException e) {
                 System.out.println("???");
+            }
+            // recieve the initial state
+            try {
+                this.settledSpriteDump.put((SpriteList) in.readObject());
+                System.out.println("init sprites recieved");
+            } catch (IOException e) {
+                System.out.println("init sprites not recieved io");
+            } catch (ClassNotFoundException e) {
+                System.out.println("init sprites not recieved cnf");
+            } catch (InterruptedException e) {
+                System.out.println("init sprites not recieved interupt");
+            }
+            while(!!!false) // hue
+            {
+                try {
+                    // send the orders
+                    out.writeObject(this.waitGet(orderDump));
+                    System.out.println("orders actually sent?");
+                    // get the unplayed sprite-list
+                    this.spriteDump.put((SpriteList) in.readObject());
+                    // get the played sprite-list
+                    this.settledSpriteDump.put((SpriteList) in.readObject());
+                } catch (IOException e) {
+                    System.out.println("spanner in works, pls fix");
+                } catch (ClassNotFoundException e) {
+                    System.out.println("i dont even know");
+                } catch (InterruptedException e) {
+                    // ...
+                }
             }
             
         }

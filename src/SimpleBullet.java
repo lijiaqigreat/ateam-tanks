@@ -20,8 +20,9 @@
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.*;
 
-public class SimpleBullet extends Projectile
+public class SimpleBullet extends Projectile implements Serializable
 {
     public SimpleBullet(Vector3D position, Direction direction)
     {

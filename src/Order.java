@@ -25,8 +25,9 @@
  * of the game (frames are the basic unit of game progression --
  * they represent one pass of the main game loop
  */
+import java.io.*;
 import java.awt.*;
-public abstract class Order
+public abstract class Order implements Serializable
 {
     protected int frames;
 

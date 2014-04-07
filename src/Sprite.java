@@ -34,8 +34,9 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.Color;
+import java.io.*;
 
-public abstract class Sprite extends Object
+public abstract class Sprite extends Object implements Serializable
 {
     protected Vector3D position;
     protected Direction direction;

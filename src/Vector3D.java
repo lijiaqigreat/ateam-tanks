@@ -18,6 +18,7 @@
  */
 
 import java.lang.Math;
+import java.io.*;
 
 /**
  * A class to represent vectors
@@ -25,7 +26,7 @@ import java.lang.Math;
  * Will be used to represent positions, velocities,
  *+and offsets
  */
-public class Vector3D
+public class Vector3D implements Serializable
 {
     private double x;
     private double y;

@@ -19,8 +19,9 @@
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.*;
 
-public class SimpleBulletExplosion extends Sprite
+public class SimpleBulletExplosion extends Sprite implements Serializable
 {
     int frames;
     Color c;

@@ -29,12 +29,15 @@ import java.io.*;
 public class RemotePlayer extends Player
 {
     ConnectionThread con;
+    String name;
 
     public RemotePlayer(int id, Socket c)
     {
         super(id);
+        name = "not set";
         this.con = new ConnectionThread(c);
         con.start();
+        name = con.askForPlayerName();
     }
 
     public ArrayList<OrderQueue> getOrders()
@@ -54,7 +57,7 @@ public class RemotePlayer extends Player
 
     protected String askForPlayerName()
     {
-        return con.askForPlayerName();
+        return name;
     }
 
     private class ConnectionThread extends Thread
@@ -89,7 +92,9 @@ public class RemotePlayer extends Player
 
         public ArrayList<OrderQueue> getOrders()
         {
+            System.out.println("waiting on orders");
             ArrayList<OrderQueue> o = this.waitGet(orderDump);
+            System.out.println("no longer waiting");
             return o;
         }
 
@@ -123,7 +128,6 @@ public class RemotePlayer extends Player
             return o;
         }
 
-
         public void run()
         {
             // get the player's name to start
@@ -131,7 +135,7 @@ public class RemotePlayer extends Player
                 this.playerNameDump.put((String) in.readObject());
                 System.out.println("player name recieved");
             } catch (IOException e) {
-                // meh
+                System.out.println("io error on player name");
             } catch (ClassNotFoundException e) {
                 System.out.println("i dont even know");
             } catch (InterruptedException e) {
@@ -141,13 +145,14 @@ public class RemotePlayer extends Player
             try {
                 out.writeObject(this.waitGet(settledSpriteDump));
             } catch (IOException e) {
-                // meh
+                System.out.println("failed to send init spritelist");
             }
             while(!!!false) // hue
             {
                 try {
                     // get the orders
                     this.orderDump.put((ArrayList<OrderQueue>) in.readObject());
+                    System.out.println("orders recieved by remoteplayer");
                     // send the unplayed sprite-list
                     out.writeObject(this.waitGet(spriteDump));
                     // send the played sprite-list

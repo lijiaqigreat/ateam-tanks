@@ -58,6 +58,7 @@
 
 import java.util.*;
 import java.awt.*;
+import java.io.*;
 
 /**
  * A containing class for a list of orders that
@@ -73,7 +74,7 @@ import java.awt.*;
  *
  */
 
-class OrderQueue
+class OrderQueue implements Serializable
 {
     private int framesLeft;
     private ArrayDeque<Order> orders;

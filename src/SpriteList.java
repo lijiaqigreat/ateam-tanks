@@ -137,30 +137,26 @@ public class SpriteList implements Serializable
 
     public int runTurn(DisplaysGame display)
     {
-        boolean running = true;
 
-        for (int t = 1; t <= turnLimit && running; t++)
+        System.out.println("starting turn");
+
+        boolean unfinishedBusiness = false; // used to check if bullets are still flying
+        for (int f = 0; f < framesPerTurn || unfinishedBusiness; f++)
         {
-            System.out.println("starting turn");
-
-            boolean unfinishedBusiness = false; // used to check if bullets are still flying
-            for (int f = 0; f < framesPerTurn || unfinishedBusiness; f++)
+            unfinishedBusiness = false;
+            for (Sprite sprite : this.sprites)
             {
-                unfinishedBusiness = false;
-                for (Sprite sprite : this.sprites)
+                if (sprite.update(this) == 1)
                 {
-                    if (sprite.update(this) == 1)
-                    {
-                        unfinishedBusiness = true;
-                    }
+                    unfinishedBusiness = true;
                 }
-                this.settle();
-                System.out.println("update! frame #" + f );
-                
-                display.show(this); // delaying also happends in here
             }
-
+            this.settle();
+            System.out.println("update! frame #" + f );
+            
+            display.show(this); // delaying also happends in here
         }
+
         return 0;
 
     }

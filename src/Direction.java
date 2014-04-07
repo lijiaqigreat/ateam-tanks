@@ -17,11 +17,12 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.*;
 /**
  * A class to abstract sprite directions
  *
  */
-public class Direction
+public class Direction implements Serializable
 {
     private double theta;
     private double phi;

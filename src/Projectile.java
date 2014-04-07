@@ -24,8 +24,9 @@
 
 import java.util.ArrayList;
 import java.awt.Color;
+import java.io.*;
 
-public abstract class Projectile extends Sprite
+public abstract class Projectile extends Sprite implements Serializable
 {
     protected Vector3D velocity;
     protected Vector3D gravity;
