@@ -76,15 +76,29 @@ import java.awt.*;
 class OrderQueue
 {
     private int framesLeft;
-    private Queue<Order> orders;
+    private ArrayDeque<Order> orders;
+    private String uid;
 
     public OrderQueue ()
     {
-        this(100);
+        this(100, "null-id");
     }
-    public OrderQueue(int framesAllowed){
+    public OrderQueue(int framesAllowed, String u){
         this.framesLeft=framesAllowed;
+        this.uid = new String(u);
         orders = new ArrayDeque<Order> ();
+    }
+
+    public OrderQueue clone()
+    {
+        OrderQueue output = new OrderQueue();
+        output.framesLeft = this.framesLeft;
+        output.uid = this.uid;
+        for (Order order : orders)
+        {
+            output.add(order.clone());
+        }
+        return output;
     }
 
     public int getFramesLeft(){
@@ -116,7 +130,7 @@ class OrderQueue
     /**
      * @return 0 when success, 1 when queue is empty.
      */
-    public int exec ( SimpleTank tank )
+    public int exec ( SpriteList sprites, SimpleTank tank )
     {
         Order o=orders.peek();
         while(o!=null&&o.getFrames()==0){
@@ -125,10 +139,14 @@ class OrderQueue
         }
         if ( o !=null )
         {
-            o.exec( tank );
+            o.exec( sprites, tank );
             return 0;
         }else{
             return 1;
         }
+    }
+    public String uid()
+    {
+        return this.uid;
     }
 }

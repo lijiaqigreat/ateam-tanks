@@ -18,27 +18,16 @@
  */
 
 /**
- * A player class for a human
+ * An interface for a general display (graphical or not)
+ * that the game would use during the 
+ * running phase.
+ *
  */
 
-import java.awt.Color;
-import java.util.ArrayList;
-
-public class HumanPlayer extends Player
+public class FakeDisplay implements DisplaysGame
 {
-    private InterfaceWithGame display;
-
-    public HumanPlayer ( InterfaceWithGame iwg, String playerName, ArrayList<SimpleTank> tanks , Color c)
+    public void show(SpriteList sprites)
     {
-        super ( playerName, tanks , c);
-        this.display = iwg;
-    }
-
-    public void giveOrders ( int frameLimit )
-    {
-        for ( SimpleTank tank : ownedTanks )
-        {
-            tank.giveOrders ( display.askForOrders ( this . playerName, frameLimit, tank) );
-        }
+        // does nothing!
     }
 }

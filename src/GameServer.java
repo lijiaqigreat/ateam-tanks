@@ -21,54 +21,138 @@ import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
 import java.util.ArrayList;
+import java.awt.Color;
 
-public class GameServer
+public class GameServer extends Thread
 {
 
-    BlockingQueue<String> reportDump;
-    BlockingQueue<Socket> clientDump;
-    ArrayList<PrintStream> outputs;
+    ArrayList<Player> players;
+    SpriteList sprites;
+    CollectServer collector;
+    int numRemotePlayers;
+    int numLocalPlayers;
+    int frameLimit;
 
-    public GameServer ()
+    public GameServer (int r, int l)
     {
-        reportDump = new LinkedBlockingDeque<String> ();
-        clientDump = new LinkedBlockingDeque<Socket> ();
-        outputs = new ArrayList<PrintStream> ();
-        CollectServer collector = new CollectServer ( reportDump, clientDump );
-        collector . start ();
+        this.frameLimit = 100;
+        this.numRemotePlayers = r;
+        this.numLocalPlayers = l;
+        this.players = new ArrayList<Player>();
+        this.sprites = new SpriteList();
+        this.collector = new CollectServer(r);
     }
 
-    public void play ()
+    public void run ()
     {
-        while ( true )
+        collector.start();
+        int i = 1; // counter for remote and local players
+        ArrayList<Socket> clientSockets = collector.getClients();
+
+        // creates players for all the sockets and gives them a demo unit
+        for (Socket socket : clientSockets)
         {
-            try
+            players.add(new RemotePlayer(i, socket));
+            sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
+            System.out.println("client player " + i + "registered");
+            i++;
+        }
+        //Finishes up by generating any desired local players (probably AIs)
+        while (i <= this.numRemotePlayers + this.numLocalPlayers)
+        {
+            players.add(new LocalPlayer(i));
+            sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
+            System.out.println("local player " + i + "generated");
+            i++;
+        }
+        sprites.settle(); // settles the spritelist
+
+        System.out.println("Starting game with " + players.size() + " players.");
+
+        // give players the preliminary state to order on
+        for (Player p : this.players)
+        {
+            p.giveSettledGameState(sprites.clone());
+        }
+        while (this.players.size() > 1)
+        {
+            // get orders from players
+            for (Player p : this.players)
             {
-                while ( clientDump . size () != 0 )
-                {
-                    outputs . add ( new PrintStream ( clientDump . take () . getOutputStream () ) );
-                }
-                while ( reportDump . size () != 0 )
-                {
-                    System.out.println ( "recieved: " );
-                    System.out.println ( reportDump . take () );
-                }
-                System.out.println ( "send announcement: " );
-                String o = System . console () . readLine ();
-                for ( PrintStream output : outputs )
-                {
-                    output . println ( o );
-                }
+                System.out.println("Waiting on " + p.getName() + " for orders");
+                // getOrders() will hang until the player has a set of orders ready
+                ArrayList<OrderQueue> os = p.getOrders();
+                ArrayList<Sprite> ss = this.sprites.getOwnedBy(p.ID());
+                matchOrders(os, ss);
+                System.out.println("Orders recieved from " + p.getName());
             }
-            catch ( InterruptedException i )
+            // give each player the runnable list
+            for (Player p : this.players)
             {
-                System.out.println ( "main loop fail" );
+                // this will also hang for each until the list has been sent
+                p.giveGameState(sprites.clone());
             }
-            catch ( IOException i )
+            // run the list through the turn
+            this.sprites.runTurn();
+            // give each player the canonical ran list
+            for (Player p : this.players)
             {
-                System.out.println ( "main loop fail" );
+                p.giveSettledGameState(sprites.clone());
+            }
+            // players then go about writing new orders
+            // based on the updated sprite list and this
+            // thread hangs again while it waits for those
+            // orders to be ready
+        }
+
+        // end conditions
+        if (this.players.size() == 1)
+        {
+            System.out.println(" *** " + players.get(0).getName() + " has won! *** ");
+        }
+        else
+        {
+            System.out.println(" *** In war, nobody wins. True fact. *** ");
+        }
+    }
+
+    private void matchOrders(ArrayList<OrderQueue> os, ArrayList<Sprite> ss)
+    {
+        for (Sprite sprite : ss)
+        {
+            // all are blanked first in case they dont get a new queue
+            sprite.giveOrders(new OrderQueue());
+        }
+        for (OrderQueue q : os)
+        {
+            for (Sprite sprite : ss)
+            {
+                if (sprite.uid().equals(q.uid()))
+                {
+                    sprite.giveOrders(q);
+                }
             }
         }
     }
 
+    private void clearDeadPlayers()
+    {
+        for (Player p : this.players)
+        {
+            boolean dead = true;
+            for (Sprite s : this.sprites.getSprites())
+            {
+                if (s.getPlayerID() == p.ID())
+                {
+                    dead = false;
+                }
+            }
+            if (dead)
+            {
+                System.out.println(p.getName() + " has been destroyed.");
+                this.players.remove(p);
+                p.kill();
+            }
+        }
+    }
 }

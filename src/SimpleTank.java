@@ -39,18 +39,27 @@ class SimpleTank extends Sprite
     private int health;
     private Color color;
 
-    public SimpleTank ( SpriteList sprites, ArrayList<SimpleTank> playerTanks, Vector3D position, Direction direction, double speed, double handling , Color c)
+    public SimpleTank(Vector3D position, Direction direction, int pl, int un)
     {
-        super ( sprites, position, direction, 10 );
-        this.speed = speed;
-        this.handling = handling;
-        OrderQueue orders = new OrderQueue ();
-        this.playerTanks = playerTanks;
+        super(position, direction, 10);
+        this.speed = 5;
+        this.handling = 5;
+        OrderQueue orders = new OrderQueue();
         this.health = 100;
-        this.color = c;
+        this.color = Color.green;
+        this.playerID = pl;
+        this.unitNum = un;
+    }
+
+    public SimpleTank clone()
+    {
+        SimpleTank output = new SimpleTank(new Vector3D(this.position), new Direction(this.direction), this.playerID, this.unitNum);
+        output.orders = this.orders.clone();
+        output.health = this.health;
+        return output;
     }
     
-    public void giveOrders ( OrderQueue newOrders )
+    public void giveOrders(OrderQueue newOrders)
     {
         orders = newOrders;
     }
@@ -59,44 +68,48 @@ class SimpleTank extends Sprite
      * Simply adds a SimpleBullet to the arraylist for now, will have to 
      * be expanded to allow other types of projectiles
      */
-    public void shoot ( Direction direction )
+    public void shoot(SpriteList sprites, Direction direction)
     {
-        this.sprites.add(new SimpleBullet(this.sprites, new Vector3D(this.position, new Vector3D(25, direction)), direction ));
+        sprites.add(new SimpleBullet(new Vector3D(this.position, new Vector3D(25, direction)), direction));
     }
-    public void damage ( int intensity )
+    
+    public void damage(SpriteList sprites, int intensity)
     {
-        this . health -= intensity;
-        if ( this . health <= 0 )
+        this.health -= intensity;
+        if (this.health <= 0)
         {
-            this . kill ();
+            this.kill(sprites);
         }
     }
-    public double getSpeed ()
+
+    public int getPlayerID()
+    {
+        return this.playerID;
+    }
+
+    public double getSpeed()
     {
         return speed;
     }
-    public double getHandling ()
+
+    public double getHandling()
     {
         return handling;
     }
 
-    public Color getColor ()
+    public Color getColor()
     {
         return color;
     }
 
-    public void kill ()
+    public int update (SpriteList sprites)
     {
-        sprites.remove ( this );
-        playerTanks.remove ( this );
-    }
-
-    public int update ()
-    {
-        orders.exec( this );
+        orders.exec(sprites, this);
         return 0;
     }
-    public void paint(Graphics2D g){
+
+    public void paint(Graphics2D g)
+    {
         double radius=this.hitboxRadius;
         g.setColor(this.color);
         g.fill(Sprite.getCircle(position.getX(),position.getY(),radius));
@@ -105,4 +118,5 @@ class SimpleTank extends Sprite
         g.draw(new Line2D.Double(position.getX(),position.getY(),position.getX()+Math.cos(direction)*radius,
                                                    position.getY()+Math.sin(direction)*radius));
     }
+
 }

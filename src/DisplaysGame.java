@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2014 A-Team Games
  *
@@ -18,15 +17,18 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * An interface for a general display (graphical or not)
+ * that the game would use during the 
+ * running phase.
+ *
+ */
 
-public class GameServerTest
+public interface DisplaysGame
 {
-
-    public static void main ( String args[] )
-    {
-        GameServer s = new GameServer (2, 2);
-
-        s . start ();
-    }
-
+    /**
+     * Updates display with current positions and states
+     * of sprites
+     */
+    public void show(SpriteList sprites);
 }

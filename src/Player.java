@@ -19,65 +19,42 @@
 
 /**
  * This class represents a player, for the purposes
- * of sprite ownership and orders allocation.
- *
- * It can be instantiated itself as a dummy player
- * that gives no orders, for testing purposes
+ * of orders allocation.
  */
 
-import java.awt.Color;
 import java.util.ArrayList;
 
-public class Player
+public abstract class Player
 {
     protected String playerName;
-    private Color color;
+    protected int id;
 
-    /* This is a list to allow for multiple owned units
-     * per player if we wish to later implement that
-     */
-    protected ArrayList<SimpleTank> ownedTanks;
-
-    public Player ( String name, ArrayList<SimpleTank> tanks , Color c)
+    public Player(int id)
     {
-        playerName = name;
-        ownedTanks = tanks;
-	color = c;
+        this.id = id;
+        this.playerName = this.askForPlayerName();
     }
 
-    /**
-     * The method called during the "give orders" phase of the
-     * game.
-     *
-     * This method asks the player for the list of orders (for
-     * a human player, most likely useing the gui interface)
-     * for each of the player's units and then gives the orders
-     * to those units.
-     *
-     * In this superclass, the units are given empty orderlists.
-     *
-     * frameLimit is the number of frames that can be allocated
-     * among the orders
-     */
-    public void giveOrders ( int frameLimit )
-    {
-        for ( SimpleTank tank : ownedTanks )
-        {
-            tank.giveOrders ( new OrderQueue () );
-        }
-    }
+    public abstract ArrayList<OrderQueue> getOrders();
 
-    public boolean stillAlive ()
-    {
-        return ( ownedTanks.size() != 0 );
-    }
+    public abstract void giveGameState(SpriteList s);
 
-    public String getName ()
+    public abstract void giveSettledGameState(SpriteList s);
+
+    protected abstract String askForPlayerName();
+
+    public String getName()
     {
         return playerName;
     }
-    public Color getColor ()
+
+    public int ID()
     {
-        return color;
+        return this.id;
+    }
+
+    public void kill()
+    {
+        // does nothing for now
     }
 }

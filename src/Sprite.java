@@ -37,66 +37,87 @@ import java.awt.Color;
 
 public abstract class Sprite extends Object
 {
-    protected SpriteList sprites;
     protected Vector3D position;
     protected Direction direction;
     protected boolean alive;
     protected double hitboxRadius;
+    protected int playerID; // identifies owning player (if any; 0 means none)
+    protected int unitNum; // identifies self out of owning player's units
 
-    public Sprite ( SpriteList sprites, Vector3D p, Direction d, double hr )
+    public Sprite(Vector3D p, Direction d, double hr)
     {
-        this.sprites = sprites;
-
-        this.position= new Vector3D ( p );
-        this.direction = new Direction ( d );
+        this.position = new Vector3D(p);
+        this.direction = new Direction(d);
         this.hitboxRadius = hr;
         this.alive = true;
+        this.playerID = 0; // indicating unowned
+        this.unitNum = 0;
     }
 
-    public abstract int update ();
+    public abstract Sprite clone();
 
-    public abstract void damage ( int intensity );
+    public abstract int update(SpriteList sprites);
+
+    public abstract void damage(SpriteList sprites, int intensity);
 
     public abstract void paint(Graphics2D g);
 
-    public boolean checkCollision ( Sprite other )
+    public void giveOrders(OrderQueue newOrders)
+    {
+        // for most sprites this does nothing
+    }
+
+    public boolean checkCollision(Sprite other)
     {
         return position.distance(other.position)<hitboxRadius+other.hitboxRadius;
     }
-    public ArrayList<Sprite> getAllCollisions ()
+
+    public ArrayList<Sprite> getAllCollisions (SpriteList sprites)
     {
 
         ArrayList<Sprite> collisions = new ArrayList<Sprite>();
-        for ( Sprite sprite : this.sprites.getSprites() )
+        for ( Sprite sprite : sprites.getSprites() )
         {
-            if(sprite!=this&&checkCollision(sprite)){
+            if(sprite != this && checkCollision(sprite)){
                 collisions.add ( sprite );
             }
         }
         return collisions;
     }
 
-    public Vector3D getPosition ()
+    public Vector3D getPosition()
     {
         return position;
     }
-    public void setPosition ( Vector3D p )
+    public void setPosition(Vector3D p)
     {
         this.position = p;
     }
-    public Direction getDirection ()
+    public Direction getDirection()
     {
         return direction;
     }
-    public void setDirection ( Direction d )
+    public void setDirection(Direction d)
     {
         this.direction = d;
     }
-
-    public void kill ()
+    public int getPlayerID()
     {
-        this . alive = false;
-        sprites.remove ( this );
+        return this.playerID;
+    }
+    public int getUnitNum()
+    {
+        return this.unitNum;
+    }
+    public String uid()
+    {
+        return this.playerID + "<->" + this.unitNum;
+    }
+
+    public void kill (SpriteList sprites)
+    {
+        this.alive = false;
+        sprites.remove(this);
     }
     public static Arc2D.Double getCircle(double x,double y,double radius){
         return new Arc2D.Double(x-radius,y-radius,radius*2,radius*2,0,360,Arc2D.CHORD);

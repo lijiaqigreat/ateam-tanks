@@ -39,21 +39,20 @@ public abstract class Order
         this.frames = frames;
     }
 
-    public void exec ( SimpleTank tank )
+    public abstract Order clone();
+
+    public void exec (SpriteList sprites, SimpleTank tank )
     {
-        this.execSpecific ( tank );
+        this.execSpecific ( sprites, tank );
         frames --;
     }
 
-    protected abstract void execSpecific ( SimpleTank tank );
+    protected abstract void execSpecific ( SpriteList sprites, SimpleTank tank );
 
     public abstract void walk ( UnitModel model, Graphics2D g );
 
     public int getFrames ()
     {
         return frames;
-    }
-    public Object clone(){
-        return null;
     }
 }

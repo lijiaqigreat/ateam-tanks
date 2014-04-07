@@ -20,6 +20,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
+import java.util.ArrayList;
 
 /* This guy listens for new client connections
  * and then hands them off to helper threads that
@@ -30,12 +31,13 @@ import java.util.concurrent.*;
  
 public class CollectServer extends Thread
 {
+    Object mon;
     ServerSocket server = null;
-    BlockingQueue<String> reportDump;
     BlockingQueue<Socket> clientDump;
-    int clientCount;
+    int aim;
+    int aimClientCount;
 
-    public CollectServer ( BlockingQueue r, BlockingQueue c )
+    public CollectServer (int r)
     {
         try
         {
@@ -43,39 +45,53 @@ public class CollectServer extends Thread
         }
         catch ( IOException e )
         {
-            System.out.println ( "meh" );
+            System.out.println ( "meh says the collectserver" );
         }
-        reportDump = r;
-        clientDump = c;
-        clientCount = 0;
+        clientDump = new LinkedBlockingDeque<Socket>();
+        aimClientCount = r;
+        aim = r;
     }
         
+    public ArrayList<Socket> getClients()
+    {
+        ArrayList<Socket> cons = new ArrayList<Socket>();
+        for (int i=0; i<=aim; i++)
+        {
+            try {
+                cons.add(clientDump.take());
+            } catch (InterruptedException e) {
+                // ...
+            }
+        }
+        return cons;
+    }
 
     public void run ()
     {
-        while ( clientCount < 10 ) // Safety measure for early testing
+        System.out.println("--- Awaiting clients");
+        while (this.aimClientCount > 0)
         {
             Socket con = null;
             try
             {
                 con = server . accept ();
+                try
+                {
+                    clientDump . put ( con );
+                    System.out.println ( "Client connected" );
+                    aimClientCount --;
+                }
+                catch ( InterruptedException e )
+                {
+                    // ...
+                }
             }
             catch ( IOException e )
             {
                 // ...
             }
-            AideServer aide = new AideServer ( reportDump, con );
-            try
-            {
-                clientDump . put ( con );
-            }
-            catch ( InterruptedException e )
-            {
-                // ...
-            }
-            aide . start ();
-            System.out.println ( "Client connected" );
-            clientCount ++;
+            
         }
+        System.out.println("--- All clients connected");
     }
 }

@@ -17,25 +17,37 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.awt.Color;
+import java.util.ArrayList;
 
-public class SpriteListTest
+/*
+ * This class is a super-class for all players that
+ * do not interact with a seperate client over a
+ * network.
+ *
+ * This would likely include an AI or several, and
+ * a local playing interface
+ *
+ * This can also be instantiated itself as a dummy
+ */
+public class LocalPlayer extends Player
 {
-public static void main ( String args[] )
-{
-    SpriteList list = new SpriteList ();
+    
+    public LocalPlayer(int id)
+    {
+        super(id);
+    }
 
-    System.out.println ( "Size of empty list is " + list.getSprites().size() );
+    public ArrayList<OrderQueue> getOrders()
+    {
+        return new ArrayList<OrderQueue>();
+    }
+    
+    public void giveGameState(SpriteList s) {/*nothing*/}
 
-    Obstacle o1 = new Obstacle ( list, new Vector3D(0,0,0), new Direction(0,0), 4 );
-    list.add(o1);
+    public void giveSettledGameState(SpriteList s) {/*nothing*/}
 
-    System.out.println ( "Size of empty list is " + list.getSprites().size() );
-    list.update();
-    System.out.println ( "Size of non-empty list is " + list.getSprites().size() );
-    list.remove(o1);
-    System.out.println ( "Size of non-empty list is " + list.getSprites().size() );
-    list.update();
-    System.out.println ( "Size of empty list is " + list.getSprites().size() );
-}
+    protected String askForPlayerName()
+    {
+        return "hello i am " + this.id + "-bot";
+    }
 }
