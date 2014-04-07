@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2014 A-Team Games
  *
@@ -17,42 +18,15 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * This class represents a player, for the purposes
- * of orders allocation.
- */
 
-import java.util.ArrayList;
-
-public abstract class Player
+public class GameClientTest
 {
-    protected int id;
 
-    public Player(int id)
+    public static void main ( String args[] )
     {
-        this.id = id;
+        FakeClient c = new FakeClient ();
+
+        // c . start ();
     }
 
-    public abstract ArrayList<OrderQueue> getOrders();
-
-    public abstract void giveGameState(SpriteList s);
-
-    public abstract void giveSettledGameState(SpriteList s);
-
-    protected abstract String askForPlayerName();
-
-    public String getName()
-    {
-        return this.askForPlayerName();
-    }
-
-    public int ID()
-    {
-        return this.id;
-    }
-
-    public void kill()
-    {
-        // does nothing for now
-    }
 }

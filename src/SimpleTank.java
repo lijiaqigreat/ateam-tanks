@@ -44,7 +44,7 @@ class SimpleTank extends Sprite
         super(position, direction, 10);
         this.speed = 5;
         this.handling = 5;
-        OrderQueue orders = new OrderQueue();
+        this.orders = new OrderQueue();
         this.health = 100;
         this.color = Color.green;
         this.playerID = pl;

@@ -31,9 +31,8 @@ import java.util.ArrayList;
  
 public class CollectServer extends Thread
 {
-    Object mon;
     ServerSocket server = null;
-    BlockingQueue<Socket> clientDump;
+    BlockingQueue<RemotePlayer> playerDump;
     int aim;
     int aimClientCount;
 
@@ -47,23 +46,23 @@ public class CollectServer extends Thread
         {
             System.out.println ( "meh says the collectserver" );
         }
-        clientDump = new LinkedBlockingDeque<Socket>();
+        playerDump = new LinkedBlockingDeque<RemotePlayer>();
         aimClientCount = r;
         aim = r;
     }
         
-    public ArrayList<Socket> getClients()
+    public ArrayList<RemotePlayer> getClients()
     {
-        ArrayList<Socket> cons = new ArrayList<Socket>();
-        for (int i=0; i<=aim; i++)
+        ArrayList<RemotePlayer> ps = new ArrayList<RemotePlayer>();
+        for (int i=1; i<=aim; i++)
         {
             try {
-                cons.add(clientDump.take());
+                ps.add(playerDump.take());
             } catch (InterruptedException e) {
                 // ...
             }
         }
-        return cons;
+        return ps;
     }
 
     public void run ()
@@ -75,9 +74,10 @@ public class CollectServer extends Thread
             try
             {
                 con = server . accept ();
+                RemotePlayer p = new RemotePlayer((this.aim-this.aimClientCount)+1, con);
                 try
                 {
-                    clientDump . put ( con );
+                    playerDump . put ( p );
                     System.out.println ( "Client connected" );
                     aimClientCount --;
                 }

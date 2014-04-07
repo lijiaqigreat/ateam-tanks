@@ -47,14 +47,14 @@ public class GameServer extends Thread
     {
         collector.start();
         int i = 1; // counter for remote and local players
-        ArrayList<Socket> clientSockets = collector.getClients();
+        ArrayList<RemotePlayer> clientPlayers = collector.getClients();
 
         // creates players for all the sockets and gives them a demo unit
-        for (Socket socket : clientSockets)
+        for (RemotePlayer player : clientPlayers)
         {
-            players.add(new RemotePlayer(i, socket));
+            players.add(player);
             sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
-            System.out.println("client player " + i + "registered");
+            System.out.println("client player " + i + " registered");
             i++;
         }
         //Finishes up by generating any desired local players (probably AIs)
@@ -62,7 +62,7 @@ public class GameServer extends Thread
         {
             players.add(new LocalPlayer(i));
             sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
-            System.out.println("local player " + i + "generated");
+            System.out.println("local player " + i + " generated");
             i++;
         }
         sprites.settle(); // settles the spritelist

@@ -69,8 +69,9 @@ public class RemotePlayer extends Player
         public ConnectionThread(Socket c)
         {
             try {
-                this.in = new ObjectInputStream(c.getInputStream());
                 this.out = new ObjectOutputStream(c.getOutputStream());
+                this.out.flush();
+                this.in = new ObjectInputStream(c.getInputStream());
             } catch (IOException e) {
                 System.out.println("ConnectionThread init failed");
             }
@@ -128,6 +129,7 @@ public class RemotePlayer extends Player
             // get the player's name to start
             try {
                 this.playerNameDump.put((String) in.readObject());
+                System.out.println("player name recieved");
             } catch (IOException e) {
                 // meh
             } catch (ClassNotFoundException e) {
