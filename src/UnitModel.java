@@ -41,18 +41,15 @@ class UnitModel
 
     public UnitModel ()
     {
-        this . speed = 0;
-        this . handling = 0;
+        this . speed = 5;
+        this . handling = 5;
         this . color = Color.green;
         this . position = new Vector3D ( 0, 0, 0 );
         this . direction = new Direction ( 0, 0 );
     }
 
-    public UnitModel ( SimpleTank tank )
+    public UnitModel ( Sprite tank )
     {
-        this . speed = tank . getSpeed ();
-        this . handling = tank . getHandling ();
-        this . color = tank . getColor ();
         this . position = new Vector3D ( tank . getPosition () );
         this . direction = new Direction ( tank . getDirection () );
     }

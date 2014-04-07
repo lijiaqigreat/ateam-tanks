@@ -35,7 +35,7 @@ public class RemotePlayer extends Player
     {
         super(id);
         name = "not set";
-        this.con = new ConnectionThread(c);
+        this.con = new ConnectionThread(c, new Integer(id));
         con.start();
         name = con.askForPlayerName();
     }
@@ -62,6 +62,7 @@ public class RemotePlayer extends Player
 
     private class ConnectionThread extends Thread
     {
+        Integer playerID;
         ObjectInputStream in;
         ObjectOutputStream out;
         LinkedBlockingDeque<ArrayList<OrderQueue>> orderDump;
@@ -69,8 +70,9 @@ public class RemotePlayer extends Player
         LinkedBlockingDeque<SpriteList> settledSpriteDump;
         LinkedBlockingDeque<String> playerNameDump;
 
-        public ConnectionThread(Socket c)
+        public ConnectionThread(Socket c, Integer id)
         {
+            this.playerID = id;
             try {
                 this.out = new ObjectOutputStream(c.getOutputStream());
                 this.out.flush();
@@ -130,6 +132,12 @@ public class RemotePlayer extends Player
 
         public void run()
         {
+            // send the player its id
+            try {
+                out.writeObject(this.playerID);
+            } catch (IOException e) {
+                System.out.println("failed to send init spritelist");
+            }
             // get the player's name to start
             try {
                 this.playerNameDump.put((String) in.readObject());

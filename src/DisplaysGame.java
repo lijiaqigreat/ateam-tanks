@@ -31,4 +31,8 @@ public interface DisplaysGame
      * of sprites
      */
     public void show(SpriteList sprites);
+
+    public boolean initializeDisplay(int mapsize);
+
+    public void cleanUpAndDestroyDisplay();
 }

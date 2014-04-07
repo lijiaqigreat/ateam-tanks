@@ -29,18 +29,34 @@ import java.io.*;
 public class FakeClient
 {
     ConnectionThread con;
+    int id = -1;
+    DisplaysGame display;
+    GetsOrders orderGetter;
+    String name = "nobody";
+    
 
-    public FakeClient()
+    public FakeClient(DemoPanel panel)
     {
+        display = panel;
+        orderGetter = panel;
+        display.initializeDisplay(400);
         this.con = new ConnectionThread();
         System.out.println("past ct setup");
         con.start();
-        con.sendName(System.console().readLine("enter name: "));
+        this.name = System.console().readLine("enter name: ");
+        con.sendName(this.name);
+        this.id = con.getPlayerId();
+        SpriteList si = this.con.getSettledSprites();
+        System.console().readLine("press enter to send orders");
+        con.sendOrders(orderGetter.askForOrders(si, this.id, this.name));
         while (true)
         {
-            SpriteList s = this.con.getSettledSprites();
-            System.console().readLine("press enter to send empty orders");
-            con.sendOrders(new ArrayList<OrderQueue>());
+
+            SpriteList s = this.con.getSprites();
+            s.runTurn(display);
+            SpriteList ss = this.con.getSettledSprites();
+            System.console().readLine("press enter to send orders");
+            con.sendOrders(orderGetter.askForOrders(ss, this.id, this.name));
         }
     }
 
@@ -52,11 +68,12 @@ public class FakeClient
         LinkedBlockingDeque<SpriteList> spriteDump;
         LinkedBlockingDeque<SpriteList> settledSpriteDump;
         LinkedBlockingDeque<String> playerNameDump;
+        LinkedBlockingDeque<Integer> idDump;
 
         public ConnectionThread()
         {
             try {
-                Socket c = new Socket("localhost", 8887);
+                Socket c = new Socket(System.console().readLine("host: "), 8887);
                 System.out.println("creating streams");
                 this.out = new ObjectOutputStream(c.getOutputStream());
                 this.out.flush();
@@ -73,12 +90,23 @@ public class FakeClient
             this.spriteDump = new LinkedBlockingDeque<SpriteList>();
             this.settledSpriteDump = new LinkedBlockingDeque<SpriteList>();
             this.playerNameDump = new LinkedBlockingDeque<String>();
+            this.idDump = new LinkedBlockingDeque<Integer>();
         }
 
         public SpriteList getSettledSprites()
         {
             SpriteList s = this.waitGet(settledSpriteDump);
             return s;
+        }
+        public SpriteList getSprites()
+        {
+            SpriteList s = this.waitGet(spriteDump);
+            return s;
+        }
+
+        public int getPlayerId()
+        {
+            return this.waitGet(idDump).intValue();
         }
 
         public void sendName(String name)
@@ -100,7 +128,19 @@ public class FakeClient
 
         public void run()
         {
-            // send name for test
+            // get this player's id
+            try {
+                Integer id = (Integer) in.readObject();
+                this.idDump.put(id);
+                System.out.println("id recieved: " + id);
+            } catch (IOException e) {
+                System.out.println("id not recieved io");
+            } catch (ClassNotFoundException e) {
+                System.out.println("id not recieved cnf");
+            } catch (InterruptedException e) {
+                System.out.println("id not recieved interupt");
+            }
+            // send name
             try {
                 out.writeObject(this.waitGet(playerNameDump));
                 System.out.println("name sent");

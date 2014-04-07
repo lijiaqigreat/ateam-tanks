@@ -69,6 +69,11 @@ public class SpriteList implements Serializable
         this . framesPerTurn = 100;
     }
 
+    public int getFramesPerTurn()
+    {
+        return framesPerTurn;
+    }
+
     public ArrayList<Sprite> getSprites ()
     {
         return sprites;

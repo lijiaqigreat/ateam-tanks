@@ -30,4 +30,7 @@ public class FakeDisplay implements DisplaysGame
     {
         // does nothing!
     }
+    public boolean initializeDisplay(int mapsize){return true;}
+
+    public void cleanUpAndDestroyDisplay(){}
 }
