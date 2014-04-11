@@ -37,6 +37,10 @@ public class MoveOrder extends Order
         super ( frames );
         this.direction = direction;
     }
+    public MoveOrder clone()
+    {
+        return new MoveOrder(this.frames, this.direction);
+    }
     public int getDirection(){
         return direction;
     }
@@ -53,12 +57,12 @@ public class MoveOrder extends Order
         //there is no return value because the model was passed by reference
     }
 
-    public void execSpecific ( SimpleTank tank )
+    public void execSpecific ( SpriteList sprites, SimpleTank tank )
     {
         Vector3D oldPosition=tank.getPosition();
         Vector3D newPosition=new Vector3D ( tank.getPosition(), new Vector3D ( tank.getSpeed() * ( double ) direction, tank.getDirection()) );
         tank.setPosition (newPosition);
-        if(!tank.getAllCollisions().isEmpty()){
+        if(!tank.getAllCollisions(sprites).isEmpty()){
             tank.setPosition(oldPosition);
         }
     }

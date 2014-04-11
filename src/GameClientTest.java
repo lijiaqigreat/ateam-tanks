@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2014 A-Team Games
  *
@@ -17,28 +18,31 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * A player class for a human
- */
-
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import java.awt.BorderLayout;
 
-public class HumanPlayer extends Player
+import java.io.Console;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+public class GameClientTest
 {
-    private InterfaceWithGame display;
 
-    public HumanPlayer ( InterfaceWithGame iwg, String playerName, ArrayList<SimpleTank> tanks , Color c)
+    public static void main ( String args[] )
     {
-        super ( playerName, tanks , c);
-        this.display = iwg;
+        DemoPanel ui=new DemoPanel();
+        JFrame frame=new JFrame("ateam-tanks");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,500);
+        frame.setLayout(new BorderLayout());
+        frame.add(ui,BorderLayout.CENTER);
+        frame.setVisible(true);
+
+        FakeClient c = new FakeClient (ui);
+
+        // c . start ();
     }
 
-    public void giveOrders ( int frameLimit )
-    {
-        for ( SimpleTank tank : ownedTanks )
-        {
-            tank.giveOrders ( display.askForOrders ( this . playerName, frameLimit, tank) );
-        }
-    }
 }

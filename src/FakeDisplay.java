@@ -18,29 +18,19 @@
  */
 
 /**
- * A very simple order for shooting SimpleBullets
+ * An interface for a general display (graphical or not)
+ * that the game would use during the 
+ * running phase.
+ *
  */
-import java.awt.*;
-public class WaitOrder extends Order
+
+public class FakeDisplay implements DisplaysGame
 {
-    public WaitOrder ( int frames )
+    public void show(SpriteList sprites)
     {
-        super ( frames );
+        // does nothing!
     }
+    public boolean initializeDisplay(int mapsize){return true;}
 
-    public WaitOrder clone()
-    {
-        return new WaitOrder(this.frames);
-    }
-
-    public void walk ( UnitModel model, Graphics2D g )
-    {
-        //there is no graphical representation necessary for a wait,
-        //and the model is unchanged by a wait
-    }
-
-    public void execSpecific ( SpriteList sprites, SimpleTank tank )
-    {
-        // Whistles lazily
-    }
+    public void cleanUpAndDestroyDisplay(){}
 }

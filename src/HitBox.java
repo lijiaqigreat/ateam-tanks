@@ -24,8 +24,9 @@
  * considered to be colliding.
  *
  */
+import java.io.*;
 
-public class HitBox
+public class HitBox implements Serializable
 {
     private double length;
     private double width;

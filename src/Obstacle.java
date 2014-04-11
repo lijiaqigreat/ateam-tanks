@@ -29,22 +29,28 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
+import java.io.*;
 
-public class Obstacle extends Sprite
+public class Obstacle extends Sprite implements Serializable
 {
-    public Obstacle ( SpriteList sprites, Vector3D position, Direction direction, double hitboxRadius )
+    public Obstacle(Vector3D position, Direction direction, double hitboxRadius)
     {
-        super ( sprites, position, direction, hitboxRadius );
+        super (position, direction, hitboxRadius );
+    }
+
+    public Obstacle clone()
+    {
+        return new Obstacle(new Vector3D(this.position), new Direction(this.direction), this.hitboxRadius);
     }
 
     /**
      * An obstacle does nothing and is affected by nothing
      */
-    public int update ()
+    public int update (SpriteList sprites)
     {
         return 0;
     }
-    public void damage ( int intensity )
+    public void damage ( SpriteList sprites, int intensity )
     {
         // damage does not affect it, does nothing
     }

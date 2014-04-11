@@ -33,6 +33,14 @@ public class ShootOrder extends Order
         this . direction = new Direction ( theta, 0 );
     }
 
+    public ShootOrder clone()
+    {
+        ShootOrder output = new ShootOrder(0);
+        output.frames = this.frames;
+        output.direction = new Direction(this.direction);
+        return output;
+    }
+
     public void walk ( UnitModel model, Graphics2D g )
     {
         //The model is not altered in any way
@@ -44,12 +52,12 @@ public class ShootOrder extends Order
         g . draw ( new Line2D . Double ( startP.getX(), startP.getY(), endP.getX(), endP.getY() ) );
     }
 
-    public void execSpecific ( SimpleTank tank )
+    public void execSpecific ( SpriteList sprites, SimpleTank tank )
     {
         if ( this.frames == 2 )
         {
-            System.out.println ( "Shooting" );
-            tank . shoot ( this . direction );
+            System.out.println ("Shooting");
+            tank.shoot(sprites, this.direction);
         }
     }
 }

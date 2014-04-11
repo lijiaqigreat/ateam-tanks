@@ -39,6 +39,11 @@ public class TurnOrder extends Order
         this.direction = direction;
     }
 
+    public TurnOrder clone()
+    {
+        return new TurnOrder(this.frames, this.direction);
+    }
+
     public int getDirection(){
         return direction;
     }
@@ -57,7 +62,7 @@ public class TurnOrder extends Order
     }
 
     @Override
-    protected void execSpecific ( SimpleTank tank )
+    protected void execSpecific ( SpriteList sprites, SimpleTank tank )
     {
         tank.setDirection ( new Direction ( tank.getDirection().getTheta() + direction * tank.getHandling () ) );
     }

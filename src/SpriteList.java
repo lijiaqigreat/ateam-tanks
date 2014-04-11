@@ -18,6 +18,7 @@
  */
 
 import java.util.ArrayList;
+import java.io.*;
 
 /**
  * This class is abstracts the workings of the sprite list.
@@ -35,29 +36,42 @@ import java.util.ArrayList;
  * are safe to perform.
  */
 
-public class SpriteList
+public class SpriteList implements Serializable
 {
     private ArrayList<Sprite> sprites;
     private ArrayList<Sprite> toBeAdded;
     private ArrayList<Sprite> toBeRemoved;
+    private int turnLimit;
+    private int framesPerTurn;
 
     public SpriteList ()
     {
         this . sprites = new ArrayList<Sprite>();
         this . toBeAdded = new ArrayList<Sprite>();
         this . toBeRemoved = new ArrayList<Sprite>();
+        this . turnLimit = 20;
+        this . framesPerTurn = 100;
     }
     public SpriteList ( SpriteList other )
     {
         this . sprites = new ArrayList<Sprite>( other.sprites );
         this . toBeAdded = new ArrayList<Sprite>( other.toBeAdded );
         this . toBeRemoved = new ArrayList<Sprite>( other.toBeRemoved );
+        this . turnLimit = 20;
+        this . framesPerTurn = 100;
     }
     public SpriteList ( ArrayList<Sprite> initial )
     {
         this . sprites = initial;
         this . toBeAdded = new ArrayList<Sprite>();
         this . toBeRemoved = new ArrayList<Sprite>();
+        this . turnLimit = 20;
+        this . framesPerTurn = 100;
+    }
+
+    public int getFramesPerTurn()
+    {
+        return framesPerTurn;
     }
 
     public ArrayList<Sprite> getSprites ()
@@ -72,7 +86,18 @@ public class SpriteList
     {
         this . toBeRemoved . add ( deadSprite );
     }
-    public void update ()
+
+    public SpriteList clone()
+    {
+        SpriteList output = new SpriteList();
+        for (Sprite sprite : this.sprites)
+        {
+            output.add(sprite.clone());
+        }
+        output.settle();
+        return output;
+    }
+    public void settle ()
     {
         for ( Sprite deadSprite : this . toBeRemoved )
         {
@@ -96,4 +121,49 @@ public class SpriteList
         }
         this . toBeAdded = new ArrayList<Sprite>();
     }
+
+    public ArrayList<Sprite> getOwnedBy(int id)
+    {
+        ArrayList<Sprite> output = new ArrayList<Sprite>();
+        for (Sprite sprite : this.sprites)
+        {
+            if (sprite.getPlayerID() == id)
+            {
+                output.add(sprite);
+            }
+        }
+        return output;
+    }
+
+    public int runTurn()
+    {
+        return this.runTurn(new FakeDisplay());
+    }
+
+    public int runTurn(DisplaysGame display)
+    {
+
+        System.out.println("starting turn");
+
+        boolean unfinishedBusiness = false; // used to check if bullets are still flying
+        for (int f = 0; f < framesPerTurn || unfinishedBusiness; f++)
+        {
+            unfinishedBusiness = false;
+            for (Sprite sprite : this.sprites)
+            {
+                if (sprite.update(this) == 1)
+                {
+                    unfinishedBusiness = true;
+                }
+            }
+            this.settle();
+            System.out.println("update! frame #" + f );
+            
+            display.show(this); // delaying also happends in here
+        }
+
+        return 0;
+
+    }
+
 }

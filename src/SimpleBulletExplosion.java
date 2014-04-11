@@ -19,27 +19,36 @@
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.*;
 
-public class SimpleBulletExplosion extends Sprite
+public class SimpleBulletExplosion extends Sprite implements Serializable
 {
     int frames;
     Color c;
 
-    public SimpleBulletExplosion ( SpriteList sprites, Vector3D position )
+    public SimpleBulletExplosion(Vector3D position)
     {
-        super ( sprites, position, new Direction (0, 0), 4 );
+        super(position, new Direction(0, 0), 4);
         frames = 9;
         c = Color.yellow;
     }
 
-    public int update ()
+    public SimpleBulletExplosion clone()
     {
-        switch ( frames )
+        SimpleBulletExplosion output = new SimpleBulletExplosion(new Vector3D(this.position));
+        output.frames = this.frames;
+        output.c = this.c;
+        return output;
+    }
+
+    public int update (SpriteList sprites)
+    {
+        switch (this.frames)
         {
             case 9:
-                for ( Sprite coll : this . getAllCollisions () )
+                for ( Sprite coll : this . getAllCollisions (sprites) )
                 {
-                    coll . damage ( 40 );
+                    coll . damage ( sprites, 40 );
                 }
                 break;
             case 8:
@@ -58,7 +67,7 @@ public class SimpleBulletExplosion extends Sprite
                 this . hitboxRadius = 2;
                 break;
             case 0:
-                this . kill ();
+                this . kill (sprites);
                 break;
             default:
                 break;
@@ -69,7 +78,7 @@ public class SimpleBulletExplosion extends Sprite
         return 1;
     }
 
-    public void damage ( int intensity )
+    public void damage(SpriteList sprites, int intensity )
     {
         // you can't hurt an explosion!
         // explosion hurt you!

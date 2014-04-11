@@ -27,33 +27,33 @@ import java.awt.event.*;
 
 import java.io.Console;
 
-public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
+public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders/*, KeyListener*/{
     /**
      * 0: display
      * 1: give order
      * 2: announce winner
      */
-    int state;
 
-    SpriteList sprites;
+
     Rectangle2D.Double gameViewRect;
-    Game game;
+
+    int state;
+    SpriteList sprites;
 
     SimpleTank mainTank=null;
-    int frameLimit=-1;
     OrderQueue orderQueue=null;
 
     String winnerName=null;
 
-    OrderQueue orders = new OrderQueue ();
-    UnitModel model = new UnitModel ();
+    ArrayList<OrderQueue> orders = new ArrayList<OrderQueue>();
+    ArrayList<UnitModel> models = new ArrayList<UnitModel>();
 
     @Override
-    public boolean initializeDisplay ( SpriteList sprites, int mapSize ){
-        this.sprites=sprites;
+    public boolean initializeDisplay ( int mapSize ){
         gameViewRect=new Rectangle2D.Double(-mapSize,-mapSize,mapSize*2,mapSize*2);
         state=0;
-        this.addKeyListener(this);
+        sprites = new SpriteList();
+        //this.addKeyListener(this);
         return true;
     }
     @Override
@@ -61,133 +61,136 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
         return;
     }
     @Override
-    public void updateDisplay (){
+    public void show (SpriteList s){
+        this.sprites = s;
         repaint();
+        try {
+        Thread.sleep(60);
+        } catch (InterruptedException e) {
+            // ..
+        }
         //for ( Sprite sprite : sprites.getSprites() )
         //{
         //    System.out.println ( sprite.getPosition().toString() );
         //}
     }
     @Override
-    public OrderQueue askForOrders ( String playerName, int frameLimit, SimpleTank tank ){
-        OrderQueue q = new OrderQueue();
-        boolean keepgoing = true;
-        int frames = 0;
-        Console in = System.console();
-        System.out.println ();
-        System.out.println ();
-        System.out.println ( playerName + ", please allocate orders to your tank." );
-        while ( keepgoing && frames < frameLimit )
+    public ArrayList<OrderQueue> askForOrders (SpriteList s, int id, String playerName){
+        this.sprites = s;
+        this.models = new ArrayList<UnitModel>();
+        this.orders = new ArrayList<OrderQueue>();
+        this.repaint();
+        for (Sprite sprite : sprites.getOwnedBy(id))
         {
-            String type = "f";
-            System.out.println ( "You have " + ( frameLimit - frames ) + " frames left for this turn." );
-            System.out.println ( "Please choose an order type: [w]ait, [m]ove, [t]urn, [s]hoot, [f]inished" );
-            type = in.readLine ( ">>> " );
-            if ( type.equals ( "w" ) || type.equals ( "wait" ) )
+            OrderQueue q = new OrderQueue(sprites.getFramesPerTurn(), sprite.uid());
+            this.models.add(new UnitModel(sprite));
+            this.orders.add(q);
+            boolean keepgoing = true;
+            int frames = 0;
+            int frameLimit = sprites.getFramesPerTurn();
+            Console in = System.console();
+            System.out.println ();
+            System.out.println ();
+            System.out.println ( playerName + ", please allocate orders to your tank." );
+            while ( keepgoing && frames < sprites.getFramesPerTurn() )
             {
-                System.out.println ( "Wait for how many frames?" );
-                int f = Integer.parseInt ( in.readLine ( ">>> " ) );
-                if ( frames+f <= frameLimit )
+                String type = "f";
+                System.out.println ( "You have " + ( frameLimit - frames ) + " frames left for this turn." );
+                System.out.println ( "Please choose an order type: [w]ait, [m]ove, [t]urn, [s]hoot, [f]inished" );
+                type = in.readLine ( ">>> " );
+                if ( type.equals ( "w" ) || type.equals ( "wait" ) )
                 {
-                    frames += f;
+                    System.out.println ( "Wait for how many frames?" );
+                    int f = Integer.parseInt ( in.readLine ( ">>> " ) );
+                    if ( frames+f <= frameLimit )
+                    {
+                        frames += f;
+                    }
+                    else
+                    {
+                        f = frameLimit - frames;
+                        frames = frameLimit;
+                    }
+                    q.add ( new WaitOrder ( f ) );
+                    System.out.println ( "Ordered wait for " + f + " frames." );
                 }
-                else
+                if ( type.equals ( "m" ) || type.equals ( "move" ) )
                 {
-                    f = frameLimit - frames;
-                    frames = frameLimit;
-                }
-                q.add ( new WaitOrder ( f ) );
-                System.out.println ( "Ordered wait for " + f + " frames." );
-            }
-            if ( type.equals ( "m" ) || type.equals ( "move" ) )
-            {
-                System.out.println ( "Move for how many frames?" );
-                int f = Integer.parseInt ( in.readLine ( ">>> " ) );
-                if ( frames+f <= frameLimit )
-                {
-                    frames += f;
-                }
-                else
-                {
-                    f = frameLimit - frames;
-                    frames = frameLimit;
-                }
-                System.out.println ( "And in what direction? ( 1 = forwards, -1 = backwards )" );
-                int d = Integer.parseInt ( in.readLine ( ">>> " ) );
-                q.add ( new MoveOrder ( f, d ) );
-                System.out.println ( "Ordered move for " + f + " frames." );
-            }
-            if ( type.equals ( "t" ) || type.equals ( "turn" ) )
-            {
-                System.out.println ( "Turn for how many frames?" );
-                int f = Integer.parseInt ( in.readLine ( ">>> " ) );
-                if ( frames+f <= frameLimit )
-                {
-                    frames += f;
-                }
-                else
-                {
-                    f = frameLimit - frames;
-                    frames = frameLimit;
-                }
-                System.out.println ( "And in what direction? ( -1 = clockwise, 1 = counter-clockwise )" );
-                int d = Integer.parseInt ( in.readLine ( ">>> " ) );
-                q.add ( new TurnOrder ( f, d ) );
-                System.out.println ( "Ordered move for " + f + " frames." );
-            }
-            if ( type.equals ( "s" ) || type.equals ( "shoot" ) )
-            {
-                int f = 15;
-                if ( frames+f <= frameLimit )
-                {
-                    frames += f;
-                    System.out.println ( "In what direction? ( 0 - 359 )" );
+                    System.out.println ( "Move for how many frames?" );
+                    int f = Integer.parseInt ( in.readLine ( ">>> " ) );
+                    if ( frames+f <= frameLimit )
+                    {
+                        frames += f;
+                    }
+                    else
+                    {
+                        f = frameLimit - frames;
+                        frames = frameLimit;
+                    }
+                    System.out.println ( "And in what direction? ( 1 = forwards, -1 = backwards )" );
                     int d = Integer.parseInt ( in.readLine ( ">>> " ) );
-                    q.add ( new ShootOrder ( ( double ) (d+1)  ) );
-                    q.add ( new ShootOrder ( ( double ) d  ) );
-                    q.add ( new ShootOrder ( ( double ) (d-5)  ) );
-                    q.add ( new ShootOrder ( ( double ) (d-3)  ) );
-                    q.add ( new ShootOrder ( ( double ) (d+4)  ) );
-                    System.out.println ( "Ordered shoot (requires " + f + " frames." );
+                    q.add ( new MoveOrder ( f, d ) );
+                    System.out.println ( "Ordered move for " + f + " frames." );
                 }
-                else
+                if ( type.equals ( "t" ) || type.equals ( "turn" ) )
                 {
-                    System.out.println ( "You don't have enough frames left for a shoot (requires " + f + " frames)" );
+                    System.out.println ( "Turn for how many frames?" );
+                    int f = Integer.parseInt ( in.readLine ( ">>> " ) );
+                    if ( frames+f <= frameLimit )
+                    {
+                        frames += f;
+                    }
+                    else
+                    {
+                        f = frameLimit - frames;
+                        frames = frameLimit;
+                    }
+                    System.out.println ( "And in what direction? ( -1 = clockwise, 1 = counter-clockwise )" );
+                    int d = Integer.parseInt ( in.readLine ( ">>> " ) );
+                    q.add ( new TurnOrder ( f, d ) );
+                    System.out.println ( "Ordered move for " + f + " frames." );
                 }
+                if ( type.equals ( "s" ) || type.equals ( "shoot" ) )
+                {
+                    int f = 15;
+                    if ( frames+f <= frameLimit )
+                    {
+                        frames += f;
+                        System.out.println ( "In what direction? ( 0 - 359 )" );
+                        int d = Integer.parseInt ( in.readLine ( ">>> " ) );
+                        q.add ( new ShootOrder ( ( double ) (d+1)  ) );
+                        q.add ( new ShootOrder ( ( double ) d  ) );
+                        q.add ( new ShootOrder ( ( double ) (d-5)  ) );
+                        q.add ( new ShootOrder ( ( double ) (d-3)  ) );
+                        q.add ( new ShootOrder ( ( double ) (d+4)  ) );
+                        System.out.println ( "Ordered shoot (requires " + f + " frames." );
+                    }
+                    else
+                    {
+                        System.out.println ( "You don't have enough frames left for a shoot (requires " + f + " frames)" );
+                    }
+                }
+                if ( type.equals ( "f" ) || type.equals ( "finished" ) )
+                {
+                    System.out.println ( "Excellent" );
+                    keepgoing = false;
+                }
+                if ( frames >= frameLimit )
+                {
+                    System.out.println ( "Frames filled for this turn" );
+                }
+                this.repaint ();
             }
-            if ( type.equals ( "f" ) || type.equals ( "finished" ) )
-            {
-                System.out.println ( "Excellent" );
-                keepgoing = false;
-            }
-            if ( frames >= frameLimit )
-            {
-                System.out.println ( "Frames filled for this turn" );
-            }
-            this . model = new UnitModel ( tank );
-            this . orders = q;
-            this . repaint ();
-        }
-        for ( int g = 0; g < 300; g ++ )
-        {
-            // clears the screen
-            // so other players
-            // cant read moves
             System.out.println();
+            System.out.println();
+            System.out.println();
+            this.repaint ();
         }
-        this . orders = new OrderQueue ();
-        this . model = new UnitModel ();
-        this . repaint ();
-        return q;
-    }
-
-    @Override
-    public void announceWinner ( String winnerName ){
-        state=2;
-        this.winnerName=winnerName;
-
-        System.out.println();
-        System.out.println ( winnerName + " is winner!!!!1!" );
+        ArrayList<OrderQueue> output = new ArrayList<OrderQueue>(this.orders);
+        this.orders = new ArrayList<OrderQueue>();
+        this.models = new ArrayList<UnitModel>();
+        this.repaint();
+        return output;
     }
 
     public void updateTransform(Graphics2D g2){
@@ -227,8 +230,13 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
         if(state==1){
             //mainTank.paint(g2);
         }
-        orders.walkModel ( model, g2 );
+        for (int x = 0; x < orders.size(); x++)
+        {
+            UnitModel m = new UnitModel(models.get(x));
+            orders.get(x).walkModel ( m, g2 );
+        }
     }
+    /*
     @Override
     public void keyTyped(KeyEvent e){
 
@@ -274,4 +282,5 @@ public class DemoPanel extends JPanel implements InterfaceWithGame, KeyListener{
     public void keyReleased(KeyEvent e){
 
     }
+    */
 }

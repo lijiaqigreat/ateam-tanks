@@ -24,15 +24,16 @@
 
 import java.util.ArrayList;
 import java.awt.Color;
+import java.io.*;
 
-public abstract class Projectile extends Sprite
+public abstract class Projectile extends Sprite implements Serializable
 {
     protected Vector3D velocity;
     protected Vector3D gravity;
 
-    public Projectile ( SpriteList sprites, Vector3D position, Direction direction, double hitboxRadius, Color color, Vector3D velocity, Vector3D gravity )
+    public Projectile(Vector3D position, Direction direction, double hitboxRadius, Color color, Vector3D velocity, Vector3D gravity )
     {
-        super ( sprites, position, direction, hitboxRadius );
+        super(position, direction, hitboxRadius);
         this.velocity = velocity;
         this.gravity = gravity;
     }
@@ -42,24 +43,26 @@ public abstract class Projectile extends Sprite
      * this particular subclass of projectile is supposed to do upon hitting
      * another sprite. There is no default behavior.
      */
-    public abstract void reactToCollision ( ArrayList<Sprite> collisions );
+    public abstract void reactToCollision(SpriteList sprites, ArrayList<Sprite> collisions);
 
-    public abstract void damage ( int intensity ); // inherited but still not implemented
+    public abstract Projectile clone();
 
-    public int update ()
+    public abstract void damage(SpriteList sprites, int intensity); // inherited but still not implemented
+
+    public int update(SpriteList sprites)
     {
-        if ( this . alive )
+        if (this.alive)
         {
-            this.position = new Vector3D ( this.position, this.velocity );
-            this.velocity = new Vector3D ( this.velocity, this.gravity );
-            ArrayList<Sprite> coll = getAllCollisions ();
-            if ( coll . size () > 0 )
+            this.position = new Vector3D( this.position, this.velocity);
+            this.velocity = new Vector3D( this.velocity, this.gravity);
+            ArrayList<Sprite> coll = getAllCollisions(sprites);
+            if (coll.size() > 0)
             {
-                reactToCollision ( coll );
+                reactToCollision(sprites, coll);
             }
-            else if ( this . position . getZ () <= 0 )
+            else if (this.position.getZ() <= 0)
             {
-                reactToCollision ( new ArrayList<Sprite>() );
+                reactToCollision(sprites, new ArrayList<Sprite>());
             }
             return 1;
         }

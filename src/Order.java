@@ -25,8 +25,9 @@
  * of the game (frames are the basic unit of game progression --
  * they represent one pass of the main game loop
  */
+import java.io.*;
 import java.awt.*;
-public abstract class Order
+public abstract class Order implements Serializable
 {
     protected int frames;
 
@@ -39,21 +40,20 @@ public abstract class Order
         this.frames = frames;
     }
 
-    public void exec ( SimpleTank tank )
+    public abstract Order clone();
+
+    public void exec (SpriteList sprites, SimpleTank tank )
     {
-        this.execSpecific ( tank );
+        this.execSpecific ( sprites, tank );
         frames --;
     }
 
-    protected abstract void execSpecific ( SimpleTank tank );
+    protected abstract void execSpecific ( SpriteList sprites, SimpleTank tank );
 
     public abstract void walk ( UnitModel model, Graphics2D g );
 
     public int getFrames ()
     {
         return frames;
-    }
-    public Object clone(){
-        return null;
     }
 }
