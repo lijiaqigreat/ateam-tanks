@@ -94,11 +94,16 @@ class OrderQueue implements Serializable
     {
         OrderQueue output = new OrderQueue();
         output.framesLeft = this.framesLeft;
-        output.uid = this.uid;
-        for (Order order : orders)
+        output.uid = new String(this.uid);
+        ArrayDeque<Order> o = new ArrayDeque<Order>(this.orders);
+        while (o.size() > 0)
         {
-            output.add(order.clone());
+            output.orders.add(o.removeFirst());
         }
+        //for (Order order : orders)
+        //{
+        //    output.add(order.clone());
+        //}
         return output;
     }
 

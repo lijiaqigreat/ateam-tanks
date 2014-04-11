@@ -35,11 +35,15 @@ public class GameServer extends Thread
 
     public GameServer (int r, int l)
     {
+        this(r, l, new SpriteList());
+    }
+    public GameServer (int r, int l, SpriteList init)
+    {
         this.frameLimit = 100;
         this.numRemotePlayers = r;
         this.numLocalPlayers = l;
         this.players = new ArrayList<Player>();
-        this.sprites = new SpriteList();
+        this.sprites = init;
         this.collector = new CollectServer(r);
     }
 
@@ -53,7 +57,7 @@ public class GameServer extends Thread
         for (RemotePlayer player : clientPlayers)
         {
             players.add(player);
-            sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
+            //sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
             System.out.println("client player " + i + " registered");
             i++;
         }
@@ -61,7 +65,7 @@ public class GameServer extends Thread
         while (i <= this.numRemotePlayers + this.numLocalPlayers)
         {
             players.add(new LocalPlayer(i));
-            sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
+            //sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
             System.out.println("local player " + i + " generated");
             i++;
         }

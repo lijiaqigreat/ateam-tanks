@@ -23,8 +23,11 @@ import java.util.concurrent.*;
 import java.io.*;
 
 /*
- * This is a dummy client that just returns empty
- * orderqueues.
+ * This is really not fake at all..
+ * It was to begin with, but now it
+ * actually talks to a player.
+ *
+ * I'll rename it at some point.
  */
 public class FakeClient
 {
@@ -41,22 +44,24 @@ public class FakeClient
         orderGetter = panel;
         display.initializeDisplay(400);
         this.con = new ConnectionThread();
-        System.out.println("past ct setup");
+        //System.out.println("past ct setup");
         con.start();
-        this.name = System.console().readLine("enter name: ");
+        this.name = System.console().readLine("What is your name? ");
         con.sendName(this.name);
         this.id = con.getPlayerId();
         SpriteList si = this.con.getSettledSprites();
-        System.console().readLine("press enter to send orders");
+        System.console().readLine("Press <ENTER> to assign orders for this turn ");
         con.sendOrders(orderGetter.askForOrders(si, this.id, this.name));
         while (true)
         {
 
             SpriteList s = this.con.getSprites();
             s.runTurn(display);
+            display.show(s);
             SpriteList ss = this.con.getSettledSprites();
-            System.console().readLine("press enter to send orders");
+            System.console().readLine("Press <ENTER> to assign orders for this turn ");
             con.sendOrders(orderGetter.askForOrders(ss, this.id, this.name));
+            System.out.println("Orders sent. Waiting on other players..");
         }
     }
 
@@ -73,14 +78,14 @@ public class FakeClient
         public ConnectionThread()
         {
             try {
-                Socket c = new Socket(System.console().readLine("host: "), 8887);
-                System.out.println("creating streams");
+                Socket c = new Socket(System.console().readLine("Host: "), 8887);
+                System.out.println("creating streams..");
                 this.out = new ObjectOutputStream(c.getOutputStream());
                 this.out.flush();
-                System.out.println("...");
+                System.out.println("Waiting on other players...");
                 this.sleep(500);
                 this.in = new ObjectInputStream(c.getInputStream());
-                System.out.println("connection to server established");
+                System.out.println("Connection to server established!");
             } catch (IOException e) {
                 System.out.println("ConnectionThread init failed");
             } catch (InterruptedException e) {
@@ -132,7 +137,7 @@ public class FakeClient
             try {
                 Integer id = (Integer) in.readObject();
                 this.idDump.put(id);
-                System.out.println("id recieved: " + id);
+                //System.out.println("id recieved: " + id);
             } catch (IOException e) {
                 System.out.println("id not recieved io");
             } catch (ClassNotFoundException e) {
@@ -150,7 +155,7 @@ public class FakeClient
             // recieve the initial state
             try {
                 this.settledSpriteDump.put((SpriteList) in.readObject());
-                System.out.println("init sprites recieved");
+                //System.out.println("init sprites recieved");
             } catch (IOException e) {
                 System.out.println("init sprites not recieved io");
             } catch (ClassNotFoundException e) {
@@ -163,7 +168,7 @@ public class FakeClient
                 try {
                     // send the orders
                     out.writeObject(this.waitGet(orderDump));
-                    System.out.println("orders actually sent?");
+                    //System.out.println("orders actually sent?");
                     // get the unplayed sprite-list
                     this.spriteDump.put((SpriteList) in.readObject());
                     // get the played sprite-list

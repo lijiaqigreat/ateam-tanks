@@ -24,8 +24,36 @@ public class GameServerTest
 
     public static void main ( String args[] )
     {
-        GameServer s = new GameServer (2, 2);
+        SpriteList init = new SpriteList();
+        init.add(new SimpleTank(new Vector3D(-150, 20, 10), new Direction(0, 0), 1, 1));
+        init.add(new SimpleTank(new Vector3D(-150, -20, 10), new Direction(0, 0), 1, 2));
 
+        init.add(new SimpleTank(new Vector3D(150, 20, 10), new Direction(0, 0), 2, 1));
+        init.add(new SimpleTank(new Vector3D(150, -20, 10), new Direction(0, 0), 2, 2));
+
+        init.add(new SimpleTank(new Vector3D(20, -150, 10), new Direction(0, 0), 3, 1));
+        init.add(new SimpleTank(new Vector3D(-20, -150, 10), new Direction(0, 0), 3, 2));
+
+        init.add(new SimpleTank(new Vector3D(20, 150, 10), new Direction(0, 0), 4, 1));
+        init.add(new SimpleTank(new Vector3D(-20, 150, 10), new Direction(0, 0), 4, 2));
+
+        init.add(new Obstacle(new Vector3D(0, 0, 0), new Direction(0, 0), 27));
+
+        init.add(new Obstacle(new Vector3D(120, 120, 0), new Direction(0, 0), 17));
+        init.add(new Obstacle(new Vector3D(120, -120, 0), new Direction(0, 0), 17));
+        init.add(new Obstacle(new Vector3D(-120, 120, 0), new Direction(0, 0), 17));
+        init.add(new Obstacle(new Vector3D(-120, -120, 0), new Direction(0, 0), 17));
+
+        init.add(new Obstacle(new Vector3D(-88, 40, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(-88, -40, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(88, 40, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(88, -40, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(40, 88, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(-40, 88, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(40, -88, 0), new Direction(0, 0), 15));
+        init.add(new Obstacle(new Vector3D(-40, -88, 0), new Direction(0, 0), 15));
+
+        GameServer s = new GameServer (2, 2, init);
         s . start ();
     }
 

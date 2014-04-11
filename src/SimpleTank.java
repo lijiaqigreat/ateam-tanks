@@ -47,7 +47,27 @@ class SimpleTank extends Sprite implements Serializable
         this.handling = 5;
         this.orders = new OrderQueue();
         this.health = 100;
-        this.color = Color.green;
+        switch (pl)
+        {
+            case 1:
+                this.color = Color.red;
+                break;
+            case 2:
+                this.color = Color.blue;
+                break;
+            case 3:
+                this.color = Color.yellow;
+                break;
+            case 4:
+                this.color = Color.cyan;
+                break;
+            case 5:
+                this.color = Color.magenta;
+                break;
+            default:
+                this.color = Color.white;
+                break;
+        }
         this.playerID = pl;
         this.unitNum = un;
     }

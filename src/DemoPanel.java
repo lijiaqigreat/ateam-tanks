@@ -41,13 +41,12 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders/*, Key
     SpriteList sprites;
 
     SimpleTank mainTank=null;
-    int frameLimit=-1;
     OrderQueue orderQueue=null;
 
     String winnerName=null;
 
-    OrderQueue orders = new OrderQueue ();
-    UnitModel model = new UnitModel ();
+    ArrayList<OrderQueue> orders = new ArrayList<OrderQueue>();
+    ArrayList<UnitModel> models = new ArrayList<UnitModel>();
 
     @Override
     public boolean initializeDisplay ( int mapSize ){
@@ -78,12 +77,17 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders/*, Key
     @Override
     public ArrayList<OrderQueue> askForOrders (SpriteList s, int id, String playerName){
         this.sprites = s;
-        ArrayList<OrderQueue> output = new ArrayList<OrderQueue>();
+        this.models = new ArrayList<UnitModel>();
+        this.orders = new ArrayList<OrderQueue>();
+        this.repaint();
         for (Sprite sprite : sprites.getOwnedBy(id))
         {
             OrderQueue q = new OrderQueue(sprites.getFramesPerTurn(), sprite.uid());
+            this.models.add(new UnitModel(sprite));
+            this.orders.add(q);
             boolean keepgoing = true;
             int frames = 0;
+            int frameLimit = sprites.getFramesPerTurn();
             Console in = System.console();
             System.out.println ();
             System.out.println ();
@@ -175,22 +179,17 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders/*, Key
                 {
                     System.out.println ( "Frames filled for this turn" );
                 }
-                this . model = new UnitModel ( sprite );
-                this . orders = q;
-                this . repaint ();
+                this.repaint ();
             }
-            for ( int g = 0; g < 300; g ++ )
-            {
-                // clears the screen
-                // so other players
-                // cant read moves
-                System.out.println();
-            }
-            this . orders = new OrderQueue ();
-            this . model = new UnitModel ();
-            this . repaint ();
-            output.add(q);
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            this.repaint ();
         }
+        ArrayList<OrderQueue> output = new ArrayList<OrderQueue>(this.orders);
+        this.orders = new ArrayList<OrderQueue>();
+        this.models = new ArrayList<UnitModel>();
+        this.repaint();
         return output;
     }
 
@@ -231,7 +230,11 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders/*, Key
         if(state==1){
             //mainTank.paint(g2);
         }
-        orders.walkModel ( model, g2 );
+        for (int x = 0; x < orders.size(); x++)
+        {
+            UnitModel m = new UnitModel(models.get(x));
+            orders.get(x).walkModel ( m, g2 );
+        }
     }
     /*
     @Override
