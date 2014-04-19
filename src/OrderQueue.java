@@ -98,7 +98,7 @@ class OrderQueue implements Serializable
         ArrayDeque<Order> o = new ArrayDeque<Order>(this.orders);
         while (o.size() > 0)
         {
-            output.orders.add(o.removeFirst());
+            output.orders.add(o.remove().clone());
         }
         //for (Order order : orders)
         //{
