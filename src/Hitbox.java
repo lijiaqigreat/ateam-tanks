@@ -4,8 +4,11 @@
  */
 import java.awt.geom.*;
 public class Hitbox{
+    //x span
     private double width;
+    //y span
     private double height;
+    //z span
     private double altitude;
     public Hitbox(double a,double b,double c){
         width=a;

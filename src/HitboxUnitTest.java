@@ -1,5 +1,12 @@
 
 public class HitboxUnitTest{
+    /*
+     * w1,h1,a1 is the width,height,altitude of the first box
+     * x1,y1,z1 is the coordinate of the center of the box
+     * d1 is the direction of the box in radian
+     * w2,h2,... are means the same thing for the second box.
+     * prediction is true when you think they should collide
+     */
     public static boolean test(double w1,double h1,double a1,double x1,double y1,double z1, double d1, double w2,double h2,double a2,double x2,double y2,double z2, double d2,boolean prediction){
         Hitbox b1=new Hitbox(w1,h1,a1);
         Vector3D v1=new Vector3D(x1,y1,z1);
@@ -16,7 +23,7 @@ public class HitboxUnitTest{
     }
     public static void main(String[] args){
         test(1,1,1,0,0,0,0,1,1,1,3,0,0,0,false);
-        test(1,1,1,0,0,0,0,1,1,1,0.8,0,0,0,true);
+        test(1,1,1,0,0,0,0,1,1,1,1.01,0,0,1,true);
     }
 
 }
