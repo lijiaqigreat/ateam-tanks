@@ -70,6 +70,12 @@ public class Vector3D
         y += other.y;
         z += other.z;
     }
+    public void subtract ( Vector3D other )
+    {
+        x -= other.x;
+        y -= other.y;
+        z -= other.z;
+    }
     public double getX ()
     {
         return x;
