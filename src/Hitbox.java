@@ -24,11 +24,11 @@ public class Hitbox{
     public static boolean ifHit(Hitbox b1,Vector3D v1,double d1,Hitbox b2,Vector3D v2,double d2){
         double tmp=(b1.altitude+b2.altitude)/2;
         //check z direction
-        if(v1.getZ()-v2.getZ()<tmp){
-            return true;
+        if(v1.getZ()-v2.getZ()>tmp){
+            return false;
         }
-        if(v2.getZ()-v1.getZ()<tmp){
-            return true;
+        if(v2.getZ()-v1.getZ()>tmp){
+            return false;
         }
         Area area1=getArea(b1,v1,d1);
         Area area2=getArea(b2,v2,d2);
