@@ -17,150 +17,93 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.net.*;
-import java.io.*;
+import java.util.*;
 import java.util.concurrent.*;
-import java.util.ArrayList;
-import java.awt.Color;
 
-public class GameServer extends Thread
+/* The GameServer is intended to handle connections and disconnections and
+ * create and start games, all in the form of responses to "events"
+ */
+public class GameServer extends Thread implements DropBox<ServerEvent>
 {
+    
+    Map<String,User> users;
+    BlockingQueue<ServerEvent> events;
+    int userCapacity;
 
-    ArrayList<Player> players;
-    SpriteList sprites;
-    CollectServer collector;
-    int numRemotePlayers;
-    int numLocalPlayers;
-    int frameLimit;
-
-    public GameServer (int r, int l)
+    public GameServer(int userCapacity, int port)
     {
-        this(r, l, new SpriteList());
-    }
-    public GameServer (int r, int l, SpriteList init)
-    {
-        this.frameLimit = 100;
-        this.numRemotePlayers = r;
-        this.numLocalPlayers = l;
-        this.players = new ArrayList<Player>();
-        this.sprites = init;
-        this.collector = new CollectServer(r);
+        this.users = new HashMap<String,User>();
+        this.userCapacity = userCapacity;
+        new CollectServer(this, port);
     }
 
-    public void run ()
+    public void run()
     {
-        collector.start();
-        int i = 1; // counter for remote and local players
-        ArrayList<RemotePlayer> clientPlayers = collector.getClients();
-
-        // creates players for all the sockets and gives them a demo unit
-        for (RemotePlayer player : clientPlayers)
+        while(true)
         {
-            players.add(player);
-            //sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
-            System.out.println("client player " + i + " registered");
-            i++;
+            try {
+                ServerEvent ev = this.events.take();
+                System.out.println("Server is handling event of type " + ev.getClass().getName());
+                ev.handle(this);
+            } catch (InterruptedException e) {}
         }
-        //Finishes up by generating any desired local players (probably AIs)
-        while (i <= this.numRemotePlayers + this.numLocalPlayers)
-        {
-            players.add(new LocalPlayer(i));
-            //sprites.add(new SimpleTank(new Vector3D(10+i*30,20,10), new Direction(0,0), i, 1));
-            System.out.println("local player " + i + " generated");
-            i++;
-        }
-        sprites.settle(); // settles the spritelist
+    }
 
-        System.out.println("Starting game with " + players.size() + " players.");
+    //TODO switch DropBox to abstract class to get rid of these push methods
+    public void push(ServerEvent ev)
+    {
+        try {
+            events.put(ev);
+        } catch (InterruptedException e) {}
+    }
 
-        // give players the preliminary state to order on
-        for (Player p : this.players)
-        {
-            p.giveSettledGameState(sprites.clone());
-        }
-        while (this.players.size() > 1)
-        {
-            // get orders from players
-            for (Player p : this.players)
-            {
-                System.out.println("Waiting on " + p.getName() + " for orders");
-                // getOrders() will hang until the player has a set of orders ready
-                ArrayList<OrderQueue> os = p.getOrders();
-                System.out.println("orders got by gameserver");
-                ArrayList<Sprite> ss = this.sprites.getOwnedBy(p.ID());
-                matchOrders(os, ss);
-                System.out.println("escaped match");
-                System.out.println("Orders recieved from " + p.getName());
-            }
-            // give each player the runnable list
-            for (Player p : this.players)
-            {
-                // this will also hang for each until the list has been sent
-                p.giveGameState(sprites.clone());
-            }
-            // run the list through the turn
-            this.sprites.runTurn();
-            // give each player the canonical ran list
-            for (Player p : this.players)
-            {
-                p.giveSettledGameState(sprites.clone());
-            }
-            // players then go about writing new orders
-            // based on the updated sprite list and this
-            // thread hangs again while it waits for those
-            // orders to be ready
-        }
+    public Set<String> getUserNames()
+    {
+        return this.users.keySet();
+    }
 
-        // end conditions
-        if (this.players.size() == 1)
+    public void announce(String announcement)
+    {
+        for(String uname : this.users.keySet())
         {
-            System.out.println(" *** " + players.get(0).getName() + " has won! *** ");
+            this.users.get(uname).push(new ClientEventUserEvent(new ChatClientEvent("Server", "public", announcement)));
+        }
+    }
+
+    public void removeUser(String name, String reason)
+    {
+        this.users.get(name).push(new DisconnectionUserEvent(reason));
+        this.users.remove(name);
+    }
+
+    public void toUser(String name, UserEvent ev)
+    {
+        this.users.get(name).push(ev);
+    }
+
+    public boolean addUser(User u)
+    {
+        if(this.users.containsKey(u.getPlayerName()))
+        {
+            u.push(new DisconnectionUserEvent("Username already in use"));
+            return false;
+        }
+        else if(this.users.size() == this.userCapacity)
+        {
+            u.push(new DisconnectionUserEvent("Server is full"));
+            return false;
         }
         else
         {
-            System.out.println(" *** In war, nobody wins. True fact. *** ");
+            this.users.put(u.getPlayerName(), u);
+            System.out.println(u.getPlayerName() + " has joined!!");
+            return true;
         }
     }
 
-    private void matchOrders(ArrayList<OrderQueue> os, ArrayList<Sprite> ss)
+    public int getUserCapacity()
     {
-        for (Sprite sprite : ss)
-        {
-            // all are blanked first in case they dont get a new queue
-            sprite.giveOrders(new OrderQueue());
-        }
-        System.out.println("a");
-        for (OrderQueue q : os)
-        {
-            for (Sprite sprite : ss)
-            {
-                if (sprite.uid().equals(q.uid()))
-                {
-                    sprite.giveOrders(q);
-                }
-            }
-        }
-        System.out.println("b");
+        return this.userCapacity;
     }
 
-    private void clearDeadPlayers()
-    {
-        for (Player p : this.players)
-        {
-            boolean dead = true;
-            for (Sprite s : this.sprites.getSprites())
-            {
-                if (s.getPlayerID() == p.ID())
-                {
-                    dead = false;
-                }
-            }
-            if (dead)
-            {
-                System.out.println(p.getName() + " has been destroyed.");
-                this.players.remove(p);
-                p.kill();
-            }
-        }
-    }
 }

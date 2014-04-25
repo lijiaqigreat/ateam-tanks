@@ -20,78 +20,44 @@
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
-import java.util.ArrayList;
 
-/* This guy listens for new client connections
- * and then hands them off to helper threads that
- * listen to the clients and report their messages
- * to a thread-safe queue that the game-server
- * reads
- */
- 
 public class CollectServer extends Thread
 {
-    ServerSocket server = null;
-    BlockingQueue<RemotePlayer> playerDump;
-    int aim;
-    int aimClientCount;
+    private ServerSocket server = null;
+    private GameServer s;
 
-    public CollectServer (int r)
+    public CollectServer(GameServer s, int port)
     {
+        //port = 8887;
         try
         {
-            server = new ServerSocket(8887);
+            this.server = new ServerSocket(port);
         }
         catch ( IOException e )
         {
             System.out.println ( "meh says the collectserver" );
         }
-        playerDump = new LinkedBlockingDeque<RemotePlayer>();
-        aimClientCount = r;
-        aim = r;
+        this.s = s;
+        this.start();
     }
         
-    public ArrayList<RemotePlayer> getClients()
+    public void run()
     {
-        ArrayList<RemotePlayer> ps = new ArrayList<RemotePlayer>();
-        for (int i=1; i<=aim; i++)
-        {
-            try {
-                ps.add(playerDump.take());
-            } catch (InterruptedException e) {
-                // ...
-            }
-        }
-        return ps;
-    }
-
-    public void run ()
-    {
-        System.out.println("--- Awaiting clients");
-        while (this.aimClientCount > 0)
+        System.out.println("--- CollectServer started");
+        while (true)
         {
             Socket con = null;
             try
             {
-                con = server . accept ();
-                RemotePlayer p = new RemotePlayer((this.aim-this.aimClientCount)+1, con);
-                try
-                {
-                    playerDump . put ( p );
-                    System.out.println ( "Client connected" );
-                    aimClientCount --;
-                }
-                catch ( InterruptedException e )
-                {
-                    // ...
-                }
+                con = server.accept();
+                new User(s, con);
             }
             catch ( IOException e )
             {
-                // ...
+                System.out.println("failed user connection");
             }
             
         }
-        System.out.println("--- All clients connected");
     }
+
 }

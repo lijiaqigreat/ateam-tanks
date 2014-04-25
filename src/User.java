@@ -18,25 +18,28 @@
  */
 
 import java.util.concurrent.*;
+import java.io.*;
+import java.net.*;
 
-public class GameClient extends Thread implements DropBox<ClientEvent>
+public class User extends Thread implements DropBox<UserEvent>
 {
 
     private String name;
-    private BlockingQueue<ClientEvent> events;
-    private DropBox<UserEvent> outBox;
-    int port;
+    private BlockingQueue<UserEvent> events;
+    private DropBox<ClientEvent> outBox;
+    private DropBox<ServerEvent> server;
 
-    public GameClient(String name, int port)
+    public User(GameServer s, Socket c)
     {
-        this.name = name;
-        this.port = port;
-        this.events = new LinkedBlockingDeque<ClientEvent>();
-        this.outBox = new FakeBox<UserEvent>();
+        this.name = "un-initialized";
+        this.server = s;
+        this.outBox = new NetCore<UserEvent,ClientEvent>(c, this);
+        this.events = new LinkedBlockingDeque<UserEvent>();
+        this.outBox.push(new RequestInitInfoClientEvent());
         this.start();
     }
 
-    public void push(ClientEvent ev)
+    public void push(UserEvent ev)
     {
         try {
             this.events.put(ev);
@@ -53,25 +56,24 @@ public class GameClient extends Thread implements DropBox<ClientEvent>
         }
     }
 
-    public void toUser(UserEvent ev)
+    public void toClient(ClientEvent ev)
     {
-        this.outBox.push(ev);
+            this.outBox.push(ev);
+    }
+
+    public void toServer(ServerEvent ev)
+    {
+        this.server.push(ev);
+    }
+
+    public void setPlayerName(String name)
+    {
+        this.name = name;
     }
 
     public String getPlayerName()
     {
         return this.name;
-    }
-
-    public void connect(String hostname)
-    {
-        this.outBox = new NetWorker<ClientEvent,UserEvent>().connect(this, hostname, this.port);
-    }
-
-    public void disconnect()
-    {
-        this.toUser(new ServerEventUserEvent(new DisconnectionServerEvent(this.name, "Client quit")));
-        this.outBox = new NetWorker<ClientEvent,UserEvent>().disconnect();
     }
 
 }
