@@ -34,7 +34,9 @@ public class GameServer extends Thread implements DropBox<ServerEvent>
     {
         this.users = new HashMap<String,User>();
         this.userCapacity = userCapacity;
+        this.events = new LinkedBlockingDeque<ServerEvent>();
         new CollectServer(this, port);
+        this.start();
     }
 
     public void run()

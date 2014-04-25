@@ -30,22 +30,27 @@ public class ClientServerTest extends Thread
         GameClient c4 = new GameClient("roxy", 8887);
         GameClient c5 = new GameClient("c5", 8887);
 
+        //Things without delays between them tend to happen
+        //out of order, but that is expected what with all the
+        //event passing that goes into each Join or Part
+        //
+        //Either way, nothing crashes!
         try {
-            sleep(1000);
             c1.push(new JoinClientEvent("localhost"));
-            sleep(1000);
             c2.push(new JoinClientEvent("localhost"));
             c3.push(new JoinClientEvent("localhost"));
-            sleep(1000);
             c4.push(new JoinClientEvent("localhost"));
             c5.push(new JoinClientEvent("localhost"));
+            sleep(1000);
 
-            server.push( new AnnouncementServerEvent("just checking in again"));
+            server.push( new AnnouncementServerEvent("just checking in"));
             sleep(1000);
             c2.push(new PartClientEvent());
+            sleep(1000);
             c3.push(new JoinClientEvent("localhost"));
             sleep(1000);
-            server.push( new AnnouncementServerEvent("just checking in"));
+            server.push( new AnnouncementServerEvent("just checking in again"));
+            sleep(2000);
         } catch (InterruptedException e) {}
 
         System.out.println("----- Tests complete");

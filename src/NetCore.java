@@ -31,10 +31,12 @@ public class NetCore<I,O> implements DropBox<O>
 
     public NetCore(Socket c, DropBox<I> d)
     {
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
         try {
-            ObjectOutputStream out = new ObjectOutputStream(c.getOutputStream());
+            out = new ObjectOutputStream(c.getOutputStream());
             out.flush();
-            ObjectInputStream in = new ObjectInputStream(c.getInputStream());
+            in = new ObjectInputStream(c.getInputStream());
         } catch (IOException e) {
             System.out.println("NetCore stream init failed :/");
         }
@@ -108,4 +110,3 @@ public class NetCore<I,O> implements DropBox<O>
     }
 
 }
-
