@@ -44,15 +44,17 @@ public class Hitbox{
         double sin=Math.sin(d1);
         double x=v1.getX();
         double y=v1.getY();
-        path.moveTo(b1.width,b1.height);
-        path.lineTo(b1.width,-b1.height);
-        path.lineTo(-b1.width,-b1.height);
+        path.moveTo(b1.width/2,b1.height/2);
+        path.lineTo(b1.width/2,-b1.height/2);
+        path.lineTo(-b1.width/2,-b1.height/2);
+        path.lineTo(-b1.width/2,b1.height/2);
         path.closePath();
         AffineTransform trans=new AffineTransform();
         trans.scale(.5,.5);
         trans.rotate(d1);
         trans.translate(x,y);
         path.transform(trans);
+        System.out.println(path.toString());
         return new Area(path);
     }
 }

@@ -17,13 +17,13 @@ public class HitboxUnitTest{
         System.out.printf("[%s]:%.1f x %.1f x %.1f box at (%.1f, %.1f, %.1f) facing %.1f\n"+
                           "     %.1f x %.1f x %.1f box at (%.1f, %.1f, %.1f) facing %.1f\n"+
                           "     code prediction: %s, human prediction: %s\n",
-                          f?"  ":"X ",w1,h1,a1,x1,y1,z1,d1,w2,h2,a2,x2,y2,z2,d2,hit,prediction);
-
+                          f?"OK":"XX",w1,h1,a1,x1,y1,z1,d1,w2,h2,a2,x2,y2,z2,d2,hit,prediction);
         return f;
     }
+
     public static void main(String[] args){
-        test(1,1,1,0,0,0,0,1,1,1,3,0,0,0,false);
         test(1,1,1,0,0,0,0,1,1,1,1.01,0,0,1,true);
+
         test(1,1,1,0,0,0,0,1,1,1,1.1,0,0,0,false);
         test(1,1,1,0,0,0,0,1,1,1,1.2,0,0,0,false);
         test(1,1,1,0,0,0,0,1,1,1,1.3,0,0,0,false);
@@ -35,6 +35,20 @@ public class HitboxUnitTest{
         test(1,1,1,0,0,0,0,1,1,1,-1.0,0,0,0,false);
         test(1,1,1,0,0,0,0,1,1,1,-1.1,0,0,0,false);
         test(1,1,1,0,0,0,0,1,1,1,-2.0,0,0,0,false);
+
+        test(1,1,1,0,0,0,0,1,1,1,0.9,0,0,0,true); 
+        test(1,1,1,0,0,0,0,1,1,1,1.1,0,0,0,false); 
+        test(1,1,1,0,0,0,0,1,1,1,2.0,0,0,0,false); 
+        test(1,1,1,0,0,0,0,1,1,1,2.1,0,0,0,false); 
+        test(1,1,1,0,0,0,0,1,1,1,-1.0,0,0,0,false);
+        test(1,1,1,0,0,0,0,1,1,1,-1.1,0,0,0,false);
+        test(1,1,1,0,0,0,0,1,1,1,-2.0,0,0,0,false);
+
+        test(1,1,1,0,0,0,0,1,1,1,0,0.9,0,0,true); 
+        test(1,1,1,0,0,0,0,1,1,1,0,-0.9,0,0,true); 
+        test(1,1,1,0,0,0,0,1,1,1,0,1.1,0,0,false); 
+        test(1,1,1,0,0,0,0,1,1,1,0,-1.1,0,0,false); 
+        test(1,1,1,0,0,0,0,1,1,1,0,0.9,0.9,0,true); 
     }
 
 }
