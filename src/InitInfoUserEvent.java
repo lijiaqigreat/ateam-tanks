@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class InitInfoUserEvent implements UserEvent
+public class InitInfoUserEvent implements UserEvent, Serializable
 {
 
     String name;

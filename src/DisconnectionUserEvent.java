@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class DisconnectionUserEvent implements UserEvent
+public class DisconnectionUserEvent implements UserEvent, Serializable
 {
 
     String reason;

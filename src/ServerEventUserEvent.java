@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class ServerEventUserEvent implements UserEvent
+public class ServerEventUserEvent implements UserEvent, Serializable
 {
 
     ServerEvent toSend;

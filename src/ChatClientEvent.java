@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class ChatClientEvent implements ClientEvent
+public class ChatClientEvent implements ClientEvent, Serializable
 {
 
     String sender;

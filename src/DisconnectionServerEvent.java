@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class DisconnectionServerEvent implements ServerEvent
+public class DisconnectionServerEvent implements ServerEvent, Serializable
 {
 
     String name;

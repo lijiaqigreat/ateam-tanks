@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class ClientEventUserEvent implements UserEvent
+public class ClientEventUserEvent implements UserEvent, Serializable
 {
 
     ClientEvent toSend;

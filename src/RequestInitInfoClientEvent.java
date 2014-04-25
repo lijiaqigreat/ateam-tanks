@@ -19,7 +19,7 @@
 
 import java.io.*;
 
-public class RequestInitInfoClientEvent implements ClientEvent
+public class RequestInitInfoClientEvent implements ClientEvent, Serializable
 {
 
     public void handle(GameClient client)

@@ -18,26 +18,20 @@
  */
 
 import java.io.*;
-import java.net.*;
 
-public class NetWorker<I,O>
+public class AnnouncementServerEvent implements ServerEvent, Serializable
 {
-    public DropBox<O> connect(DropBox<I> d, String hostname, int port)
+
+    String message;
+
+    public AnnouncementServerEvent(String m)
     {
-        DropBox<O> box = new FakeBox<O>();
-        try {
-            Socket con = null;
-            con = new Socket(hostname, port);
-            box = new NetCore<I,O>(con, d);
-        } catch (IOException e) {
-            System.out.println("Bad IP or something?");
-        }
-        return box;
+        this.message = m;
     }
 
-    public DropBox<O> disconnect()
+    public void handle(GameServer server)
     {
-        return new FakeBox<O>();
+        server.announce(this.message);
     }
 
 }

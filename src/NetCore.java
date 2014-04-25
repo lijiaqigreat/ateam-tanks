@@ -39,8 +39,8 @@ public class NetCore<I,O> implements DropBox<O>
             System.out.println("NetCore stream init failed :/");
         }
         this.toSend = new LinkedBlockingDeque<O>();
-        new ReceiveThread<I>(in, d).start();
-        new SendThread<O>(out, toSend).start();
+        new ReceiveThread<I>(in, d);
+        new SendThread<O>(out, toSend);
     }
 
     public void push(O o)
@@ -68,8 +68,10 @@ public class NetCore<I,O> implements DropBox<O>
             while(true)
             {
                 try {
-                    drop.push((I) in.readObject());
+                    I event = (I) in.readObject();
+                    drop.push(event);
                 } catch (IOException e) {
+                    System.out.println("uh oh");
                 } catch (ClassNotFoundException e) {}
             }
         }
