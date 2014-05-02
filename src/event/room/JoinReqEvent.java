@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2014 A-Team Games
  *
@@ -17,25 +18,26 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.server;
+package event.room;
 
-import network.*;
+import java.util.*;
 import game.*;
 import gameinterface.*;
+import network.*;
 
-public class KillEvent implements event.Event<GameServer>
+public class JoinReqEvent implements event.Event<Room>
 {
 
-    private String reason;
+    private User user;
 
-    public KillEvent(String r)
+    public JoinReqEvent(User user)
     {
-        this.reason = r;
+        this.user = user;
     }
 
-    public void handle(GameServer server)
+    public void handle(Room room)
     {
-        server.shutdown(this.reason);
+        room.addUser(user);
     }
 
 }

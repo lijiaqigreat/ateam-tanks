@@ -41,6 +41,19 @@ public class GameRoom extends Room
         this.maxPlayers = this.sprites.playerCount();
     }
 
+    public void addUser(User user)
+    {
+        if (this.players.size() < this.maxPlayers && this.isGameRunning = false)
+        {
+            super.addUser(user);
+            user.push(new event.user.RoomAcceptEvent(this));
+        }
+        else
+        {
+            user.push(new event.user.FwdClientEvent(new event.client.ChatEvent("room", "private", "You can't join that game")));
+        }
+    }
+
     public boolean isGameRunning()
     {
         return this.isGameRunning;

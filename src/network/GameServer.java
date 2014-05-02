@@ -91,6 +91,11 @@ public class GameServer extends ConcreteDropBox<GameServer>
         this.users.remove(name);
     }
 
+    public Map<String,Room> getRooms()
+    {
+        return this.rooms;
+    }
+
     public void toUser(String name, Event<User> ev)
     {
         this.users.get(name).push(ev);

@@ -49,7 +49,11 @@ public class ConcreteDropBox<T> extends Thread implements DropBox<T>
         while(this.alive)
         {
             try {
-                this.events.poll(1, TimeUnit.SECONDS).handle((T) this);
+                Event<T> event = this.events.poll(1, TimeUnit.SECONDS);
+                if (event != null)
+                {
+                    event.handle((T) this);
+                }
             } catch (InterruptedException e) {}
         }
     }

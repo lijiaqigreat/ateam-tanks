@@ -57,6 +57,7 @@ public class ClientServerTest extends Thread
             sleep(1000);
             server.push( new event.server.AnnouncementReqEvent("just checking in again"));
             sleep(2000);
+            server.push(new event.server.KillEvent("killin you"));
         } catch (InterruptedException e) {}
 
         System.out.println("----- Tests complete");

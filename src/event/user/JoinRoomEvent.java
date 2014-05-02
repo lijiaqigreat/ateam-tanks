@@ -17,25 +17,26 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.server;
+package event.user;
 
 import network.*;
 import game.*;
 import gameinterface.*;
 
-public class KillEvent implements event.Event<GameServer>
+public class JoinRoomEvent implements event.Event<User>
 {
 
-    private String reason;
+    private String name;
 
-    public KillEvent(String r)
+    public RoomAcceptEvent(String r)
     {
-        this.reason = r;
+        this.name = r;
     }
 
-    public void handle(GameServer server)
+    public void handle(User user)
     {
-        server.shutdown(this.reason);
+        user.setRoom(this.room);
+        user.toClient(new event.client.ChatEvent("Room", "private", "Accepted");
     }
 
 }

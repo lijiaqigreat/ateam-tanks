@@ -25,13 +25,14 @@ import gameinterface.*;
 import java.io.*;
 import java.net.*;
 import event.Event;
+import java.util.*;
 
 public class User extends ConcreteDropBox<User>
 {
 
     private String name;
     private DropBox<GameClient> client;
-    private DropBox<GameServer> server;
+    private GameServer server;
     private DropBox<Room> room;
 
     public User(GameServer s, Socket c)
@@ -56,6 +57,29 @@ public class User extends ConcreteDropBox<User>
     public void toServer(Event<GameServer> ev)
     {
         this.server.push(ev);
+    }
+
+    public void tryRoom(String name)
+    {
+        Map<String,Room> rooms = this.server.getRooms();
+        if (rooms.containsKey(name))
+        {
+            rooms.get(name).push(new event.room.JoinReqEvent(this));
+        }
+        else
+        {
+            toClient(new event.client.ChatEvent("Server", "private", "that rooom does not exist"));
+        }
+    }
+
+    public void setRoom(Room room)
+    {
+        this.room = room;
+    }
+
+    public void resetRoom()
+    {
+        this.room = server.getLobby();
     }
 
     public void setPlayerName(String name)

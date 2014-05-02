@@ -44,6 +44,11 @@ public class Room extends ConcreteDropBox<Room>
         this.start();
     }
 
+    public void addUser(User user)
+    {
+        this.users.put(user.getPlayerName(), user);
+    }
+
     public boolean isGameRunning()
     {
         return false;
