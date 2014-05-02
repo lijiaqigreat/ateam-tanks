@@ -32,9 +32,9 @@ import java.util.ArrayList;
 public class LocalPlayer extends Player
 {
     
-    public LocalPlayer(int id)
+    public LocalPlayer(int id, String n)
     {
-        super(id);
+        super(id, n);
     }
 
     public ArrayList<OrderQueue> getOrders()

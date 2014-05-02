@@ -18,30 +18,30 @@
  */
 
 import java.util.concurrent.*;
-import java.io.*;
-import java.net.*;
+import java.util.*;
 
-public class User extends Thread implements DropBox<UserEvent>
+public class Room extends Thread implements DropBox<GameEvent>
 {
-
-    private String name;
-    private BlockingQueue<UserEvent> events;
-    private DropBox<ClientEvent> client;
+    
+    protected String name;
+    protected String creator;
+    private BlockingQueue<GameEvent> events;
+    protected Map<String,User> users;
+    protected Map<String,Player> players;
     private DropBox<ServerEvent> server;
-    private DropBox<GameEvent> room;
 
-    public User(GameServer s, Socket c)
+    public Room(GameServer s, String name, String creator)
     {
-        this.name = "un-initialized";
+        this.name = name;
         this.server = s;
-        this.client = new NetCore<UserEvent,ClientEvent>(c, this);
-        this.events = new LinkedBlockingDeque<UserEvent>();
-        this.client.push(new RequestInitInfoClientEvent());
-        this.room = s.getLobby();
+        this.creator = creator;
+        this.events = new LinkedBlockingDeque<GameEvent>();
+        this.users = new HashMap<String,User>();
+        this.players = new HashMap<String,Player>();
         this.start();
     }
 
-    public void push(UserEvent ev)
+    public void push(GameEvent ev)
     {
         try {
             this.events.put(ev);
@@ -58,29 +58,16 @@ public class User extends Thread implements DropBox<UserEvent>
         }
     }
 
-    public void toClient(ClientEvent ev)
+    public boolean isGameRunning()
     {
-        this.client.push(ev);
+        return false;
     }
 
-    public void toRoom(GameEvent ev)
-    {
-        this.room.push(ev);
-    }
+    public void startGame() {}
 
-    public void toServer(ServerEvent ev)
+    public boolean depositOrders(String playerName, ArrayList<OrderQueue> os)
     {
-        this.server.push(ev);
-    }
-
-    public void setPlayerName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getPlayerName()
-    {
-        return this.name;
+        return false;
     }
 
 }

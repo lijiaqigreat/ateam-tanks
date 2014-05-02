@@ -25,6 +25,7 @@ public class GameClient extends Thread implements DropBox<ClientEvent>
     private String name;
     private BlockingQueue<ClientEvent> events;
     private DropBox<UserEvent> outBox;
+    private DropBox<GWEvent> gameWindow;
     int port;
 
     public GameClient(String name, int port)
@@ -33,6 +34,7 @@ public class GameClient extends Thread implements DropBox<ClientEvent>
         this.port = port;
         this.events = new LinkedBlockingDeque<ClientEvent>();
         this.outBox = new FakeBox<UserEvent>();
+        this.gameWindow = new FakeWindow();
         this.start();
     }
 
@@ -56,6 +58,11 @@ public class GameClient extends Thread implements DropBox<ClientEvent>
     public void toUser(UserEvent ev)
     {
         this.outBox.push(ev);
+    }
+
+    public void toGW(GWEvent ev)
+    {
+        this.gameWindow.push(ev);
     }
 
     public String getPlayerName()

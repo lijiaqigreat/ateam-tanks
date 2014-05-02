@@ -17,47 +17,25 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
-public class Player
+public class GetOrdersGWEvent
 {
 
-    protected int id;
-    protected String name;
+    private SpriteList list;
+    private int ID;
 
-    public Player(int id, String n)
+    public GetOrdersGWEvent(SpriteList ss, int ID)
     {
-        this.id = id;
-        this.name = n;
+        this.list = ss;
+        this.ID = ID;
     }
 
-    public ArrayList<OrderQueue> getOrders()
+    public void handle(GWindow win)
     {
-        ArrayList<OrderQueue> os = new ArrayList<OrderQueue>();
-        OrderQueue o = new OrderQueue();
-        MoveOrder ord = new MoveOrder(10, 1);
-        o.add(ord);
-        os.add(o);
-        return os;
-    }
-
-    public boolean areOrdersSet()
-    {
-        return true;
-    }
-
-    public void setOrders(ArrayList<OrderQueue> os) {}
-
-    public void clearOrders() {}
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public int ID()
-    {
-        return this.id;
+        ArrayList<OrderQueue> orders = win.makeOrders(this.list, this.ID);
+        win.toClient(new UserEventClientEvent(new OrdersReceivedUserEvent(orders)));
     }
 
 }

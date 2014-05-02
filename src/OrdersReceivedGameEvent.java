@@ -17,47 +17,24 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
-public class Player
+public class OrdersReceivedGameEvent implements GameEvent
 {
 
-    protected int id;
-    protected String name;
+    private ArrayList<OrderQueue> orders;
+    private String playerName;
 
-    public Player(int id, String n)
+    public OrdersReceivedGameEvent(ArrayList<OrderQueue> os, String pn)
     {
-        this.id = id;
-        this.name = n;
+        this.orders = os;
+        this.playerName = pn;
     }
 
-    public ArrayList<OrderQueue> getOrders()
+    public void handle(Room room)
     {
-        ArrayList<OrderQueue> os = new ArrayList<OrderQueue>();
-        OrderQueue o = new OrderQueue();
-        MoveOrder ord = new MoveOrder(10, 1);
-        o.add(ord);
-        os.add(o);
-        return os;
-    }
-
-    public boolean areOrdersSet()
-    {
-        return true;
-    }
-
-    public void setOrders(ArrayList<OrderQueue> os) {}
-
-    public void clearOrders() {}
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public int ID()
-    {
-        return this.id;
+        room.depositOrders(this.playerName, this.orders);
     }
 
 }

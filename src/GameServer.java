@@ -27,6 +27,7 @@ public class GameServer extends Thread implements DropBox<ServerEvent>
 {
     
     Map<String,User> users;
+    Map<String,Room> rooms;
     BlockingQueue<ServerEvent> events;
     int userCapacity;
 
@@ -35,6 +36,8 @@ public class GameServer extends Thread implements DropBox<ServerEvent>
         this.users = new HashMap<String,User>();
         this.userCapacity = userCapacity;
         this.events = new LinkedBlockingDeque<ServerEvent>();
+        this.rooms = new HashMap<String,Room>();
+        this.rooms.put("Lobby", new Room(this, "Lobby", "Server"));
         new CollectServer(this, port);
         this.start();
     }
@@ -49,6 +52,11 @@ public class GameServer extends Thread implements DropBox<ServerEvent>
                 ev.handle(this);
             } catch (InterruptedException e) {}
         }
+    }
+
+    public DropBox<GameEvent> getLobby()
+    {
+        return this.rooms.get("Lobby");
     }
 
     //TODO switch DropBox to abstract class to get rid of these push methods

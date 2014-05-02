@@ -17,7 +17,7 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
+import java.util.*;
 import java.io.*;
 
 /**
@@ -67,6 +67,16 @@ public class SpriteList implements Serializable
         this . toBeRemoved = new ArrayList<Sprite>();
         this . turnLimit = 20;
         this . framesPerTurn = 100;
+    }
+
+    public int playerCount()
+    {
+        TreeSet set = new TreeSet();
+        for (Sprite s : this.sprites)
+        {
+            set.add(s.getPlayerID());
+        }
+        return set.size();
     }
 
     public int getFramesPerTurn()

@@ -17,47 +17,13 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
+import java.util.*;
 
-public class Player
+public abstract class GWindow extends AbstractDropBox<GWEvent>
 {
 
-    protected int id;
-    protected String name;
+    public ArrayList<OrderQueue> makeOrders(SpriteList sprites, int ID);
 
-    public Player(int id, String n)
-    {
-        this.id = id;
-        this.name = n;
-    }
-
-    public ArrayList<OrderQueue> getOrders()
-    {
-        ArrayList<OrderQueue> os = new ArrayList<OrderQueue>();
-        OrderQueue o = new OrderQueue();
-        MoveOrder ord = new MoveOrder(10, 1);
-        o.add(ord);
-        os.add(o);
-        return os;
-    }
-
-    public boolean areOrdersSet()
-    {
-        return true;
-    }
-
-    public void setOrders(ArrayList<OrderQueue> os) {}
-
-    public void clearOrders() {}
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public int ID()
-    {
-        return this.id;
-    }
+    public void display(SpriteList sprites, int ID);
 
 }

@@ -17,47 +17,33 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
-
-public class Player
+public abstract class AbstractDropBox<T>
 {
 
-    protected int id;
-    protected String name;
+    private BlockingQueue<Event<T>> events;
+    private T self;
 
-    public Player(int id, String n)
+    public AbstractDropBox(T self)
     {
-        this.id = id;
-        this.name = n;
+        this.events = new LinkedBlockingDeque<Event<T>>();
+        this.self = self;
+    }
+    
+    public void push(Event<T> ev)
+    {
+        try {
+            this.events.put(ev);
+        } catch (InterruptedException e) {}
     }
 
-    public ArrayList<OrderQueue> getOrders()
+    public void run()
     {
-        ArrayList<OrderQueue> os = new ArrayList<OrderQueue>();
-        OrderQueue o = new OrderQueue();
-        MoveOrder ord = new MoveOrder(10, 1);
-        o.add(ord);
-        os.add(o);
-        return os;
-    }
-
-    public boolean areOrdersSet()
-    {
-        return true;
-    }
-
-    public void setOrders(ArrayList<OrderQueue> os) {}
-
-    public void clearOrders() {}
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public int ID()
-    {
-        return this.id;
+        while(true)
+        {
+            try {
+                this.events.take().handle(self);
+            } catch (InterruptedException e) {}
+        }
     }
 
 }
