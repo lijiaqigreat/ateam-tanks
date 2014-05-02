@@ -17,6 +17,11 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import game.*;
+import network.*;
+import event.*;
+import gameinterface.*;
+
 public class ClientServerTest extends Thread
 {
     public static void main(String[] args)
@@ -29,6 +34,7 @@ public class ClientServerTest extends Thread
         GameClient c3 = new GameClient("nick", 8887);
         GameClient c4 = new GameClient("roxy", 8887);
         GameClient c5 = new GameClient("c5", 8887);
+        GameClient c6 = new GameClient("Sollux", 8887);
 
         //Things without delays between them tend to happen
         //out of order, but that is expected what with all the
@@ -36,20 +42,20 @@ public class ClientServerTest extends Thread
         //
         //Either way, nothing crashes!
         try {
-            c1.push(new JoinClientEvent("localhost"));
-            c2.push(new JoinClientEvent("localhost"));
-            c3.push(new JoinClientEvent("localhost"));
-            c4.push(new JoinClientEvent("localhost"));
-            c5.push(new JoinClientEvent("localhost"));
+            c1.push(new event.client.JoinServerEvent("localhost"));
+            c2.push(new event.client.JoinServerEvent("localhost"));
+            c3.push(new event.client.JoinServerEvent("localhost"));
+            c4.push(new event.client.JoinServerEvent("localhost"));
+            c5.push(new event.client.JoinServerEvent("localhost"));
             sleep(1000);
 
-            server.push( new AnnouncementServerEvent("just checking in"));
+            server.push( new event.server.AnnouncementReqEvent("just checking in"));
             sleep(1000);
-            c2.push(new PartClientEvent());
+            c2.push(new event.client.PartServerEvent());
             sleep(1000);
-            c3.push(new JoinClientEvent("localhost"));
+            c6.push(new event.client.JoinServerEvent("localhost"));
             sleep(1000);
-            server.push( new AnnouncementServerEvent("just checking in again"));
+            server.push( new event.server.AnnouncementReqEvent("just checking in again"));
             sleep(2000);
         } catch (InterruptedException e) {}
 
