@@ -56,14 +56,22 @@ public class GameClient extends ConcreteDropBox<GameClient>
         return this.name;
     }
 
+    public void shutdown()
+    {
+        System.out.println(this.getPlayerName() + " is shutting down.");
+        this.toUser(new event.user.PartEvent("Client shutdown"));
+        this.killingYou();
+    }
+
     public void connect(String hostname)
     {
         this.outBox = new NetWorker<GameClient,User>().connect(this, hostname, this.port);
     }
 
-    public void disconnect()
+    public void disconnect(String reason)
     {
-        this.toUser(new event.user.FwdServerEvent(new event.server.UserPartEvent(this.name, "Client quit")));
+        System.out.println(this.name + " leaving server: " + reason);
+        this.toUser(new event.user.PartEvent(reason));
         this.outBox = new NetWorker<GameClient,User>().disconnect();
     }
 

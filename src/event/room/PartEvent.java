@@ -17,25 +17,29 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.client;
+package event.room;
 
-import network.*;
+import java.util.*;
 import game.*;
 import gameinterface.*;
+import network.*;
 
-public class PartServerEvent implements event.Event<GameClient>
+public class PartEvent implements event.Event<Room>
 {
 
+    private String username;
     private String reason;
 
-    public PartServerEvent(String r)
+    public PartEvent(String u, String r)
     {
+        this.username = u;
         this.reason = r;
     }
 
-    public void handle(GameClient client)
+    public void handle(Room room)
     {
-        client.disconnect(reason);
+        room.announce(this.username + " has left: " + this.reason);
+        room.removeUser(room.getUser(username));
     }
 
 }

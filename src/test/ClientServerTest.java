@@ -29,6 +29,8 @@ public class ClientServerTest extends Thread
     public static void main(String[] args)
     {
 
+        System.out.println("----- Client-Server Test -----");
+
         GameServer server = new GameServer(3, 8887);
 
         GameClient c1 = new GameClient("joe", 8887);
@@ -53,14 +55,22 @@ public class ClientServerTest extends Thread
 
             server.push( new event.server.AnnouncementReqEvent("just checking in"));
             //sleep(1000);
-            c2.push(new event.client.PartServerEvent());
+            c2.push(new event.client.PartServerEvent("reason"));
             //sleep(1000);
             c6.push(new event.client.JoinServerEvent("localhost"));
             //sleep(1000);
-            server.push( new event.server.AnnouncementReqEvent("just checking in again"));
+            server.push(new event.server.AnnouncementReqEvent("just checking in again"));
+            c1.push(new event.client.ShutdownEvent());
             //sleep(2000);
             sleep(1000);
-            server.push(new event.server.KillEvent("killin you"));
+            server.push(new event.server.ShutdownEvent("killin you"));
+            sleep(1000);
+            c1.push(new event.client.ShutdownEvent());
+            c2.push(new event.client.ShutdownEvent());
+            c3.push(new event.client.ShutdownEvent());
+            c4.push(new event.client.ShutdownEvent());
+            c5.push(new event.client.ShutdownEvent());
+            c6.push(new event.client.ShutdownEvent());
             sleep(1000);
         } catch (InterruptedException e) {}
 

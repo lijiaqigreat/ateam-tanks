@@ -17,25 +17,25 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.client;
+package event.server;
 
 import network.*;
 import game.*;
 import gameinterface.*;
 
-public class PartServerEvent implements event.Event<GameClient>
+public class ShutdownEvent implements event.Event<GameServer>
 {
 
     private String reason;
 
-    public PartServerEvent(String r)
+    public ShutdownEvent(String r)
     {
         this.reason = r;
     }
 
-    public void handle(GameClient client)
+    public void handle(GameServer server)
     {
-        client.disconnect(reason);
+        server.shutdown(this.reason);
     }
 
 }

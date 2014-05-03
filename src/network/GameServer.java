@@ -87,8 +87,14 @@ public class GameServer extends ConcreteDropBox<GameServer>
 
     public void removeUser(String name, String reason)
     {
-        this.users.get(name).push(new event.user.PartEvent(reason));
-        this.users.remove(name);
+        // if a user gets rejected before actually joining, they stiil
+        // send the server a part event, so we must check if they are
+        // really in users before we try to do anything
+        if(this.users.get(name) != null)
+        {
+            this.users.get(name).push(new event.user.PartEvent(reason));
+            this.users.remove(name);
+        }
     }
 
     public Room getRoom(String name)

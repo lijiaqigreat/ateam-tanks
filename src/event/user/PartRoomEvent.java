@@ -17,25 +17,26 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.client;
+package event.user;
 
 import network.*;
 import game.*;
 import gameinterface.*;
 
-public class PartServerEvent implements event.Event<GameClient>
+public class PartRoomEvent implements event.Event<User>
 {
 
-    private String reason;
+    String reason;
 
-    public PartServerEvent(String r)
+    public PartRoomEvent(String r)
     {
         this.reason = r;
     }
 
-    public void handle(GameClient client)
+    public void handle(User user)
     {
-        client.disconnect(reason);
+        user.toClient(new event.client.ChatEvent("Game", "private", "You have left the game: " + this.reason));
+        user.resetRoom();
     }
 
 }

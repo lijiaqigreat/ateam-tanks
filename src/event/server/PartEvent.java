@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2014 A-Team Games
  *
@@ -17,25 +18,27 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.client;
+package event.server;
 
 import network.*;
 import game.*;
 import gameinterface.*;
 
-public class PartServerEvent implements event.Event<GameClient>
+public class PartEvent implements event.Event<GameServer>
 {
 
-    private String reason;
+    String name;
+    String reason;
 
-    public PartServerEvent(String r)
+    public PartEvent(String n, String r)
     {
+        this.name = n;
         this.reason = r;
     }
 
-    public void handle(GameClient client)
+    public void handle(GameServer server)
     {
-        client.disconnect(reason);
+        server.removeUser(this.name, this.reason);
     }
 
 }

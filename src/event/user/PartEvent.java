@@ -35,10 +35,9 @@ public class PartEvent implements event.Event<User>
 
     public void handle(User user)
     {
-        user.toClient(new event.client.ChatEvent("Server", "private", this.reason));
-        try {
-            user.sleep(500);
-        } catch (InterruptedException e) {}
+        user.toClient(new event.client.PartServerEvent(this.reason));
+        user.toRoom(new event.room.PartEvent(user.getPlayerName(), this.reason));
+        user.toServer(new event.server.PartEvent(user.getPlayerName(), this.reason));
         user.killingYou();
     }
 

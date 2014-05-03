@@ -56,6 +56,11 @@ public class ConcreteDropBox<T> extends Thread implements DropBox<T>
                 }
             } catch (InterruptedException e) {}
         }
+        try {
+            // This gives remaining outgoing events a chance to send
+            // while not taking any new incoming events.
+            sleep(500); 
+        } catch (InterruptedException e) {}
     }
 
     public void killingYou()

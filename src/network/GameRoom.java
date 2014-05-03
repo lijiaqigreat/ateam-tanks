@@ -33,16 +33,21 @@ public class GameRoom extends Room
     private boolean isGameRunning;
     private int maxPlayers;
     private String creator;
+    private Map<String,User> users;
+    private Map<String,Player> players;
 
     public GameRoom(GameServer s, String name, User c, SpriteList initList)
     {
         super(s, name);
+        this.users = new HashMap<String,User>();
+        this.players = new HashMap<String,Player>();
         this.sprites = initList.clone();
         this.creator = c.getPlayerName();
         this.isGameRunning = false;
         this.maxPlayers = this.sprites.playerCount();
         if(this.maxPlayers < 1)
         {
+            c.push(new event.user.FwdClientEvent(new event.client.ChatEvent("Game", "private", "You cannot make a game that takes no players")));
             this.killingYou();
         }
         addUser(c);
@@ -52,13 +57,47 @@ public class GameRoom extends Room
     {
         if(this.players.size() < this.maxPlayers && this.isGameRunning == false)
         {
-            super.addUser(user);
+            this.users.put(user.getPlayerName(), user);
             user.push(new event.user.RoomAcceptEvent(this));
         }
         else
         {
             user.push(new event.user.FwdClientEvent(new event.client.ChatEvent("room", "private", "You can't join that game")));
         }
+    }
+
+    public void removeUser(User user)
+    {
+        this.users.remove(user.getPlayerName());
+        if(user.getPlayerName().equals(this.creator))
+        {
+            toUsers(new event.user.PartRoomEvent("Creator left, game closed"));
+        }
+        else if(this.isGameRunning)
+        {
+            //replace the human player with a dummy or AI
+            int id = this.players.get(user.getPlayerName()).ID();
+            this.players.remove(user.getPlayerName());
+            this.players.put(user.getPlayerName(), new Player(id, user.getPlayerName()));
+        }
+    }
+
+    public void toUsers(Event<User> ev)
+    {
+        for(String un : this.users.keySet())
+        {
+            this.users.get(un).push(ev);
+        }
+    }
+
+    public void announce(String message)
+    {
+        this.toUsers(new event.user.FwdClientEvent(new event.client.ChatEvent("Game", "room", message)));
+    }
+
+    public User getUser(String username)
+    {
+        return users.get(username);
     }
 
     public boolean isCreator(String name)

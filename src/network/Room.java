@@ -37,14 +37,20 @@ public class Room extends ConcreteDropBox<Room>
     {
         this.name = name;
         this.server = s;
-        this.users = new HashMap<String,User>();
-        this.players = new HashMap<String,Player>();
         this.start();
     }
 
-    public void addUser(User user)
+    public void addUser(User user) {}
+
+    public void removeUser(User user) {}
+
+    public void toUsers(Event<User> ev) {}
+
+    public void announce(String s) {}
+
+    public User getUser(String s)
     {
-        this.users.put(user.getPlayerName(), user);
+        return null; // TODO dangerous hack, find a better way
     }
 
     public boolean isCreator(String name)
