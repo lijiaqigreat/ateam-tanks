@@ -37,7 +37,7 @@ public class OrdersEvent implements event.Event<User>
 
     public void handle(User user)
     {
-        user.toRoom(new event.room.OrdersEvent(os, user.getPlayerName()));
+        user.toRoom(new event.room.OrdersReceivedEvent(this.orders, user.getPlayerName()));
     }
 
 }

@@ -17,26 +17,29 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.user;
+package event.server;
 
 import network.*;
 import game.*;
 import gameinterface.*;
 
-public class RoomAcceptEvent implements event.Event<User>
+public class CreateRoomEvent implements event.Event<GameServer>
 {
 
-    private Room room;
+    private String name;
+    private User creator;
+    private SpriteList init;
 
-    public RoomAcceptEvent(Room r)
+    public CreateRoomEvent(String n, User c, SpriteList i)
     {
-        this.room = r;
+        this.name = n;
+        this.creator = c;
+        this.init = i;
     }
 
-    public void handle(User user)
+    public void handle(GameServer server)
     {
-        user.setRoom(this.room);
-        user.toClient(new event.client.ChatEvent("Room", "private", "Accepted to " + room.getRoomName()));
+        server.addRoom(this.creator, this.name, this.init);
     }
 
 }

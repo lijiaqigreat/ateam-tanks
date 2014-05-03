@@ -29,16 +29,14 @@ public class Room extends ConcreteDropBox<Room>
 {
     
     protected String name;
-    protected String creator;
     protected Map<String,User> users;
     protected Map<String,Player> players;
     private DropBox<GameServer> server;
 
-    public Room(GameServer s, String name, String creator)
+    public Room(GameServer s, String name)
     {
         this.name = name;
         this.server = s;
-        this.creator = creator;
         this.users = new HashMap<String,User>();
         this.players = new HashMap<String,Player>();
         this.start();
@@ -49,9 +47,19 @@ public class Room extends ConcreteDropBox<Room>
         this.users.put(user.getPlayerName(), user);
     }
 
+    public boolean isCreator(String name)
+    {
+        return false;
+    }
+
     public boolean isGameRunning()
     {
         return false;
+    }
+
+    public String getRoomName()
+    {
+        return this.name;
     }
 
     public void startGame() {}

@@ -23,20 +23,21 @@ import network.*;
 import game.*;
 import gameinterface.*;
 
-public class RoomAcceptEvent implements event.Event<User>
+public class CreateRoomEvent implements event.Event<User>
 {
 
-    private Room room;
+    private String name;
+    private SpriteList init;
 
-    public RoomAcceptEvent(Room r)
+    public CreateRoomEvent(String n, SpriteList i)
     {
-        this.room = r;
+        this.name = n;
+        this.init = i;
     }
 
     public void handle(User user)
     {
-        user.setRoom(this.room);
-        user.toClient(new event.client.ChatEvent("Room", "private", "Accepted to " + room.getRoomName()));
+        user.toServer(new event.server.CreateRoomEvent(this.name, user, this.init));
     }
 
 }

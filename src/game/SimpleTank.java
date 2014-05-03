@@ -33,7 +33,7 @@ import java.awt.geom.*;
 import java.awt.Color;
 import java.io.*;
 
-class SimpleTank extends Sprite implements Serializable
+public class SimpleTank extends Sprite implements Serializable
 {
     private ArrayList<SimpleTank> playerTanks;
     private double speed; //how far a frame of MoveOrder will move the tank

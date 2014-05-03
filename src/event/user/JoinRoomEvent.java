@@ -28,15 +28,14 @@ public class JoinRoomEvent implements event.Event<User>
 
     private String name;
 
-    public RoomAcceptEvent(String r)
+    public JoinRoomEvent(String r)
     {
         this.name = r;
     }
 
     public void handle(User user)
     {
-        user.setRoom(this.room);
-        user.toClient(new event.client.ChatEvent("Room", "private", "Accepted");
+        user.tryRoom(this.name);
     }
 
 }

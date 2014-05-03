@@ -31,16 +31,16 @@ import event.Event;
 public class GameServer extends ConcreteDropBox<GameServer>
 {
     
-    Map<String,User> users;
-    Map<String,Room> rooms;
-    int userCapacity;
+    private Map<String,User> users;
+    private Map<String,Room> rooms;
+    private int userCapacity;
 
     public GameServer(int userCapacity, int port)
     {
         this.users = new HashMap<String,User>();
         this.userCapacity = userCapacity;
         this.rooms = new HashMap<String,Room>();
-        this.rooms.put("Lobby", new Room(this, "Lobby", "Server"));
+        this.rooms.put("Lobby", new Room(this, "Lobby"));
         new CollectServer(this, port);
         this.start();
     }
@@ -91,14 +91,28 @@ public class GameServer extends ConcreteDropBox<GameServer>
         this.users.remove(name);
     }
 
-    public Map<String,Room> getRooms()
+    public Room getRoom(String name)
     {
-        return this.rooms;
+        return this.rooms.get(name);
     }
 
     public void toUser(String name, Event<User> ev)
     {
         this.users.get(name).push(ev);
+    }
+
+    public boolean addRoom(User creator, String name, SpriteList initList)
+    {
+        if(this.rooms.containsKey(name))
+        {
+            creator.push(new event.user.FwdClientEvent(new event.client.ChatEvent("Server", "private", "A game with that name already exists")));
+            return false;
+        }
+        else
+        {
+            this.rooms.put(name, new GameRoom(this, name, creator, initList));
+            return true;
+        }
     }
 
     public boolean addUser(User u)

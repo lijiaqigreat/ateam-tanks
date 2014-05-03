@@ -17,6 +17,8 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package test;
+
 import game.*;
 import network.*;
 import event.*;
@@ -50,17 +52,19 @@ public class ClientServerTest extends Thread
             sleep(1000);
 
             server.push( new event.server.AnnouncementReqEvent("just checking in"));
-            sleep(1000);
+            //sleep(1000);
             c2.push(new event.client.PartServerEvent());
-            sleep(1000);
+            //sleep(1000);
             c6.push(new event.client.JoinServerEvent("localhost"));
-            sleep(1000);
+            //sleep(1000);
             server.push( new event.server.AnnouncementReqEvent("just checking in again"));
-            sleep(2000);
+            //sleep(2000);
+            sleep(1000);
             server.push(new event.server.KillEvent("killin you"));
+            sleep(1000);
         } catch (InterruptedException e) {}
 
-        System.out.println("----- Tests complete");
+        System.out.println("----- Tests complete -----");
     }
 
 }

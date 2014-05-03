@@ -32,18 +32,25 @@ public class GameRoom extends Room
     private SpriteList sprites;
     private boolean isGameRunning;
     private int maxPlayers;
+    private String creator;
 
-    public GameRoom(GameServer s, String name, String creator, SpriteList initList)
+    public GameRoom(GameServer s, String name, User c, SpriteList initList)
     {
-        super(s, name, creator);
+        super(s, name);
         this.sprites = initList.clone();
+        this.creator = c.getPlayerName();
         this.isGameRunning = false;
         this.maxPlayers = this.sprites.playerCount();
+        if(this.maxPlayers < 1)
+        {
+            this.killingYou();
+        }
+        addUser(c);
     }
 
     public void addUser(User user)
     {
-        if (this.players.size() < this.maxPlayers && this.isGameRunning = false)
+        if(this.players.size() < this.maxPlayers && this.isGameRunning == false)
         {
             super.addUser(user);
             user.push(new event.user.RoomAcceptEvent(this));
@@ -52,6 +59,11 @@ public class GameRoom extends Room
         {
             user.push(new event.user.FwdClientEvent(new event.client.ChatEvent("room", "private", "You can't join that game")));
         }
+    }
+
+    public boolean isCreator(String name)
+    {
+        return name.equals(this.creator);
     }
 
     public boolean isGameRunning()
@@ -80,12 +92,12 @@ public class GameRoom extends Room
         this.isGameRunning = true;
     }
 
-    public boolean stepGame()
+    public void stepGame()
     {
 
         for (String uname : this.players.keySet())
         {
-            this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(PLAY, this.sprites.clone(), this.players.get(uname).ID())));
+            this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(SpriteType.PLAY, this.sprites.clone(), this.players.get(uname).ID())));
         }
         this.sprites.runTurn();
         clearDeadPlayers();
@@ -93,7 +105,7 @@ public class GameRoom extends Room
         {
             for (String uname : this.players.keySet())
             {
-                this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(ORDER, this.sprites.clone(), this.players.get(uname).ID())));
+                this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(SpriteType.ORDER, this.sprites.clone(), this.players.get(uname).ID())));
             }
         }
         else if (this.players.size() == 1)

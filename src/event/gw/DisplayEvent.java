@@ -29,7 +29,7 @@ public class DisplayEvent implements event.Event<GWindow>
     private SpriteList list;
     private int ID;
 
-    public DisplayGWEvent(SpriteList ss, int ID)
+    public DisplayEvent(SpriteList ss, int ID)
     {
         this.list = ss;
         this.ID = ID;
@@ -37,7 +37,7 @@ public class DisplayEvent implements event.Event<GWindow>
 
     public void handle(GWindow win)
     {
-        win.display(this.list, this.ID);
+        win.runAndDisplay(this.list, this.ID);
     }
 
 }

@@ -28,11 +28,16 @@ import java.util.*;
 public class FakeWindow extends GWindow
 {
 
+    public FakeWindow(DropBox<GameClient> c)
+    {
+        super(c);
+    }
+
     public ArrayList<OrderQueue> makeOrders(SpriteList sprites, int ID)
     {
         return new ArrayList<OrderQueue>();
     }
 
-    public void display(SpriteList sprites, int ID) {}
+    public void runAndDisplay(SpriteList sprites, int ID) {}
 
 }

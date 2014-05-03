@@ -17,26 +17,25 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package event.user;
+package event.client;
 
 import network.*;
 import game.*;
 import gameinterface.*;
 
-public class RoomAcceptEvent implements event.Event<User>
+public class GameOverEvent implements event.Event<GameClient>
 {
 
-    private Room room;
+    String winner;
 
-    public RoomAcceptEvent(Room r)
+    public GameOverEvent(String w)
     {
-        this.room = r;
+        this.winner = w;
     }
 
-    public void handle(User user)
+    public void handle(GameClient client)
     {
-        user.setRoom(this.room);
-        user.toClient(new event.client.ChatEvent("Room", "private", "Accepted to " + room.getRoomName()));
+        System.out.println("The game is over, and the winner is " + this.winner);
     }
 
 }

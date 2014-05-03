@@ -28,8 +28,20 @@ import java.util.*;
 public abstract class GWindow extends ConcreteDropBox<GWindow>
 {
 
+    DropBox<GameClient> client;
+
+    public GWindow(DropBox<GameClient> c)
+    {
+        this.client = c;
+    }
+
     public abstract ArrayList<OrderQueue> makeOrders(SpriteList sprites, int ID);
 
-    public abstract void display(SpriteList sprites, int ID);
+    public abstract void runAndDisplay(SpriteList sprites, int ID);
+
+    public void toClient(Event<GameClient> ev)
+    {
+        this.client.push(ev);
+    }
 
 }

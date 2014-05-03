@@ -61,10 +61,10 @@ public class User extends ConcreteDropBox<User>
 
     public void tryRoom(String name)
     {
-        Map<String,Room> rooms = this.server.getRooms();
-        if (rooms.containsKey(name))
+        Room room = this.server.getRoom(name);
+        if (room != null)
         {
-            rooms.get(name).push(new event.room.JoinReqEvent(this));
+            room.push(new event.room.JoinReqEvent(this));
         }
         else
         {
@@ -79,7 +79,7 @@ public class User extends ConcreteDropBox<User>
 
     public void resetRoom()
     {
-        this.room = server.getLobby();
+        this.room = this.server.getLobby();
     }
 
     public void setPlayerName(String name)

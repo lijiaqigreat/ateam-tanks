@@ -30,7 +30,7 @@ public class SpritesEvent implements event.Event<GameClient>
     private int ID;
     private event.SpriteType t;
 
-    public OrderTheseClientEvent(SpritesType t, SpriteList ss, int ID)
+    public SpritesEvent(event.SpriteType t, SpriteList ss, int ID)
     {
         this.initList = ss;
         this.ID = ID;

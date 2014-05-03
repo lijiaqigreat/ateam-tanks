@@ -33,7 +33,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.Color;
 
-class UnitModel
+public class UnitModel
 {
     private double speed;
     private double handling;

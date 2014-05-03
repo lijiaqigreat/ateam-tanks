@@ -37,7 +37,7 @@ public class GameClient extends ConcreteDropBox<GameClient>
         this.name = name;
         this.port = port;
         this.outBox = new FakeBox<User>();
-        this.gameWindow = new FakeWindow();
+        this.gameWindow = new FakeWindow(this);
         this.start();
     }
 
