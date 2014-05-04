@@ -163,7 +163,7 @@ public class SpriteList implements Serializable
     public int runTurn(DisplaysGame display)
     {
 
-        System.out.println("starting turn");
+        System.out.println("SpriteList is starting turn");
 
         boolean unfinishedBusiness = false; // used to check if bullets are still flying
         for (int f = 0; f < framesPerTurn || unfinishedBusiness; f++)
@@ -177,7 +177,7 @@ public class SpriteList implements Serializable
                 }
             }
             this.settle();
-            System.out.println("update! frame #" + f );
+            //System.out.println("update! frame #" + f );
             
             display.show(this); // delaying also happends in here
         }

@@ -32,6 +32,7 @@ public class SpritesEvent implements event.Event<GameClient>
 
     public SpritesEvent(event.SpriteType t, SpriteList ss, int ID)
     {
+        this.t = t;
         this.initList = ss;
         this.ID = ID;
     }

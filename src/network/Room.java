@@ -70,9 +70,6 @@ public class Room extends ConcreteDropBox<Room>
 
     public void startGame() {}
 
-    public boolean depositOrders(String playerName, ArrayList<OrderQueue> os)
-    {
-        return false;
-    }
+    public void depositOrders(String playerName, ArrayList<OrderQueue> os) {}
 
 }

@@ -38,6 +38,7 @@ public class PartEvent implements event.Event<Room>
 
     public void handle(Room room)
     {
+        System.out.println("ROOM PART RECEIVED");
         room.announce(this.username + " has left: " + this.reason);
         room.removeUser(room.getUser(username));
     }
