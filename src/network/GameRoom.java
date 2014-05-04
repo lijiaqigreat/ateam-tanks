@@ -50,7 +50,10 @@ public class GameRoom extends Room
             c.push(new event.user.FwdClientEvent(new event.client.ChatEvent("Game", "private", "You cannot make a game that takes no players")));
             this.killingYou();
         }
-        addUser(c);
+        else
+        {
+            addUser(c);
+        }
     }
 
     public void addUser(User user)
@@ -72,6 +75,7 @@ public class GameRoom extends Room
         if(user.getPlayerName().equals(this.creator))
         {
             toUsers(new event.user.PartRoomEvent("Creator left, game closed"));
+            this.killingYou();
         }
         else if(this.isGameRunning)
         {

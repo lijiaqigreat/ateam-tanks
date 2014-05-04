@@ -34,9 +34,11 @@ public class User extends ConcreteDropBox<User>
     private DropBox<GameClient> client;
     private GameServer server;
     private DropBox<Room> room;
+    private boolean registeredWithServer;
 
     public User(GameServer s, Socket c)
     {
+        this.registeredWithServer = false;
         this.name = "un-initialized";
         this.server = s;
         this.client = new NetCore<User,GameClient>(c, this);
@@ -57,6 +59,11 @@ public class User extends ConcreteDropBox<User>
     public void toServer(Event<GameServer> ev)
     {
         this.server.push(ev);
+    }
+
+    public void register()
+    {
+        this.registeredWithServer = true;
     }
 
     public void tryRoom(String name)
@@ -85,6 +92,22 @@ public class User extends ConcreteDropBox<User>
     public void setPlayerName(String name)
     {
         this.name = name;
+    }
+
+    public void shutdown(String reason)
+    {
+        this.toClient(new event.client.PartServerEvent(reason));
+        this.toRoom(new event.room.PartEvent(this.getPlayerName(), reason));
+        if(this.registeredWithServer)
+        {
+            this.toServer(new event.server.PartEvent(this.getPlayerName(), reason));
+        }
+        this.killingYou();
+        try {
+            sleep(100);
+        } catch (InterruptedException e) {}
+        this.client.killingYou();
+        //System.out.println(this.name + " User has killed its netcore");
     }
 
     public String getPlayerName()

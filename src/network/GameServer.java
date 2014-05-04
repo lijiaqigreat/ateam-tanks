@@ -34,6 +34,7 @@ public class GameServer extends ConcreteDropBox<GameServer>
     private Map<String,User> users;
     private Map<String,Room> rooms;
     private int userCapacity;
+    private CollectServer coll;
 
     public GameServer(int userCapacity, int port)
     {
@@ -41,7 +42,7 @@ public class GameServer extends ConcreteDropBox<GameServer>
         this.userCapacity = userCapacity;
         this.rooms = new HashMap<String,Room>();
         this.rooms.put("Lobby", new Room(this, "Lobby"));
-        new CollectServer(this, port);
+        this.coll = new CollectServer(this, port);
         this.start();
     }
 
@@ -62,17 +63,19 @@ public class GameServer extends ConcreteDropBox<GameServer>
 
     public void shutdown(String reason)
     {
+        coll.killingYou();
         announce("Server is going down: " + reason);
         try {
-            sleep(500);
+            sleep(700);
         } catch (InterruptedException e) {}
         for (String uname : this.users.keySet())
         {
             this.users.get(uname).push(new event.user.PartEvent("Server shutdown"));
         }
         try {
-            sleep(500);
+            sleep(700);
         } catch (InterruptedException e) {}
+        this.rooms.get("Lobby").killingYou();
         this.killingYou();
     }
 

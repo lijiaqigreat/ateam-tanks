@@ -38,7 +38,7 @@ public class ClientServerTest extends Thread
         GameClient c3 = new GameClient("nick", 8887);
         GameClient c4 = new GameClient("roxy", 8887);
         GameClient c5 = new GameClient("c5", 8887);
-        GameClient c6 = new GameClient("Sollux", 8887);
+        GameClient c6 = new GameClient("sollux", 8887);
 
         //Things without delays between them tend to happen
         //out of order, but that is expected what with all the
@@ -58,7 +58,8 @@ public class ClientServerTest extends Thread
             c2.push(new event.client.PartServerEvent("reason"));
             //sleep(1000);
             c6.push(new event.client.JoinServerEvent("localhost"));
-            //sleep(1000);
+            sleep(1000);
+            c3.push(new event.client.JoinServerEvent("localhost"));
             server.push(new event.server.AnnouncementReqEvent("just checking in again"));
             c1.push(new event.client.ShutdownEvent());
             //sleep(2000);

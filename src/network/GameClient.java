@@ -61,6 +61,11 @@ public class GameClient extends ConcreteDropBox<GameClient>
         System.out.println(this.getPlayerName() + " is shutting down.");
         this.toUser(new event.user.PartEvent("Client shutdown"));
         this.killingYou();
+        try {
+            sleep(100);
+        } catch (InterruptedException e) {}
+        this.outBox.killingYou();
+        //System.out.println(this.name + " Client has killed its netcore");
     }
 
     public void connect(String hostname)
@@ -72,6 +77,7 @@ public class GameClient extends ConcreteDropBox<GameClient>
     {
         System.out.println(this.name + " leaving server: " + reason);
         this.toUser(new event.user.PartEvent(reason));
+        this.outBox.killingYou();
         this.outBox = new NetWorker<GameClient,User>().disconnect();
     }
 
