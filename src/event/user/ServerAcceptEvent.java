@@ -17,18 +17,18 @@
  *    along with ateam-tanks.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network;
+package event.user;
 
+import network.*;
 import game.*;
 import gameinterface.*;
 
-import event.Event;
-
-public class FakeBox<O> implements DropBox<O>
+public class ServerAcceptEvent implements event.Event<User>
 {
-    
-    public void push(Event<O> o) {}
 
-    public void killingYou() {}
+    public void handle(User user)
+    {
+        user.register();
+    }
 
 }

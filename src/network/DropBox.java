@@ -29,4 +29,6 @@ public interface DropBox<T>
 
     public void push(Event<T> ev);
 
+    public void killingYou();
+
 }

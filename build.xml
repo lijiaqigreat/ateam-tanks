@@ -13,7 +13,7 @@
         <!-- Create the build directory structure used by compile -->
     </target>
 
-    <target name="compile" depends="init"
+    <target name="compile" depends="init,clean"
             description="compile the source " >
         <!-- Compile the java code from ${src} into ${build} -->
         <mkdir dir="${build}"/>
@@ -31,6 +31,7 @@
 
     <target name="test" depends="compile" description="run test procedure" >
         <java classpath="${build}" classname="test.ClientServerTest" />
+        <java classpath="${build}" classname="test.GameRoomTest" />
     </target>
 
     <target name="clean"

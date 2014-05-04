@@ -31,12 +31,15 @@ import event.Event;
 public class NetCore<I,O> implements DropBox<O>
 {
 
-    ObjectInputStream in;
-    ObjectOutputStream out;
-    BlockingQueue<Event<O>> toSend;
+    private BlockingQueue<Event<O>> toSend;
+    private ReceiveThread<I> rec;
+    private SendThread<O> sen;
 
     public NetCore(Socket c, DropBox<I> d)
     {
+        try {
+            c.setSoTimeout(200);
+        } catch (SocketException e) {}
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
@@ -47,8 +50,14 @@ public class NetCore<I,O> implements DropBox<O>
             System.out.println("NetCore stream init failed :/");
         }
         this.toSend = new LinkedBlockingDeque<Event<O>>();
-        new ReceiveThread<I>(in, d);
-        new SendThread<O>(out, toSend);
+        this.rec = new ReceiveThread<I>(in, d);
+        this.sen = new SendThread<O>(out, toSend);
+    }
+
+    public void killingYou()
+    {
+        this.rec.killingYou();
+        this.sen.killingYou();
     }
 
     public void push(Event<O> ev)
@@ -63,9 +72,11 @@ public class NetCore<I,O> implements DropBox<O>
 
         ObjectInputStream in;
         DropBox<I> drop;
+        volatile boolean alive;
 
         public ReceiveThread(ObjectInputStream i, DropBox<I> d)
         {
+            this.alive = true;
             this.in = i;
             this.drop = d;
             this.start();
@@ -73,15 +84,21 @@ public class NetCore<I,O> implements DropBox<O>
 
         public void run()
         {
-            while(true)
+            while(this.alive)
             {
                 try {
                     Event<I> ev = (Event<I>) in.readObject();
                     drop.push(ev);
                 } catch (IOException e) {
-                    System.out.println("uh oh");
+                    //System.out.println("uh oh");
                 } catch (ClassNotFoundException e) {}
+                //System.out.println("REC THREAD still going");
             }
+        }
+
+        public void killingYou()
+        {
+            this.alive = false;
         }
 
     }
@@ -91,9 +108,11 @@ public class NetCore<I,O> implements DropBox<O>
 
         ObjectOutputStream out;
         BlockingQueue<Event<O>> toSend;
+        volatile boolean alive;
 
         public SendThread(ObjectOutputStream o, BlockingQueue<Event<O>> q)
         {
+            this.alive = true;
             this.out = o;
             this.toSend = q;
             this.start();
@@ -101,16 +120,25 @@ public class NetCore<I,O> implements DropBox<O>
 
         public void run()
         {
-            while(true)
+            while(!this.toSend.isEmpty() || this.alive)
             {
                 try {
-                    out.writeObject(this.toSend.take());
+                    Event<O> ev = this.toSend.poll(500, TimeUnit.MICROSECONDS);
+                    if(ev != null)
+                    {
+                        out.writeObject(ev);
+                    }
                 } catch (IOException e) {
                     System.out.println("netcore network failure?");
                 } catch (InterruptedException e) {
-                    System.out.println("netcore interrupt failure?");
-                }
+                    System.out.println("netcore interrupt failure?"); }
+                //System.out.println("SEND THREAD still going");
             }
+        }
+
+        public void killingYou()
+        {
+            this.alive = false;
         }
 
     }

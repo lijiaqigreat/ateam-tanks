@@ -30,18 +30,17 @@ public class CollectServer extends Thread
 {
     private ServerSocket server = null;
     private GameServer s;
+    private volatile boolean alive;
 
     public CollectServer(GameServer s, int port)
     {
         //port = 8887;
-        try
-        {
+        this.alive = true;
+        try {
             this.server = new ServerSocket(port);
-        }
-        catch ( IOException e )
-        {
-            System.out.println ( "meh says the collectserver" );
-        }
+            this.server.setSoTimeout(500);
+        } catch ( IOException e ) {
+            System.out.println ( "meh says the collectserver" ); }
         this.s = s;
         this.start();
     }
@@ -49,20 +48,21 @@ public class CollectServer extends Thread
     public void run()
     {
         System.out.println("--- CollectServer started");
-        while (true)
+        while (this.alive)
         {
             Socket con = null;
-            try
-            {
+            try {
                 con = server.accept();
                 new User(s, con);
+            } catch (IOException e) {
+                //System.out.println("failed user connection");
             }
-            catch ( IOException e )
-            {
-                System.out.println("failed user connection");
-            }
-            
         }
+    }
+
+    public void killingYou()
+    {
+        this.alive = false;
     }
 
 }
