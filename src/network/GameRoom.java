@@ -58,7 +58,7 @@ public class GameRoom extends Room
 
     public void addUser(User user)
     {
-        if(this.players.size() < this.maxPlayers && this.isGameRunning == false)
+        if(this.users.size() < this.maxPlayers && this.isGameRunning == false)
         {
             this.users.put(user.getPlayerName(), user);
             user.push(new event.user.RoomAcceptEvent(this));

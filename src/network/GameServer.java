@@ -97,6 +97,7 @@ public class GameServer extends ConcreteDropBox<GameServer>
         {
             this.users.get(name).push(new event.user.PartEvent(reason));
             this.users.remove(name);
+            System.out.println("SERVER REMOVED " + name);
         }
     }
 
@@ -140,6 +141,7 @@ public class GameServer extends ConcreteDropBox<GameServer>
         {
             this.users.put(u.getPlayerName(), u);
             System.out.println(u.getPlayerName() + " has joined!!");
+            u.push(new event.user.ServerAcceptEvent());
             return true;
         }
     }

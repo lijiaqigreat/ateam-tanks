@@ -30,10 +30,12 @@ public class GameClient extends ConcreteDropBox<GameClient>
     private String name;
     private DropBox<User> outBox;
     private DropBox<GWindow> gameWindow;
-    int port;
+    private int port;
+    private boolean connected;
 
     public GameClient(String name, int port)
     {
+        this.connected = false;
         this.name = name;
         this.port = port;
         this.outBox = new FakeBox<User>();
@@ -70,15 +72,20 @@ public class GameClient extends ConcreteDropBox<GameClient>
 
     public void connect(String hostname)
     {
+        this.connected = true;
         this.outBox = new NetWorker<GameClient,User>().connect(this, hostname, this.port);
     }
 
     public void disconnect(String reason)
     {
-        System.out.println(this.name + " leaving server: " + reason);
-        this.toUser(new event.user.PartEvent(reason));
-        this.outBox.killingYou();
-        this.outBox = new NetWorker<GameClient,User>().disconnect();
+        if(this.connected)
+        {
+            this.connected = false;
+            System.out.println(this.name + " leaving server: " + reason);
+            this.toUser(new event.user.PartEvent(reason));
+            this.outBox.killingYou();
+            this.outBox = new NetWorker<GameClient,User>().disconnect();
+        }
     }
 
 }

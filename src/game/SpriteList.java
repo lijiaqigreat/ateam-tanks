@@ -74,12 +74,16 @@ public class SpriteList implements Serializable
 
     public int playerCount()
     {
-        TreeSet set = new TreeSet();
+        int count = 0;
         for (Sprite s : this.sprites)
         {
-            set.add(s.getPlayerID());
+            int c = s.getPlayerID();
+            if(c > count)
+            {
+                count = c;
+            }
         }
-        return set.size();
+        return count;
     }
 
     public int getFramesPerTurn()
@@ -116,6 +120,8 @@ public class SpriteList implements Serializable
         {
             boolean success = false;
             success = this . sprites . remove ( deadSprite );
+            /*
+            // Debugging prints
             if ( success )
             {
                 System.out.println ( deadSprite . getClass () . getName () + " removed" );
@@ -124,13 +130,14 @@ public class SpriteList implements Serializable
             {
                 System.out.println ( "REMOVE FAILED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
             }
+            */
         }
         this . toBeRemoved = new ArrayList<Sprite>();
 
         for ( Sprite newSprite : this . toBeAdded )
         {
             this . sprites . add ( newSprite );
-            System.out.println ( newSprite . getClass () . getName () + " added" );
+            //System.out.println ( newSprite . getClass () . getName () + " added" );
         }
         this . toBeAdded = new ArrayList<Sprite>();
     }
