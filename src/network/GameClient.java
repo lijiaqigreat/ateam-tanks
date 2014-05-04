@@ -62,6 +62,7 @@ public class GameClient extends ConcreteDropBox<GameClient>
     {
         System.out.println(this.getPlayerName() + " is shutting down.");
         this.toUser(new event.user.PartEvent("Client shutdown"));
+        this.gameWindow.killingYou();
         this.killingYou();
         try {
             sleep(100);

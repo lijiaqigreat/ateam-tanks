@@ -31,10 +31,12 @@ public class FakeWindow extends GWindow
     public FakeWindow(DropBox<GameClient> c)
     {
         super(c);
+        this.start();
     }
 
     public ArrayList<OrderQueue> makeOrders(SpriteList sprites, int ID)
     {
+        System.out.println("doin sprite stuff");
         return new ArrayList<OrderQueue>();
     }
 

@@ -30,7 +30,8 @@ public class RemotePlayer extends Player
     public RemotePlayer(int id, String n)
     {
         super(id, n);
-        this.clearOrders();
+        this.ordersAreSet = false;
+        this.orders = new ArrayList<OrderQueue>();
     }
 
     public ArrayList<OrderQueue> getOrders()

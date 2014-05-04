@@ -26,6 +26,14 @@ import java.util.concurrent.*;
 import java.util.*;
 import event.*;
 
+//TODO ensure that rooms are removed from the server
+//when they end or close
+//
+//right now tests indicate that if you kill a room
+//and then start a new room with the same name weird
+//stuff happens and some players move automatically
+//into the new one
+//
 public class GameRoom extends Room
 {
 
@@ -35,10 +43,12 @@ public class GameRoom extends Room
     private String creator;
     private Map<String,User> users;
     private Map<String,Player> players;
+    private int maxTurns;
 
     public GameRoom(GameServer s, String name, User c, SpriteList initList)
     {
         super(s, name);
+        this.maxTurns = 100;
         this.users = new HashMap<String,User>();
         this.players = new HashMap<String,Player>();
         this.sprites = initList.clone();
@@ -74,15 +84,18 @@ public class GameRoom extends Room
         this.users.remove(user.getPlayerName());
         if(user.getPlayerName().equals(this.creator))
         {
+            System.out.println("CLOSINGGAMEBECAUSECREATORLEFT");
             toUsers(new event.user.PartRoomEvent("Creator left, game closed"));
             this.killingYou();
         }
         else if(this.isGameRunning)
         {
             //replace the human player with a dummy or AI
+            System.out.println("REPLACING HUMAN WITH AI");
             int id = this.players.get(user.getPlayerName()).ID();
             this.players.remove(user.getPlayerName());
             this.players.put(user.getPlayerName(), new Player(id, user.getPlayerName()));
+            toUsers(new event.user.FwdClientEvent(new event.client.ChatEvent("Room", "room", user.getPlayerName() + " has quit; replaced by AI.")));
         }
     }
 
@@ -121,6 +134,7 @@ public class GameRoom extends Room
         {
             playerCount ++;
             this.players.put(uname, new RemotePlayer(playerCount, uname));
+            System.out.println("Player created for "+ uname);
         }
         while (playerCount < this.maxPlayers)
         {
@@ -133,22 +147,44 @@ public class GameRoom extends Room
             this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.GameStartEvent(this.sprites.clone(), this.players.get(uname).ID())));
         }
         this.isGameRunning = true;
+        System.out.println(this.name + ": Game has started");
     }
 
     public void stepGame()
     {
-
-        for (String uname : this.players.keySet())
+        System.out.println("game step");
+        this.maxTurns --;
+        System.out.println("Turns left: " + this.maxTurns);
+        this.applyOrders();
+        for (String uname : this.users.keySet())
         {
-            this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(SpriteType.PLAY, this.sprites.clone(), this.players.get(uname).ID())));
+            int thisId = -1;
+            if(this.players.get(uname) != null)
+            {
+                thisId = this.players.get(uname).ID();
+            }
+            this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(SpriteType.PLAY, this.sprites.clone(), thisId)));
         }
         this.sprites.runTurn();
         clearDeadPlayers();
-        if (this.players.size() > 1)
+        if (this.maxTurns < 1)
         {
-            for (String uname : this.players.keySet())
+            for (String uname : this.users.keySet())
             {
-                this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(SpriteType.ORDER, this.sprites.clone(), this.players.get(uname).ID())));
+                this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.GameOverEvent("Nobody")));
+                this.isGameRunning = false;
+            }
+        }
+        else if (this.players.size() > 1)
+        {
+            for (String uname : this.users.keySet())
+            {
+                int thisId = -1;
+                if(this.players.get(uname) != null)
+                {
+                    thisId = this.players.get(uname).ID();
+                }
+                this.users.get(uname).push(new event.user.FwdClientEvent(new event.client.SpritesEvent(SpriteType.ORDER, this.sprites.clone(), thisId)));
             }
         }
         else if (this.players.size() == 1)
@@ -170,7 +206,7 @@ public class GameRoom extends Room
         }
     }
 
-    public boolean depositOrders(String playerName, ArrayList<OrderQueue> os)
+    public void depositOrders(String playerName, ArrayList<OrderQueue> os)
     {
         this.players.get(playerName).setOrders(os);
         boolean ready = true;
@@ -181,7 +217,10 @@ public class GameRoom extends Room
                 ready = false;
             }
         }
-        return ready;
+        if(ready)
+        {
+            this.stepGame();
+        }
     }
 
     private void applyOrders()
