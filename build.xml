@@ -1,6 +1,6 @@
-<project name="ateam-tanks" default="test" basedir=".">
+<project name="ateam-tanks" default="dist" basedir=".">
         <description>
-            simple  build file
+            simple build file
         </description>
     <!-- set global properties for this build -->
     <property name="src" location="src"/>
@@ -29,7 +29,7 @@
         <jar jarfile="${dist}/lib/Ateam-Tanks-${DSTAMP}.jar" basedir="${build}"/>
     </target>
 
-    <target name="test" depends="dist" description="run test procedure" >
+    <target name="test" depends="compile" description="run test procedure" >
         <java classpath="${build}" classname="test.ClientServerTest" />
     </target>
 
