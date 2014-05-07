@@ -34,7 +34,7 @@ import java.awt.Point;
 
 import java.io.Console;
 
-public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, MouseListener{
+public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, MouseListener,KeyListener{
     /**
      * 0: display
      * 1: give order
@@ -46,9 +46,11 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, Mouse
 
     int state;
     SpriteList sprites;
+    ArrayList<Sprite> sprites2;
     OrderQueue queue=null;
     UnitModel model=null;
     Object queueLock=new Object();
+    int framesLeft=0;
 
     SimpleTank mainTank=null;
     OrderQueue orderQueue=null;
@@ -64,6 +66,7 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, Mouse
         state=0;
         sprites = new SpriteList();
         this.addMouseListener(this);
+        this.addKeyListener(this);
         //this.addKeyListener(this);
         return true;
     }
@@ -89,29 +92,33 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, Mouse
     @Override
     public ArrayList<OrderQueue> askForOrders (SpriteList s, int id, String playerName){
         this.sprites = s;
+        this.sprites2=sprites.getOwnedBy(id);
         this.models = new ArrayList<UnitModel>();
         this.orders = new ArrayList<OrderQueue>();
         this.repaint();
-        for (Sprite sprite : sprites.getOwnedBy(id))
+
+        for (Sprite sprite : this.sprites2)
         {
             this.queue = new OrderQueue(sprites.getFramesPerTurn(), sprite.uid());
             this.model = new UnitModel(sprite);
             this.models.add(this.model);
             this.orders.add(this.queue);
-            boolean keepgoing = true;
-            int frames = 0;
-            int frameLimit = sprites.getFramesPerTurn();
+            this.framesLeft=s.getFramesPerTurn();
             Console in = System.console();
             System.out.println ();
             System.out.println ();
             System.out.println ( playerName + ", please allocate orders to your tank." );
-            while ( keepgoing && frames < frameLimit)
+            while ( this.framesLeft>0)
             {
                 try{
-                    queueLock.wait();
+                    synchronized(queueLock){
+                      queueLock.wait();
+                    }
                 }catch(Exception ex){
-                    keepgoing=false;
+                    //ex.printStackTrace();
+                    System.out.println(ex.getMessage());
                 }
+                System.out.println("unblocked: "+queue.getFramesLeft());
                 this.repaint ();
             }
             this.model=null;
@@ -166,14 +173,17 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, Mouse
         }
         for (int x = 0; x < orders.size(); x++)
         {
-            UnitModel m = new UnitModel(models.get(x));
+            UnitModel m = new UnitModel(sprites2.get(x));
             orders.get(x).walkModel ( m, g2 );
         }
     }
     public void mouseClicked(MouseEvent e){
+        System.out.println("mouseClicked");
         if(this.model==null){
             return;
         }
+        System.out.println("test1");
+
         Point _p=e.getPoint();
         Point2D.Double p1=new Point2D.Double(_p.x,_p.y);
         Point2D.Double p2=new Point2D.Double();
@@ -182,11 +192,14 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, Mouse
         }catch(Exception ex){
             return;
         }
+        System.out.println("test1");
         Vector3D position = this.model.getPosition();
         p1.setLocation(p2.x-position.getX(),p2.y-position.getY());
-        double theta2=Math.atan2(p1.x,p1.y)*180/Math.PI;
+        System.out.println("("+p1.getX()+" "+p1.getY()+")");
+        double theta2=Math.atan2(p1.getY(),p1.getX())*180/Math.PI;
         if(e.getButton()==MouseEvent.BUTTON1){
           double theta1=this.model.getDirection().getTheta();
+          System.out.println("angle: "+theta2+" "+theta1);
           double dt=theta2-theta1;
           if(dt>180){
             dt-=360;
@@ -195,22 +208,50 @@ public class DemoPanel extends JPanel implements DisplaysGame, GetsOrders, Mouse
           }
           dt=(int)(dt/this.model.getHandling()+0.5);
           if(dt>0){
-            queue.add(new TurnOrder((int)dt,1));
+            Order order=new TurnOrder((int)dt,1);
+            tryAddOrder(order);
           }else{
-            queue.add(new TurnOrder((int)-dt,-1));
+            Order order=new TurnOrder((int)-dt,-1);
+            tryAddOrder(order);
           }
+          System.out.println("turn frame: "+dt);
           dt=Math.hypot(p1.x,p1.y);
           dt=(int)(dt/this.model.getSpeed()+0.5);
-          queue.add(new MoveOrder((int)dt,1));
-          queueLock.notify();
+          Order order=new MoveOrder((int)dt,1);
+          tryAddOrder(order);
+          System.out.println("move frame: "+dt);
         }else if(e.getButton()==MouseEvent.BUTTON3){
-          queue.add(new ShootOrder(theta2));
+          Order order=new ShootOrder(theta2);
+          tryAddOrder(order);
+        }
+        synchronized(queueLock){
           queueLock.notify();
         }
         
     }
+    public void tryAddOrder(Order order){
+      if(order.getFrames()<=this.framesLeft){
+        order.walk(this.model,(Graphics2D)this.getGraphics());
+        queue.add(order);
+        this.framesLeft-=order.getFrames();
+        System.out.println("add order");
+      }
+    }
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
-    public void mousePressed(MouseEvent e){}
+    public void mousePressed(MouseEvent e){
+    }
+    public void keyPressed(KeyEvent e){
+        System.out.println("key!");
+      if(e.getKeyCode()==KeyEvent.VK_SPACE){
+        this.framesLeft=0;
+        synchronized(queueLock){
+          queueLock.notify();
+        }
+      }
+    }
+    public void keyReleased(KeyEvent e){}
+    public void keyTyped(KeyEvent e){}
+
 }
